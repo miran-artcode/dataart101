@@ -1,0 +1,39 @@
+rules_version = '2';
+
+// =============================================================================
+// DATA ART 101 — Firestore 보안 규칙
+// 프로젝트: lab-datacanvas (앱 닉네임 101design)
+// -----------------------------------------------------------------------------
+// 이 앱은 별도 로그인(Firebase Auth) 없이 "한 링크"로 학급 전체가 공유하는 구조입니다
+// (교사 로그인은 브라우저 로컬 기반 admin-gate라 서버 규칙으로는 신원 확인 불가).
+// 그래서 아래 5개 컬렉션에 한해서만 읽기/쓰기를 허용하고, 그 외 경로는 모두 막습니다.
+//
+// ⚠ 보안 주의
+//   • 웹 apiKey는 비밀이 아니며, 프로젝트 ID를 아는 사람은 누구나 이 컬렉션을
+//     읽고/쓰고/지울 수 있습니다(현 설계상 불가피 — 공개 공유 수업용).
+//   • 학생(미성년자) 데이터이므로 단원이 끝나면 콘솔에서 데이터를 정리/삭제하세요.
+//   • 더 잠그려면:
+//       (1) 아래 isOpen()의 만료일을 단원 종료일로 바꿔 기간이 지나면 자동 잠김
+//           → 만료 후 앱은 자동으로 로컬 저장으로 폴백(수업은 안 멈춤).
+//       (2) Firebase Auth(익명 로그인) 도입 후 request.auth != null 로 제한.
+// =============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 수업 운영 기간. 단원 종료일로 바꾸면 그 이후 자동으로 읽기/쓰기가 잠깁니다.
+    // (항상 열어두려면 이 함수가 true 를 반환하도록 바꾸세요.)
+    function isOpen() {
+      return request.time < timestamp.date(2026, 12, 31);
+    }
+
+    match /works/{id}       { allow read, write: if isOpen(); }
+    match /feedback/{id}    { allow read, write: if isOpen(); }
+    match /notes/{id}       { allow read, write: if isOpen(); }
+    match /quizzes/{id}     { allow read, write: if isOpen(); }
+    match /quizAnswers/{id} { allow read, write: if isOpen(); }
+
+    // 위에 없는 모든 경로는 차단
+    match /{document=**} { allow read, write: if false; }
+  }
+}

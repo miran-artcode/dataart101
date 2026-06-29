@@ -14,3 +14,8 @@ npm-debug.log*
 # 의존성 / 빌드 산출물
 node_modules/
 dist/
+
+# Firebase CLI
+.firebase/
+firebase-debug.log
+firestore-debug.log

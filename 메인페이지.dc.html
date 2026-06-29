@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  @keyframes badgeSpin { to { transform: rotate(360deg); } }
+</style>
+</helmet>
+
+<div data-screen-label="메인페이지" style="min-height:100vh; padding:18px 18px 0; background:#f6fbff;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600; white-space:nowrap;">
+          <span onClick="{{ goHub }}" style="color:#667080; cursor:pointer;" style-hover="color:#0E1523;">둘러보기</span>
+          <span onClick="{{ goAnalyze }}" style="color:#667080; cursor:pointer;" style-hover="color:#0E1523;">분석 도구</span>
+          <span onClick="{{ goGallery }}" style="color:#667080; cursor:pointer;" style-hover="color:#0E1523;">전시</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:10px;">
+          <button onClick="{{ goCoach }}" style="background:#EAF1FB; color:#2C3A52; border:none; border-radius:999px; padding:9px 16px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#dde8f7;">AI 코치</button>
+          <div style="width:34px; height:34px; border-radius:50%; background:#0E1523; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- hero -->
+    <section style="position:relative; text-align:center; padding:66px 0 26px;">
+
+      <!-- atmosphere blob -->
+      <div style="position:absolute; left:50%; top:54%; width:760px; height:430px; transform:translate(-50%,-50%); filter:blur(60px); opacity:{{ blobOpacity }}; pointer-events:none; background:radial-gradient(40% 60% at 28% 40%, #3A4F7A 0%, transparent 70%), radial-gradient(46% 60% at 74% 56%, #182F49 0%, transparent 72%), radial-gradient(40% 60% at 52% 64%, #8FC0B5 0%, transparent 70%);"></div>
+
+      <!-- rotating badge -->
+      <sc-if value="{{ showBadge }}" hint-placeholder-val="{{ true }}">
+      <div style="position:absolute; right:6px; top:64px; width:118px; height:118px; z-index:3;">
+        <svg width="118" height="118" viewBox="0 0 118 118">
+          <defs><path id="badgePath" d="M59,59 m-45,0 a45,45 0 1,1 90,0 a45,45 0 1,1 -90,0"></path></defs>
+          <circle cx="59" cy="59" r="57" fill="none" stroke="#cdd9ea" stroke-width="1"></circle>
+          <g style="animation:badgeSpin 20s linear infinite; transform-origin:59px 59px; animation-play-state:{{ badgePlay }};">
+            <text font-size="7.5" font-weight="700" letter-spacing="0.6" fill="#3a4658">
+              <textPath href="#badgePath" startOffset="0">© MIRAN HWANG · SEOUL ARTS HIGH SCHOOL · ART TEACHER · </textPath>
+            </text>
+          </g>
+          <g>
+            <circle cx="59" cy="48" r="7" fill="none" stroke="#0E1523" stroke-width="2"></circle>
+            <line x1="59" y1="42.5" x2="59" y2="48" stroke="#0E1523" stroke-width="2" stroke-linecap="round"></line>
+            <text x="59" y="71" text-anchor="middle" font-family="Orbitron" font-size="13" font-weight="800" letter-spacing="1.5" fill="#0E1523">2025</text>
+          </g>
+        </svg>
+      </div>
+      </sc-if>
+
+      <!-- kicker -->
+      <div style="position:relative; z-index:2; display:inline-flex; align-items:center; gap:9px; background:#fff; border:1px solid #E4EAF2; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; color:#3a4658; letter-spacing:0.02em; box-shadow:0 12px 30px -22px rgba(14,21,35,0.4);">
+        <span style="width:7px; height:7px; border-radius:50%; background:#3A4F7A;"></span>
+        DATA × ART · 미술 감상 학습 플랫폼
+      </div>
+
+      <!-- headline · 채움 + 외곽선 -->
+      <div style="position:relative; z-index:2; margin:30px 0 4px; display:flex; justify-content:center;">
+        <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:112px; line-height:0.97; letter-spacing:-0.01em;">
+          <div style="color:#0E1523;">READ ART</div>
+          <div style="color:transparent; -webkit-text-stroke:2.5px #0E1523;">WITH DATA</div>
+        </div>
+      </div>
+
+      <!-- tagline -->
+      <p style="position:relative; z-index:2; font-size:17px; line-height:1.6; color:#51607A; max-width:560px; margin:18px auto 0;">색·구도·소리·맥락을 데이터로 읽고, 다시 그립니다.<br>정답이 아니라 더 좋은 질문을 건넵니다.</p>
+
+      <!-- CTA -->
+      <div style="position:relative; z-index:2; margin-top:26px; display:flex; justify-content:center;">
+        <button onClick="{{ start }}" style="background:#0E1523; color:#fff; border:none; border-radius:999px; padding:16px 30px; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:0 22px 44px -24px rgba(14,21,35,0.7); transition:transform .18s ease;" style-hover="transform:translateY(-2px);">첫 작품 읽어보기 →</button>
+      </div>
+
+    </section>
+
+    <!-- about -->
+    <section style="padding:54px 6px 0; display:grid; grid-template-columns:1.15fr 1fr; gap:40px; align-items:center;">
+      <div>
+        <div style="font-family:'Orbitron',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.18em; color:#4C6CA6;">ABOUT</div>
+        <h2 style="font-size:34px; font-weight:800; letter-spacing:-0.025em; line-height:1.2; margin:14px 0 0;">그림을 ‘느낌’이 아니라<br>데이터로 읽습니다.</h2>
+        <p style="font-size:15.5px; line-height:1.75; color:#51607A; margin:18px 0 0;">〈데이터의 눈으로 그림 읽기〉는 작품의 색·구도·객체·소리·맥락을 데이터로 추출해, 그림을 새로운 언어로 번역하는 미술 감상 학습 플랫폼입니다.</p>
+        <p style="font-size:15.5px; line-height:1.75; color:#51607A; margin:14px 0 0;">읽어낸 데이터는 다시 재료가 됩니다. 학생은 그 데이터로 자신만의 미디어아트를 만들고, 친구들의 작품을 데이터의 눈으로 비평합니다.</p>
+      </div>
+
+      <!-- data portrait visual -->
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:24px; padding:26px; box-shadow:0 36px 70px -42px rgba(14,21,35,0.4);">
+        <div style="font-size:12px; font-weight:700; color:#9AA6B6; letter-spacing:0.04em;">DATA PORTRAIT · 〈무제〉</div>
+        <div style="display:flex; gap:6px; margin-top:16px;">{{ swatches }}</div>
+        <div style="display:flex; gap:3px; align-items:flex-end; height:46px; margin-top:18px;">{{ wave }}</div>
+        <div style="position:relative; height:54px; margin-top:18px; border-top:1px solid #EEF2F8; padding-top:10px;">
+          <div style="position:absolute; left:8%; top:36%; width:9px; height:9px; border-radius:50%; background:#0E0A2E;"></div>
+          <div style="position:absolute; left:34%; top:64%; width:9px; height:9px; border-radius:50%; background:#3A4F7A;"></div>
+          <div style="position:absolute; left:60%; top:28%; width:9px; height:9px; border-radius:50%; background:#8FC0B5;"></div>
+          <div style="position:absolute; left:84%; top:58%; width:9px; height:9px; border-radius:50%; background:#182F49;"></div>
+          <div style="position:absolute; left:12%; top:46%; width:24%; height:1.4px; background:#D6DEEA; transform:rotate(14deg);"></div>
+          <div style="position:absolute; left:40%; top:50%; width:24%; height:1.4px; background:#D6DEEA; transform:rotate(-16deg);"></div>
+        </div>
+        <div style="font-size:12.5px; color:#667080; margin-top:14px; line-height:1.5;">색 6 · 객체 4 · 리듬 1.6Hz — 한 점의 그림이 데이터가 되는 순간.</div>
+      </div>
+    </section>
+
+    <!-- tools preview -->
+    <section style="padding:54px 6px 0;">
+      <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:18px;">
+        <h2 style="font-size:20px; font-weight:700; margin:0;">분석 도구</h2>
+        <span style="font-size:14px; color:#667080;">그림 → 소리 → 내 삶 → 사회</span>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:14px;">
+
+        <div style="border-radius:22px; padding:26px; box-shadow:0 30px 60px -38px rgba(14,21,35,0.5); cursor:pointer; transition:transform .2s ease; background:#dfeafe;" style-hover="transform:translateY(-3px);" onClick="{{ goAnalyze }}">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div style="font-size:12px; font-weight:700; color:#4C6CA6; letter-spacing:0.06em;">01 · 지금 시작</div>
+            <div style="font-size:18px; color:#2C3A52;">→</div>
+          </div>
+          <div style="display:flex; gap:6px; margin-top:28px;">{{ swatches }}</div>
+          <div style="font-size:22px; font-weight:700; color:#0E1523; margin-top:20px;">그림</div>
+          <p style="font-size:13.5px; line-height:1.6; color:#51607A; margin:6px 0 0;">색·구도·객체로 작품을 데이터로 읽기</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:26px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3); cursor:pointer; transition:transform .2s ease;" style-hover="transform:translateY(-3px);">
+          <div style="font-size:12px; font-weight:700; color:#9AA6B6; letter-spacing:0.06em;">02</div>
+          <div style="display:flex; gap:3px; align-items:center; height:40px; margin-top:24px;">{{ wave }}</div>
+          <div style="font-size:22px; font-weight:700; margin-top:20px; color:#0e1523;">소리</div>
+          <p style="font-size:13.5px; line-height:1.6; color:#667080; margin:6px 0 0;">파형·리듬을 데이터로 듣기</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:26px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3); cursor:pointer; transition:transform .2s ease;" style-hover="transform:translateY(-3px);">
+          <div style="font-size:12px; font-weight:700; color:#9AA6B6; letter-spacing:0.06em;">03</div>
+          <div style="position:relative; height:40px; margin-top:24px;">
+            <div style="position:absolute; left:0; right:0; top:50%; height:1.5px; background:#E4EAF2;"></div>
+            <div style="position:absolute; left:8%; top:30%; width:9px; height:9px; border-radius:50%; background:#182F49;"></div>
+            <div style="position:absolute; left:40%; top:60%; width:9px; height:9px; border-radius:50%; background:#3A4F7A;"></div>
+            <div style="position:absolute; left:72%; top:20%; width:9px; height:9px; border-radius:50%; background:#8FC0B5;"></div>
+          </div>
+          <div style="font-size:22px; font-weight:700; margin-top:20px;">내 삶</div>
+          <p style="font-size:13.5px; line-height:1.6; color:#667080; margin:6px 0 0;">나의 기록을 시각으로 옮기기</p>
+        </div>
+
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:26px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3); cursor:pointer; transition:transform .2s ease;" style-hover="transform:translateY(-3px);">
+          <div style="font-size:12px; font-weight:700; color:#9AA6B6; letter-spacing:0.06em;">04</div>
+          <div style="position:relative; height:40px; margin-top:24px;">
+            <div style="position:absolute; left:14%; top:10%; width:11px; height:11px; border-radius:50%; border:1.5px solid #182F49;"></div>
+            <div style="position:absolute; left:48%; top:55%; width:11px; height:11px; border-radius:50%; border:1.5px solid #3A4F7A;"></div>
+            <div style="position:absolute; left:78%; top:20%; width:11px; height:11px; border-radius:50%; border:1.5px solid #8FC0B5;"></div>
+            <div style="position:absolute; left:20%; top:18%; width:30%; height:1.5px; background:#D6DEEA; transform:rotate(20deg);"></div>
+            <div style="position:absolute; left:52%; top:40%; width:26%; height:1.5px; background:#D6DEEA; transform:rotate(-22deg);"></div>
+          </div>
+          <div style="font-size:22px; font-weight:700; margin-top:20px;">사회</div>
+          <p style="font-size:13.5px; line-height:1.6; color:#667080; margin:6px 0 0;">함께 사는 세계를 비평으로</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- closing CTA -->
+    <section style="padding:54px 6px 60px;">
+      <div style="position:relative; overflow:hidden; background:#0E1523; border-radius:28px; padding:56px 40px; text-align:center; box-shadow:0 50px 90px -50px rgba(14,21,35,0.8);">
+        <div style="position:absolute; left:50%; bottom:-40%; width:680px; height:340px; transform:translateX(-50%); filter:blur(70px); opacity:0.32; pointer-events:none; background:radial-gradient(45% 60% at 30% 50%, #2F6BE0, transparent 70%), radial-gradient(45% 60% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+        <div style="position:relative; font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.22em; color:#8FA3BE;">READY?</div>
+        <h2 style="position:relative; font-size:32px; font-weight:800; letter-spacing:-0.02em; color:#fff; margin:14px 0 0;">지금, 첫 작품을 데이터로 읽어보세요</h2>
+        <p style="position:relative; font-size:15px; color:#A9B8CC; margin:12px 0 0;">5분이면 한 점의 그림이 색·소리·이야기의 데이터가 됩니다.</p>
+        <div style="position:relative; margin-top:28px; display:flex; justify-content:center; gap:12px;">
+          <button onClick="{{ start }}" style="background:#fff; color:#0E1523; border:none; border-radius:999px; padding:15px 28px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer; transition:transform .18s ease;" style-hover="transform:translateY(-2px);">작품 올리기 →</button>
+          <button onClick="{{ goHub }}" style="background:transparent; color:#EAF1FB; border:1px solid #3a4658; border-radius:999px; padding:15px 26px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="border-color:#6b7686;">먼저 둘러보기</button>
+        </div>
+      </div>
+      <footer style="margin-top:34px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+        <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+        <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+          <div style="display:flex; align-items:center; gap:13px;">
+            <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+              <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+            </div>
+            <div>
+              <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+              <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+            </div>
+          </div>
+          <div style="display:flex; gap:9px; flex-wrap:wrap;">
+            <span onClick="{{ goHub }}" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">둘러보기</span>
+            <span onClick="{{ goAnalyze }}" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">분석 도구</span>
+            <span onClick="{{ goGallery }}" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">전시</span>
+            <span onClick="{{ goCoach }}" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">AI 코치</span>
+          </div>
+        </div>
+      </footer>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;showBadge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;animateBadge&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;},&quot;glow&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;off&quot;,&quot;soft&quot;,&quot;strong&quot;],&quot;default&quot;:&quot;soft&quot;,&quot;tsType&quot;:&quot;'off'|'soft'|'strong'&quot;}}">
+class Component extends DCLogic {
+  state = { dir: 'A' };
+  rand(s){ const x=Math.sin((s+1)*99.13)*43758.5453; return x-Math.floor(x); }
+  renderVals(){
+    const dir = this.state.dir;
+    const museum = ['#0E0A2E','#182F49','#3A4F7A','#8FC0B5','#E6F5A6','#0A0820'];
+
+    // tool / about visuals
+    const swW=[26,16,23,13,22];
+    const swatches = React.createElement(React.Fragment,{}, museum.slice(0,5).map((c,i)=>
+      React.createElement('div',{key:i,style:{flex:swW[i],height:'34px',borderRadius:'7px',background:c}})));
+    const waveH=[12,22,30,18,34,24,14,28,20,32,16,26,12,22,30,18];
+    const wave = React.createElement(React.Fragment,{}, waveH.map((h,i)=>
+      React.createElement('div',{key:i,style:{flex:1,height:h+'px',borderRadius:'2px',background:'#3A4F7A',opacity:0.92}})));
+
+    // B · dissolving dot field
+    const dotsB = React.createElement(React.Fragment,{}, Array.from({length:36}).map((_,i)=>{
+      const rx=this.rand(i*3+1), ry=this.rand(i*3+2), rs=this.rand(i*3+3);
+      const x=47+rx*56, y=14+ry*104;
+      const prog=Math.min(1,Math.max(0,(x-47)/56));
+      const size=Math.max(2.2, 8.6-prog*5.6 + rs*1.4);
+      const op=Math.max(0.07, 0.55-prog*0.42);
+      return React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:size+'px',height:size+'px',borderRadius:'50%',background:'#0E1523',opacity:op}});
+    }));
+
+    // C · color stripe fill (top word)
+    const cols = museum.slice(0,5);
+    const step = 100/cols.length;
+    const stripeGrad = 'linear-gradient(100deg,'+cols.map((c,i)=>`${c} ${(i*step).toFixed(2)}%, ${c} ${((i+1)*step).toFixed(2)}%`).join(',')+')';
+
+    // C · equalizer bars fill (bottom word)
+    const n=44; let bars='';
+    for(let i=0;i<n;i++){ const h=26+this.rand(i+7)*150; const w=600/n;
+      bars += `<rect x="${(i*w+w*0.16).toFixed(1)}" y="${(200-h).toFixed(1)}" width="${(w*0.66).toFixed(1)}" height="${h.toFixed(1)}" rx="1" fill="#0E1523"/>`; }
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="600" height="200">${bars}</svg>`;
+    const barUrl = 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'")';
+
+    // switcher active states
+    const on = (d)=> dir===d ? '#0E1523' : 'transparent';
+    const fg = (d)=> dir===d ? '#ffffff' : '#0E1523';
+
+    // atmosphere
+    const glow = this.props.glow ?? 'soft';
+    const blobOpacity = glow==='off' ? 0 : glow==='strong' ? 0.5 : 0.3;
+
+    const animateBadge = this.props.animateBadge ?? true;
+
+    const go = (u)=>()=>{ window.location.href = u; };
+    return {
+      isA: dir==='A', isB: dir==='B', isC: dir==='C',
+      setA: ()=>this.setState({dir:'A'}), setB: ()=>this.setState({dir:'B'}), setC: ()=>this.setState({dir:'C'}),
+      aBg:on('A'), aFg:fg('A'), bBg:on('B'), bFg:fg('B'), cBg:on('C'), cFg:fg('C'),
+      swatches, wave, dotsB, stripeGrad, barUrl,
+      blobOpacity,
+      showBadge: this.props.showBadge ?? true,
+      badgePlay: animateBadge ? 'running' : 'paused',
+      goHub: go('허브.dc.html'),
+      goAnalyze: go('그림분석.dc.html'),
+      goGallery: go('전시.dc.html'),
+      goCoach: go('AI코치.dc.html'),
+      start: go('그림분석.dc.html'),
+    };
+  }
+}
+</script>
+</body>
+</html>

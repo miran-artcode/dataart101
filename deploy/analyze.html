@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="그림분석" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="hub.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#2C3A52; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #EEF7FF; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#EEF7FF; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <a href="hub.html" style="color:#667080;" style-hover="color:#0E1523;">둘러보기</a>
+          <span style="color:#0E1523; cursor:pointer;">분석 도구</span>
+          <a href="gallery.html" style="color:#667080;" style-hover="color:#0E1523;">전시</a>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2C3A52; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header style="padding:40px 6px 26px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="hub.html" style="font-size:14px; font-weight:600; color:#667080;">← 둘러보기</a>
+        <h1 style="font-size:40px; font-weight:800; letter-spacing:-0.03em; margin:10px 0 0;">그림 분석 · <span style="color:#4C6CA6;">〈무제〉</span></h1>
+        <div style="font-size:14px; color:#667080; margin-top:8px;">색·구도·객체·렌즈 — 작품을 데이터로 읽었습니다.</div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <a href="gallery.html"><button style="background:#fff; border:1px solid #cdd8e6; color:#2C3A52; border-radius:999px; padding:13px 22px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#f0f5fc;">전시에 출품</button></a>
+        <a href="studio.html"><button style="background:#2C3A52; color:#fff; border:none; border-radius:999px; padding:13px 24px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#38496A;">이 데이터로 다시 그리기 →</button></a>
+      </div>
+    </header>
+
+    <!-- top: artwork + summary -->
+    <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px;">
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:16px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3);">
+        <div style="position:relative; height:360px; border-radius:14px; overflow:hidden; background:#EAF1FB;">
+          <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="paint" shape="rect" placeholder="분석할 작품을 드래그하세요" hint-size="100%,100%" style="display:block; width:100%; height:100%;"></x-import>
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#dfeafe; border-radius:22px; padding:26px;">
+          <div style="font-size:13px; font-weight:700; color:#4C6CA6; letter-spacing:0.04em;">한눈에</div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px;">
+            <div><div style="font-size:34px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums;">12</div><div style="font-size:12.5px; color:#51607A; margin-top:2px;">감지 객체</div></div>
+            <div><div style="font-size:34px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums;">0.71</div><div style="font-size:12.5px; color:#51607A; margin-top:2px;">평균 명도</div></div>
+            <div><div style="font-size:34px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums;">0.43</div><div style="font-size:12.5px; color:#51607A; margin-top:2px;">채도</div></div>
+          </div>
+        </div>
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:24px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3); flex:1;">
+          <div style="font-size:15px; font-weight:700;">색 군집 <span style="font-size:13px; color:#9AA6B6; font-weight:500;">6개 · 비중순</span></div>
+          <div style="display:flex; height:14px; border-radius:7px; overflow:hidden; margin-top:14px;">{{ clusterBar }}</div>
+          <div style="margin-top:16px; display:flex; flex-direction:column; gap:9px;">{{ clusterList }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- lenses + objects -->
+    <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; margin-top:14px;">
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:26px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3);">
+        <div style="font-size:15px; font-weight:700;">7가지 분석 렌즈</div>
+        <div style="font-size:13px; color:#667080; margin-top:3px;">같은 그림도 렌즈마다 다른 숫자를 말합니다.</div>
+        <div style="margin-top:18px; display:flex; flex-direction:column; gap:12px;">{{ lensRows }}</div>
+      </div>
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:26px; box-shadow:0 24px 50px -38px rgba(14,21,35,0.3);">
+        <div style="font-size:15px; font-weight:700;">객체 감지 <span style="font-size:13px; color:#9AA6B6; font-weight:500;">12개</span></div>
+        <div style="position:relative; height:170px; margin-top:16px; border-radius:12px; overflow:hidden; background:#EAF1FB;">
+          <div style="position:absolute; inset:0; display:grid; grid-template-columns:repeat(6,1fr); grid-template-rows:repeat(3,1fr);">{{ artGrid }}</div>
+          <div style="position:absolute; left:12%; top:16%; width:30%; height:54%; border:1.5px solid #2C3A52; border-radius:4px;"><span style="position:absolute; top:-19px; left:0; font-size:10.5px; font-weight:600; background:#2C3A52; color:#fff; padding:2px 6px; border-radius:4px;">인물 0.92</span></div>
+          <div style="position:absolute; left:58%; top:44%; width:26%; height:40%; border:1.5px solid #4C6CA6; border-radius:4px;"><span style="position:absolute; top:-19px; left:0; font-size:10.5px; font-weight:600; background:#4C6CA6; color:#fff; padding:2px 6px; border-radius:4px;">창문 0.78</span></div>
+        </div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px; margin-top:16px;">{{ objChips }}</div>
+      </div>
+    </section>
+
+    <!-- next step -->
+    <section style="margin-top:14px; margin-bottom:60px;">
+      <div style="background:#2C3A52; border-radius:24px; padding:34px 34px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; box-shadow:0 40px 80px -44px rgba(14,21,35,0.5);">
+        <div>
+          <div style="font-size:13px; font-weight:700; color:#9DB3D6; letter-spacing:0.05em;">다음 단계</div>
+          <div style="font-size:26px; font-weight:700; color:#fff; letter-spacing:-0.02em; margin-top:8px;">이 데이터를 재료로, 나만의 미디어아트를 만들어요</div>
+          <div style="font-size:14px; color:#B9C6DC; margin-top:8px;">무엇을 강조할지는 작가인 당신의 선택입니다.</div>
+        </div>
+        <a href="studio.html"><button style="background:#dae3f6; color:#0E1523; border:none; border-radius:999px; padding:16px 28px; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap;" style-hover="background:#C7D4EE;">작업실로 →</button></a>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  rand(s){ const x=Math.sin(s*99.13)*43758.5453; return x-Math.floor(x); }
+  renderVals(){
+    const museum = ['#2E3A4A','#7C8B7A','#C9A24C','#9C6E5B','#8C93A2','#E4DED0'];
+    const pcts = [31,22,17,12,10,8];
+    const names = ['청회색','세이지','오커','테라코타','연보라','본'];
+
+    const clusterBar = React.createElement(React.Fragment,{}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{width:pcts[i]+'%',background:c}})));
+
+    const clusterList = React.createElement(React.Fragment,{}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'10px'}},[
+        React.createElement('div',{key:'s',style:{width:'18px',height:'18px',borderRadius:'5px',background:c,border:'1px solid rgba(0,0,0,0.06)'}}),
+        React.createElement('div',{key:'n',style:{fontSize:'14px',fontWeight:600,flex:1}},names[i]),
+        React.createElement('div',{key:'h',style:{fontSize:'12px',color:'#9AA6B6'}},c),
+        React.createElement('div',{key:'p',style:{fontSize:'14px',fontWeight:700,fontVariantNumeric:'tabular-nums',width:'40px',textAlign:'right'}},pcts[i]+'%'),
+      ])));
+
+    const lenses = [['색 대비',0.82],['구도 균형',0.64],['명도 분포',0.71],['질감 밀도',0.48],['감정 강도',0.9],['시선 집중',0.57],['공간 깊이',0.66]];
+    const lensRows = React.createElement(React.Fragment,{}, lenses.map((l,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'12px'}},[
+        React.createElement('div',{key:'n',style:{fontSize:'13px',fontWeight:600,width:'74px',color:'#51607A'}},l[0]),
+        React.createElement('div',{key:'t',style:{flex:1,height:'8px',borderRadius:'4px',background:'#EAF0F7',overflow:'hidden'}},
+          React.createElement('div',{style:{width:(l[1]*100)+'%',height:'100%',borderRadius:'4px',background:i===4?'#4C6CA6':'#2C3A52'}})),
+        React.createElement('div',{key:'v',style:{fontSize:'13px',fontWeight:700,fontVariantNumeric:'tabular-nums',width:'34px',textAlign:'right'}},l[1].toFixed(2)),
+      ])));
+
+    const artGrid = React.createElement(React.Fragment,{}, Array.from({length:18}).map((_,i)=>{
+      const c = museum[Math.floor(this.rand(i+2)*museum.length)];
+      return React.createElement('div',{key:i,style:{background:c,opacity:0.55+this.rand(i+9)*0.4}});
+    }));
+
+    const objs = ['인물','창문','꽃','의자','컵','책','그림자','커튼'];
+    const objChips = React.createElement(React.Fragment,{}, objs.map((o,i)=>
+      React.createElement('div',{key:i,style:{fontSize:'12.5px',fontWeight:600,color:'#51607A',background:'#F2F6FC',border:'1px solid #E4EAF2',borderRadius:'999px',padding:'5px 11px'}},o)));
+
+    return { clusterBar, clusterList, lensRows, artGrid, objChips };
+  }
+}
+</script>
+</body>
+</html>

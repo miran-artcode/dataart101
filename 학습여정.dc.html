@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="학습여정" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="배움터.dc.html" style="color:#667080;" style-hover="color:#0E1523;">배움터</a>
+        <span style="color:#0E1523;">학습 여정</span>
+        <a href="내작업.dc.html" style="color:#667080;" style-hover="color:#0E1523;">내 작업</a>
+      </div>
+    </nav>
+
+    <header style="padding:40px 6px 26px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#667080;">← 허브</a>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A; margin-top:12px;">JOURNEY</div>
+        <h1 style="font-size:42px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">학습 여정 지도</h1>
+        <div style="font-size:14.5px; color:#667080; margin-top:8px;">그림 → 소리 → 내 삶 → 사회. 데이터의 눈을 넓혀온 나의 길.</div>
+      </div>
+      <div style="display:flex; gap:10px;">{{ stats }}</div>
+    </header>
+
+    <!-- journey path -->
+    <section style="padding:0 6px;">
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:24px; padding:34px 30px; box-shadow:0 30px 60px -42px rgba(14,21,35,0.34); position:relative; overflow:hidden;">
+        <div style="position:relative;">{{ journeyPath }}</div>
+      </div>
+    </section>
+
+    <!-- badges + skills -->
+    <section style="padding:24px 6px 0; display:grid; grid-template-columns:1.3fr 1fr; gap:14px; align-items:start;">
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:24px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+        <div style="font-size:16px; font-weight:700;">획득한 배지</div>
+        <div style="font-size:13px; color:#667080; margin-top:3px;">각 단계를 완수하면 데이터의 눈 배지를 얻어요.</div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(96px,1fr)); gap:12px; margin-top:18px;">{{ badges }}</div>
+      </div>
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:24px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+        <div style="font-size:16px; font-weight:700;">나의 데이터 역량</div>
+        <div style="margin-top:18px; display:flex; flex-direction:column; gap:14px;">{{ skills }}</div>
+      </div>
+    </section>
+
+    <!-- next recommendation -->
+    <section style="padding:24px 6px 0;">
+      <div style="position:relative; overflow:hidden; background:linear-gradient(135deg,#1c2a5c 0%,#0f1730 100%); border-radius:24px; padding:32px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; box-shadow:0 50px 90px -50px rgba(8,8,30,0.9);">
+        <div style="position:absolute; right:-4%; top:-30%; width:380px; height:280px; filter:blur(60px); opacity:0.5; pointer-events:none; background:radial-gradient(50% 60% at 50% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 70% 60%, #2FB6A8, transparent 72%);"></div>
+        <div style="position:relative;">
+          <div style="font-size:13px; font-weight:700; color:#8FB6FF; letter-spacing:0.05em;">다음 추천</div>
+          <div style="font-size:24px; font-weight:700; color:#fff; letter-spacing:-0.02em; margin-top:8px;">소리 스튜디오 · 파형으로 감정 읽기</div>
+          <div style="font-size:14px; color:#A9B8DC; margin-top:8px;">‘내 삶’ 단계까지 마쳤어요. 이제 소리의 데이터를 만나볼 차례예요.</div>
+        </div>
+        <a href="소리스튜디오.dc.html" style="position:relative;"><button style="background:#fff; color:#0E1523; border:none; border-radius:999px; padding:15px 26px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap;" style-hover="transform:translateY(-1px);">이어서 학습 →</button></a>
+      </div>
+    </section>
+
+    <footer style="margin:34px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="배움터.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">배움터</a>
+          <a href="데이터비평.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">데이터 비평</a>
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { hover:-1 };
+  renderVals(){
+    const S=this.state;
+    const statData=[['12','완료 차시'],['5','획득 배지'],['3','만든 작품']];
+    const stats=React.createElement(React.Fragment,{}, statData.map((d,i)=>
+      React.createElement('div',{key:i,style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'16px',padding:'14px 18px',textAlign:'center',boxShadow:'0 22px 46px -38px rgba(14,21,35,0.3)'}},[
+        React.createElement('div',{key:'n',style:{fontSize:'26px',fontWeight:800,letterSpacing:'-0.03em',fontVariantNumeric:'tabular-nums'}},d[0]),
+        React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#667080',marginTop:'2px'}},d[1]),
+      ])));
+
+    // journey nodes
+    const nodes=[
+      ['그림','색·구도·객체','done','#2F6BE0','그림분석.dc.html'],
+      ['소리','파형·리듬','done','#2FB6A8','소리스튜디오.dc.html'],
+      ['내 삶','기록·감정','doing','#8FC0B5','내삶스튜디오.dc.html'],
+      ['사회','관점·관계','todo','#6E84B8','사회스튜디오.dc.html'],
+      ['종합','나의 전시','todo','#3A4F7A','전시.dc.html'],
+    ];
+    const journeyPath=React.createElement('div',{style:{position:'relative'}},[
+      React.createElement('div',{key:'line',style:{position:'absolute',left:'6%',right:'6%',top:'40px',height:'3px',background:'linear-gradient(90deg,#2F6BE0,#2FB6A8 40%,#8FC0B5 55%,#E4EAF2 60%)',borderRadius:'2px'}}),
+      React.createElement('div',{key:'nodes',style:{position:'relative',display:'grid',gridTemplateColumns:'repeat(5,1fr)',gap:'8px'}}, nodes.map((n,i)=>{
+        const c=n[2]==='done'?n[3]:n[2]==='doing'?n[3]:'#D6DEEA'; const hov=S.hover===i;
+        return React.createElement('a',{key:i,href:n[4],onMouseEnter:()=>this.setState({hover:i}),onMouseLeave:()=>this.setState({hover:-1}),style:{textDecoration:'none',display:'flex',flexDirection:'column',alignItems:'center',cursor:'pointer'}},[
+          React.createElement('div',{key:'d',style:{width:hov?'92px':'80px',height:hov?'92px':'80px',borderRadius:'50%',background:n[2]==='todo'?'#F4F8FD':c,border:'3px solid '+(n[2]==='todo'?'#E4EAF2':'#fff'),boxShadow:hov?'0 16px 36px -14px '+c:(n[2]==='todo'?'none':'0 14px 30px -16px '+c),display:'flex',alignItems:'center',justifyContent:'center',transition:'all .2s ease',color:n[2]==='todo'?'#9AA6B6':'#fff',fontSize:'22px',fontWeight:800}}, n[2]==='done'?'✓':(i+1)),
+          React.createElement('div',{key:'t',style:{fontSize:'15px',fontWeight:700,marginTop:'14px',color:hov?c:'#0E1523',transition:'color .2s ease'}},n[0]),
+          React.createElement('div',{key:'s',style:{fontSize:'12px',color:'#667080',marginTop:'2px',textAlign:'center'}},n[1]),
+          React.createElement('div',{key:'st',style:{fontSize:'11px',fontWeight:700,marginTop:'8px',color:c,background:c+'1f',borderRadius:'999px',padding:'3px 10px'}}, n[2]==='done'?'완료':n[2]==='doing'?'진행 중':'예정'),
+        ]);
+      })),
+    ]);
+
+    const badgeData=[['색의 눈','#2F6BE0',true],['소리의 귀','#2FB6A8',true],['시간의 지도','#8FC0B5',true],['비평가','#E6A85A',true],['데이터 윤리','#6E84B8',true],['관점 전환','#9AA6B6',false],['종합 작가','#9AA6B6',false]];
+    const badges=React.createElement(React.Fragment,{}, badgeData.map((b,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'8px',opacity:b[2]?1:0.4}},[
+        React.createElement('div',{key:'h',style:{width:'58px',height:'58px',clipPath:'polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)',background:b[2]?b[1]:'#E4EAF2',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:'20px',fontWeight:800}}, b[2]?'★':'?'),
+        React.createElement('div',{key:'l',style:{fontSize:'11.5px',fontWeight:600,color:'#51607A',textAlign:'center'}},b[0]),
+      ])));
+
+    const skillData=[['데이터 읽기',82],['시각화 설계',68],['비평·질문',74],['창작·재해석',60],['윤리·관점',55]];
+    const skills=React.createElement(React.Fragment,{}, skillData.map((s,i)=>
+      React.createElement('div',{key:i},[
+        React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'13px',fontWeight:600,marginBottom:'7px'}},[React.createElement('span',{key:'a'},s[0]),React.createElement('span',{key:'b',style:{color:'#3A4F7A',fontVariantNumeric:'tabular-nums'}},s[1])]),
+        React.createElement('div',{key:'b',style:{height:'8px',borderRadius:'4px',background:'#EAF0F7',overflow:'hidden'}}, React.createElement('div',{style:{width:s[1]+'%',height:'100%',borderRadius:'4px',background:'linear-gradient(90deg,#2F6BE0,#2FB6A8)'}})),
+      ])));
+
+    return { stats, journeyPath, badges, skills };
+  }
+}
+</script>
+</body>
+</html>

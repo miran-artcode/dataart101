@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+  .si{ background:#F4F8FD; border:1px solid #E4EAF2; border-radius:10px; padding:11px 13px; color:#0E1523; font-family:inherit; font-size:14px; outline:none; width:100%; }
+</style>
+</helmet>
+
+<div data-screen-label="작업노트" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="내작업.dc.html" style="color:#667080;" style-hover="color:#0E1523;">내 작업</a>
+        <span style="color:#0E1523;">작업 노트</span>
+        <a href="학습여정.dc.html" style="color:#667080;" style-hover="color:#0E1523;">학습 여정</a>
+      </div>
+    </nav>
+
+    <header style="padding:40px 6px 24px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="내작업.dc.html" style="font-size:14px; font-weight:600; color:#667080;">← 내 작업</a>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A; margin-top:12px;">NOTES</div>
+        <h1 style="font-size:42px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">작업 노트</h1>
+        <div style="font-size:14.5px; color:#667080; margin-top:8px;">분석·창작 과정의 발견과 생각을 기록하고, 작품과 연결합니다.</div>
+      </div>
+      <button onClick="{{ newNote }}" style="background:#0E1523; color:#fff; border:none; border-radius:999px; padding:14px 24px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer;" style-hover="transform:translateY(-1px);">+ 새 노트</button>
+    </header>
+
+    <div style="display:flex; gap:8px; padding:0 6px 18px; flex-wrap:wrap;">{{ filterTabs }}</div>
+
+    <section style="padding:0 6px 30px; display:grid; grid-template-columns:1.4fr 1fr; gap:14px; align-items:start;">
+      <!-- editor -->
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:26px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+        <div style="font-size:15px; font-weight:700;">새 노트 작성</div>
+        <input placeholder="제목 — 예: 감청을 크게 쓴 이유" class="si" style="margin-top:14px;">
+        <div style="display:flex; gap:10px; margin-top:10px; flex-wrap:wrap;">
+          <select class="si" style="flex:1;">{{ toolOptions }}</select>
+          <select class="si" style="flex:1;">{{ stageOptions }}</select>
+        </div>
+        <textarea placeholder="오늘의 발견 — 분석에서 무엇을 알게 됐나요? 창작에서 어떤 선택을 했나요?" class="si" style="margin-top:10px; min-height:140px; resize:vertical; line-height:1.6;"></textarea>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; flex-wrap:wrap; gap:10px;">
+          <div style="display:flex; gap:7px; flex-wrap:wrap;">{{ tagChips }}</div>
+          <button style="background:#2F6BE0; color:#fff; border:none; border-radius:10px; padding:11px 22px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer;">저장</button>
+        </div>
+      </div>
+
+      <!-- stats -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="font-size:15px; font-weight:700;">기록 통계</div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:16px;">{{ statBoxes }}</div>
+        </div>
+        <div style="background:#16224a; border:1px solid #2a3a66; border-radius:22px; padding:22px;">
+          <div style="font-size:13px; font-weight:700; color:#fff;">기록 팁</div>
+          <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">{{ tips }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- notes list -->
+    <section style="padding:0 6px;">
+      <div style="font-size:15px; font-weight:700; margin-bottom:14px;">내 노트 <span style="font-size:13px; color:#9AA6B6; font-weight:500;">{{ noteCount }}</span></div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;">{{ notes }}</div>
+    </section>
+
+    <footer style="margin:40px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="내작업.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">내 작업</a>
+          <a href="학습여정.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">학습 여정</a>
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { filter:'all' };
+  renderVals(){
+    const S=this.state;
+    const toolOptions=React.createElement(React.Fragment,{}, ['연결할 도구 선택','그림 분석','색 군집 스튜디오','데이터 점 스튜디오','소리 스튜디오','내 삶 스튜디오','사회 스튜디오'].map(o=>React.createElement('option',{key:o},o)));
+    const stageOptions=React.createElement(React.Fragment,{}, ['단계 선택','읽기(분석)','만들기(창작)','나누기(비평/전시)'].map(o=>React.createElement('option',{key:o},o)));
+    const tagChips=React.createElement(React.Fragment,{}, ['#발견','#색','#구도','#질문','#실패'].map((t,i)=>React.createElement('span',{key:i,style:{fontSize:'12.5px',fontWeight:600,color:'#3A4F7A',background:'#EAF1FB',borderRadius:'999px',padding:'6px 12px',cursor:'pointer'}},t)));
+
+    const statData=[['14','전체 노트'],['6','연결된 작품'],['3','이번 주']];
+    const statBoxes=React.createElement(React.Fragment,{}, statData.map((d,i)=>React.createElement('div',{key:i,style:{background:'#F4F8FD',borderRadius:'14px',padding:'16px',textAlign:'center'}},[
+      React.createElement('div',{key:'n',style:{fontSize:'26px',fontWeight:800,letterSpacing:'-0.03em',fontVariantNumeric:'tabular-nums'}},d[0]),
+      React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#667080',marginTop:'2px'}},d[1]),
+    ])));
+
+    const tips=React.createElement(React.Fragment,{}, ['데이터(숫자)와 느낌을 함께 적기','실패한 시도도 기록하기','다음에 시도할 질문 남기기'].map((t,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',gap:'9px',alignItems:'center',fontSize:'13px',color:'#A9B8DC'}},[React.createElement('span',{key:'n',style:{width:'18px',height:'18px',borderRadius:'50%',background:'rgba(47,182,168,0.2)',color:'#7FE0C8',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',fontWeight:800,flexShrink:0}},i+1),t])));
+
+    const noteData=[
+      ['읽기','감청을 크게 쓴 이유','색 군집 분석에서 감청이 58%로 나왔다. 의도한 건 아니었지만, 비 오는 날의 기억과 연결되는 듯하다.','#3A4F7A',[['#182F49',50],['#3A4F7A',30],['#6E84B8',20]],'그림 분석','3일 전',['#색','#발견']],
+      ['만들기','입자가 흩어질 때','복귀력을 30으로 낮추니 점들이 자유롭게 떠다녔다. 통제를 놓을수록 더 살아있는 느낌.','#2FB6A8',[['#8FC0B5',40],['#E6F5A6',35],['#CFE0D6',25]],'색 군집 스튜디오','5일 전',['#실패','#발견']],
+      ['나누기','친구의 질문','민서가 "왜 좌하단에 시선을 모았냐"고 물었다. 나도 몰랐던 선택이었다. 데이터가 나를 가르친다.','#6E84B8',[['#3A4F7A',45],['#6E84B8',30],['#8FC0B5',25]],'데이터 비평','지난주',['#질문']],
+      ['만들기','소리를 색으로','빗소리의 높은 주파수를 밝은 청록으로 매핑했다. 듣는 것과 보는 것이 처음으로 겹쳐 보였다.','#2F6BE0',[['#3A4F7A',30],['#8FC0B5',40],['#E6F5A6',30]],'소리 스튜디오','지난주',['#발견','#색']],
+    ];
+    const shown = S.filter==='all'?noteData:noteData.filter(n=>n[0]===S.filter);
+    const stMeta={읽기:'#3A4F7A',만들기:'#2FB6A8',나누기:'#6E84B8'};
+    const notes=React.createElement(React.Fragment,{}, shown.map((n,i)=>React.createElement('div',{key:i,style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'18px',padding:'18px',boxShadow:'0 22px 46px -38px rgba(14,21,35,0.3)',display:'flex',flexDirection:'column'}},[
+      React.createElement('div',{key:'top',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},[
+        React.createElement('span',{key:'s',style:{fontSize:'11px',fontWeight:700,color:stMeta[n[0]],background:stMeta[n[0]]+'1f',borderRadius:'999px',padding:'4px 10px'}},n[0]),
+        React.createElement('span',{key:'d',style:{fontSize:'11.5px',color:'#9AA6B6'}},n[6]),
+      ]),
+      React.createElement('div',{key:'t',style:{fontSize:'16px',fontWeight:700,marginTop:'12px'}},n[1]),
+      React.createElement('div',{key:'b',style:{fontSize:'13px',color:'#51607A',marginTop:'7px',lineHeight:1.6}},n[2]),
+      React.createElement('div',{key:'art',style:{display:'flex',height:'40px',borderRadius:'8px',overflow:'hidden',marginTop:'14px'}}, n[4].map((p,j)=>React.createElement('div',{key:j,style:{flex:p[1],background:p[0]}}))),
+      React.createElement('div',{key:'foot',style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginTop:'12px'}},[
+        React.createElement('span',{key:'l',style:{fontSize:'11.5px',color:'#3A4F7A',fontWeight:600}},'🔗 '+n[5]),
+        React.createElement('div',{key:'tags',style:{display:'flex',gap:'5px'}}, n[7].map((t,j)=>React.createElement('span',{key:j,style:{fontSize:'11px',color:'#9AA6B6'}},t))),
+      ]),
+    ])));
+
+    const cats={all:'전체',읽기:'읽기',만들기:'만들기',나누기:'나누기'};
+    const filterTabs=React.createElement(React.Fragment,{}, Object.keys(cats).map(k=>React.createElement('div',{key:k,onClick:()=>this.setState({filter:k}),style:{fontSize:'13px',fontWeight:700,cursor:'pointer',padding:'9px 16px',borderRadius:'999px',background:S.filter===k?'#0E1523':'#fff',border:'1px solid '+(S.filter===k?'#0E1523':'#E4EAF2'),color:S.filter===k?'#fff':'#51607A'}},cats[k])));
+
+    return { newNote:()=>{}, toolOptions, stageOptions, tagChips, statBoxes, tips, notes, noteCount:noteData.length+'개', filterTabs };
+  }
+}
+</script>
+</body>
+</html>

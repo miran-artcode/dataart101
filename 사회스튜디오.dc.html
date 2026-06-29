@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; }
+  .si{ background:rgba(255,255,255,0.05); border:1px solid #232734; border-radius:8px; padding:9px 11px; color:#fff; font-family:inherit; font-size:13px; outline:none; width:100%; }
+</style>
+</helmet>
+
+<div data-screen-label="사회스튜디오" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(0,0,0,0.5);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="내삶스튜디오.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">내 삶</a>
+        <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">허브</a>
+        <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">전시</a>
+      </div>
+    </nav>
+
+    <header style="padding:34px 6px 20px;">
+      <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 허브</a>
+      <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8; margin-top:12px;">STUDIO · SOCIETY</div>
+      <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">사회 스튜디오</h1>
+      <div style="font-size:14px; color:#8794b0; margin-top:8px;">이미지 속 객체를 감지하고, 사회문제의 관점·관계망을 데이터로 읽어 캠페인 작품으로 옮깁니다.</div>
+    </header>
+
+    <!-- step tabs -->
+    <div style="display:flex; gap:8px; padding:0 6px 14px; flex-wrap:wrap;">{{ stepTabs }}</div>
+
+    <section style="display:grid; grid-template-columns:1fr 348px; gap:14px; padding-bottom:30px; align-items:start;">
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:13px; font-weight:600; color:#9DB3D6;">{{ stageTitle }}</div>
+            <button onClick="{{ reseed }}" style="background:#1E2A42; color:#cfe0f7; border:none; border-radius:999px; padding:7px 14px; font-size:12px; font-weight:600; font-family:inherit; cursor:pointer;">↻ 예시</button>
+          </div>
+          <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:430px;">{{ mainStage }}</div>
+        </div>
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px;">{{ bottomPanel }}</div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">{{ sidePanels }}</div>
+    </section>
+
+    <footer style="margin:4px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="내삶스튜디오.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">내 삶</a>
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { step:'detect', topic:'환경', detConf:50, relStrength:55, layout:'force', viewpoint:'all', campaignStyle:'bold', seed:1 };
+  r(s){ const x=Math.sin((s+this.state.seed*6.1)*99.13)*43758.5453; return x-Math.floor(x); }
+
+  renderVals(){
+    const S=this.state;
+    const seg=(val,opts,on)=>React.createElement('div',{style:{display:'flex',gap:'5px',background:'rgba(255,255,255,0.05)',padding:'4px',borderRadius:'10px',flexWrap:'wrap'}},opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>on(o[0]),style:{flex:'1 1 auto',textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 8px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},o[1])));
+    const sld=(label,key,val,unit)=>React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'12.5px',marginBottom:'7px'}},[React.createElement('span',{key:'a',style:{color:'#cdd9ef',fontWeight:600}},label),React.createElement('span',{key:'b',style:{color:'#fff',fontWeight:700}},val+(unit||''))]),
+      React.createElement('input',{key:'i',type:'range',min:0,max:100,value:val,onChange:(e)=>this.setState({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+    const card=(title,child)=>React.createElement('div',{style:{background:'#13151d',border:'1px solid #232734',borderRadius:'20px',padding:'20px'}},[
+      React.createElement('div',{key:'t',style:{fontSize:'12px',fontWeight:700,color:'#93A4E8',letterSpacing:'0.04em'}},title),
+      React.createElement('div',{key:'c',style:{marginTop:'14px'}},child)]);
+
+    const steps=[['detect','1 · 객체 감지'],['relation','2 · 관계망'],['viewpoint','3 · 관점 분석'],['campaign','4 · 캠페인 제작']];
+    const stepTabs=React.createElement(React.Fragment,{}, steps.map(st=>React.createElement('div',{key:st[0],onClick:()=>this.setState({step:st[0]}),style:{fontSize:'13px',fontWeight:700,cursor:'pointer',padding:'10px 16px',borderRadius:'999px',background:S.step===st[0]?'#2F6BE0':'#13151d',border:'1px solid '+(S.step===st[0]?'#2F6BE0':'#232734'),color:S.step===st[0]?'#fff':'#9fb0d0'}},st[1])));
+
+    const topics={ 환경:['공장','자동차','나무','강','새','사람','쓰레기'], 도시:['빌딩','도로','신호등','사람','버스','벤치','가로수'], 평등:['사람','집','학교','책','손','문','계단'] };
+    const objs=topics[S.topic];
+    const objColor=['#2FB6A8','#5673D8','#8FC0B5','#E6F5A6','#6E84B8','#3A4F7A','#93A4E8'];
+
+    let mainStage, bottomPanel, sidePanels, stageTitle;
+
+    if(S.step==='detect'){
+      stageTitle='이미지 객체 감지 · COCO-SSD';
+      const boxes=objs.map((o,i)=>{ const conf=Math.round(40+this.r(i+1)*58); const x=8+this.r(i+2)*64, y=8+this.r(i+3)*62, w=16+this.r(i+4)*24, h=16+this.r(i+5)*26; return {o,conf,x,y,w,h,c:objColor[i%objColor.length]}; }).filter(b=>b.conf>=S.detConf);
+      mainStage=React.createElement('div',{style:{position:'absolute',inset:0,background:'linear-gradient(135deg,#10233a,#1a2f1e)'}}, [
+        React.createElement('div',{key:'hint',style:{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',color:'rgba(255,255,255,0.12)',fontSize:'15px'}},'이미지 업로드 영역'),
+        ...boxes.map((b,i)=>React.createElement('div',{key:i,style:{position:'absolute',left:b.x+'%',top:b.y+'%',width:b.w+'%',height:b.h+'%',border:'2px solid '+b.c,borderRadius:'4px'}},
+          React.createElement('span',{style:{position:'absolute',top:'-20px',left:'-2px',fontSize:'10.5px',fontWeight:700,background:b.c,color:'#06231f',padding:'2px 7px',borderRadius:'4px',whiteSpace:'nowrap'}},b.o+' '+(b.conf/100).toFixed(2))))
+      ]);
+      bottomPanel=React.createElement('div',{},[
+        React.createElement('div',{key:'t',style:{fontSize:'15px',fontWeight:700}},'감지된 객체 '+boxes.length+'개'),
+        React.createElement('div',{key:'c',style:{display:'flex',flexWrap:'wrap',gap:'8px',marginTop:'14px'}}, boxes.map((b,i)=>
+          React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'7px',fontSize:'12.5px',fontWeight:600,color:'#cdd9ef',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'999px',padding:'6px 12px'}},[
+            React.createElement('span',{key:'d',style:{width:'8px',height:'8px',borderRadius:'50%',background:b.c}}), b.o, React.createElement('span',{key:'p',style:{color:'#7E89A8'}},(b.conf/100).toFixed(2))]))),
+      ]);
+      sidePanels=React.createElement(React.Fragment,{},[
+        card('입력 · 주제', React.createElement('div',{},[
+          React.createElement('input',{key:'f',type:'file',accept:'image/*',className:'si',style:{padding:'8px'}}),
+          React.createElement('div',{key:'tp',style:{marginTop:'12px'}}, seg(S.topic,[['환경','환경'],['도시','도시'],['평등','평등']],(v)=>this.setState({topic:v}))),
+        ])),
+        card('감지 설정', sld('신뢰도 임계값','detConf',S.detConf,'%')),
+        React.createElement('div',{key:'coach',style:{background:'#16224a',border:'1px solid #2a3a66',borderRadius:'20px',padding:'20px'}},[
+          React.createElement('div',{key:'t',style:{fontSize:'13px',fontWeight:700,color:'#fff'}},'AI 감상 코치'),
+          React.createElement('div',{key:'c',style:{fontSize:'12.5px',color:'#A9B8DC',lineHeight:1.6,marginTop:'8px'}},'기계는 '+boxes.length+'개의 객체를 "'+S.topic+'"의 눈으로 보았어요. 기계가 놓친 것, 혹은 잘못 본 것은 없나요? 무엇을 "문제"로 볼지는 누가 정하나요?'),
+        ]),
+      ]);
+    } else if(S.step==='relation'){
+      stageTitle='객체 관계망 · '+({force:'힘 기반',circle:'원형',hierarchy:'위계'}[S.layout]);
+      const nodes=objs.map((o,i)=>({o,c:objColor[i%objColor.length],size:14+this.r(i+1)*20}));
+      const cx=280,cy=215;
+      const place=(i,n)=>{ if(S.layout==='circle'){ const a=i/n*Math.PI*2; return [cx+Math.cos(a)*150,cy+Math.sin(a)*140]; } if(S.layout==='hierarchy'){ const cols=Math.ceil(n/2); return [70+(i%cols)/(cols-1||1)*420, i<cols?120:300]; } const a=i*2.4; return [cx+Math.cos(a)*(50+i*14), cy+Math.sin(a)*(40+i*12)]; };
+      const pts=nodes.map((nd,i)=>place(i,nodes.length));
+      const edges=[]; for(let i=0;i<nodes.length;i++){ for(let j=i+1;j<nodes.length;j++){ const s=this.r(i*7+j); if(s*100<S.relStrength) edges.push([i,j,s]); } }
+      mainStage=React.createElement('svg',{viewBox:'0 0 560 430',style:{position:'absolute',inset:0,width:'100%',height:'100%'}}, [
+        ...edges.map((e,i)=>React.createElement('line',{key:'e'+i,x1:pts[e[0]][0],y1:pts[e[0]][1],x2:pts[e[1]][0],y2:pts[e[1]][1],stroke:'rgba(143,164,232,'+(0.15+e[2]*0.4)+')',strokeWidth:0.5+e[2]*2.5})),
+        ...nodes.map((nd,i)=>React.createElement('g',{key:'n'+i},[
+          React.createElement('circle',{key:'c',cx:pts[i][0],cy:pts[i][1],r:nd.size,fill:nd.c,opacity:0.9}),
+          React.createElement('text',{key:'t',x:pts[i][0],y:pts[i][1]+nd.size+14,textAnchor:'middle',fontSize:'12',fontWeight:'700',fill:'#cdd9ef'},nd.o),
+        ])),
+      ]);
+      bottomPanel=React.createElement('div',{},[
+        React.createElement('div',{key:'t',style:{fontSize:'15px',fontWeight:700}},'관계 '+edges.length+'개 · 노드 '+nodes.length+'개'),
+        React.createElement('div',{key:'d',style:{fontSize:'13px',color:'#8794b0',marginTop:'8px',lineHeight:1.6}},'객체 사이의 연결을 통해 사회문제의 구조를 봅니다. 가장 많이 연결된 객체가 문제의 중심일까요?'),
+      ]);
+      sidePanels=React.createElement(React.Fragment,{},[
+        card('레이아웃', seg(S.layout,[['force','힘 기반'],['circle','원형'],['hierarchy','위계']],(v)=>this.setState({layout:v}))),
+        card('관계 설정', sld('연결 강도 임계','relStrength',S.relStrength,'%')),
+      ]);
+    } else if(S.step==='viewpoint'){
+      stageTitle='관점 분석 · 누구의 눈으로 보는가';
+      const views=[['시민','#2FB6A8',58],['기업','#5673D8',42],['정부','#6E84B8',50],['미래세대','#E6F5A6',71],['자연','#8FC0B5',64]];
+      const total=views.reduce((a,v)=>a+v[2],0);
+      mainStage=React.createElement('div',{style:{position:'absolute',inset:0,padding:'26px',display:'flex',flexDirection:'column',justifyContent:'center',gap:'16px'}}, views.map((v,i)=>
+        React.createElement('div',{key:i,style:{opacity:S.viewpoint==='all'||S.viewpoint===v[0]?1:0.3}},[
+          React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'13.5px',fontWeight:700,marginBottom:'7px'}},[React.createElement('span',{key:'a',style:{color:'#E7ECF7'}},v[0]+'의 관점'),React.createElement('span',{key:'b',style:{color:v[1]}},Math.round(v[2]/total*100)+'%')]),
+          React.createElement('div',{key:'b',style:{height:'22px',borderRadius:'7px',background:'rgba(255,255,255,0.06)',overflow:'hidden'}}, React.createElement('div',{style:{width:(v[2]/Math.max(...views.map(x=>x[2]))*100)+'%',height:'100%',background:v[1],borderRadius:'7px'}})),
+        ])
+      ));
+      bottomPanel=React.createElement('div',{},[
+        React.createElement('div',{key:'t',style:{fontSize:'15px',fontWeight:700}},'같은 문제, 다른 입장'),
+        React.createElement('div',{key:'d',style:{fontSize:'13px',color:'#8794b0',marginTop:'8px',lineHeight:1.6}},'하나의 사회문제도 누구의 눈으로 보느냐에 따라 전혀 다른 데이터가 됩니다. 당신의 작품은 누구의 목소리를 키우나요?'),
+      ]);
+      sidePanels=React.createElement(React.Fragment,{},[
+        card('강조할 관점', seg(S.viewpoint,[['all','전체'],['시민','시민'],['미래세대','미래'],['자연','자연']],(v)=>this.setState({viewpoint:v}))),
+        React.createElement('div',{key:'coach',style:{background:'#16224a',border:'1px solid #2a3a66',borderRadius:'20px',padding:'20px'}},[
+          React.createElement('div',{key:'t',style:{fontSize:'13px',fontWeight:700,color:'#fff'}},'AI 감상 코치'),
+          React.createElement('div',{key:'c',style:{fontSize:'12.5px',color:'#A9B8DC',lineHeight:1.6,marginTop:'8px'}},'데이터에는 항상 만든 사람의 관점이 담겨요. 당신이 키우고 싶은 목소리와, 의도치 않게 지운 목소리는 무엇인가요?'),
+        ]),
+      ]);
+    } else {
+      stageTitle='캠페인 작품 미리보기';
+      const styles={ bold:['#2FB6A8','#0E1523','900'], calm:['#3A4F7A','#E6F5A6','700'], urgent:['#d56b5a','#fff','900'] };
+      const st=styles[S.campaignStyle];
+      mainStage=React.createElement('div',{style:{position:'absolute',inset:0,background:st[0],display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'30px',textAlign:'center'}}, [
+        React.createElement('div',{key:'k',style:{fontFamily:"'Orbitron',sans-serif",fontSize:'12px',fontWeight:700,letterSpacing:'0.2em',color:st[1],opacity:0.7}},S.topic.toUpperCase()+' · 2025'),
+        React.createElement('div',{key:'h',style:{fontSize:'40px',fontWeight:st[2],color:st[1],lineHeight:1.1,marginTop:'16px',letterSpacing:'-0.02em'}},S.topic==='환경'?'지금, 이 강을 기억해':S.topic==='도시'?'도시는 누구의 것인가':'모두의 자리를 위해'),
+        React.createElement('div',{key:'d',style:{display:'flex',gap:'6px',marginTop:'26px'}}, objs.slice(0,5).map((o,i)=>React.createElement('div',{key:i,style:{width:'30px',height:'30px',borderRadius:'50%',background:objColor[i%objColor.length],opacity:0.9}}))),
+        React.createElement('div',{key:'s',style:{fontSize:'13px',color:st[1],opacity:0.75,marginTop:'24px'}},'데이터로 읽은 '+objs.length+'개의 목소리'),
+      ]);
+      bottomPanel=React.createElement('div',{},[
+        React.createElement('div',{key:'t',style:{fontSize:'15px',fontWeight:700}},'내보내기'),
+        React.createElement('div',{key:'b',style:{display:'flex',gap:'8px',marginTop:'14px',flexWrap:'wrap'}}, ['포스터 PNG','캠페인 카드','리포트 MD','갤러리 전시'].map((l,i)=>
+          React.createElement('button',{key:i,style:{flex:'1 1 auto',background:i===0?'#2F6BE0':i===3?'rgba(47,182,168,0.14)':'rgba(255,255,255,0.06)',color:i===0?'#fff':i===3?'#7FE0C8':'#E7ECF7',border:i===3?'1px solid rgba(47,182,168,0.3)':i===0?'none':'1px solid rgba(255,255,255,0.16)',borderRadius:'9px',padding:'11px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},l))),
+      ]);
+      sidePanels=React.createElement(React.Fragment,{},[
+        card('캠페인 스타일', seg(S.campaignStyle,[['bold','강렬'],['calm','차분'],['urgent','긴급']],(v)=>this.setState({campaignStyle:v}))),
+        card('메시지', React.createElement('textarea',{className:'si',placeholder:'캠페인 한 줄 메시지',style:{minHeight:'70px',resize:'vertical'}})),
+        React.createElement('div',{key:'coach',style:{background:'#16224a',border:'1px solid #2a3a66',borderRadius:'20px',padding:'20px'}},[
+          React.createElement('div',{key:'t',style:{fontSize:'13px',fontWeight:700,color:'#fff'}},'AI 감상 코치'),
+          React.createElement('div',{key:'c',style:{fontSize:'12.5px',color:'#A9B8DC',lineHeight:1.6,marginTop:'8px'}},'데이터를 근거로 사람의 마음을 움직이는 캠페인을 만들었어요. 이 작품이 누구에게 가닿길 바라나요?'),
+        ]),
+      ]);
+    }
+
+    return { stepTabs, stageTitle, mainStage, bottomPanel, sidePanels, reseed:()=>this.setState(s=>({seed:s.seed+1})) };
+  }
+}
+</script>
+</body>
+</html>

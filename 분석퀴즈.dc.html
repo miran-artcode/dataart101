@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="분석퀴즈" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:820px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="배움터.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <a href="배움터.dc.html" style="font-size:14px; font-weight:600; color:#667080;" style-hover="color:#0E1523;">← 배움터</a>
+    </nav>
+
+    <!-- progress -->
+    <div style="padding:34px 6px 18px;">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A;">QUIZ · 색의 언어</div>
+        <div style="font-size:13.5px; color:#667080; font-weight:600;">{{ progressText }}</div>
+      </div>
+      <div style="height:8px; border-radius:4px; background:#EAF0F7; overflow:hidden; margin-top:12px;"><div style="width:{{ progressPct }}%; height:100%; background:linear-gradient(90deg,#2F6BE0,#2FB6A8); border-radius:4px; transition:width .4s ease;"></div></div>
+    </div>
+
+    <!-- quiz card -->
+    <section style="padding:0 6px;">{{ quizCard }}</section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { q:0, picked:-1, answered:false, score:0, done:false };
+  quizzes(){ return [
+    { type:'palette', q:'이 팔레트에서 가장 비중이 큰 색 군집은?', pal:[['#182F49',52],['#8FC0B5',20],['#E6F5A6',16],['#3A4F7A',12]], opts:['감청 (52%)','세이지 (20%)','연두 (16%)','회청 (12%)'], a:0, ex:'K-means 군집화는 비중(픽셀 수) 순으로 대표색을 정렬해요. 가장 넓은 면적을 차지한 감청이 1순위입니다.' },
+    { type:'concept', q:'RGB와 달리 LAB 색공간이 미술 분석에 유리한 이유는?', opts:['계산이 더 빠르다','사람 눈의 색 차이와 더 비슷하다','색을 3개만 쓴다','흑백만 표현한다'], a:1, ex:'LAB는 인간의 지각적 색 차이에 가깝게 설계되어, 비슷해 보이는 색을 더 잘 구분합니다.' },
+    { type:'chart', q:'채도(Saturation) 0.41은 무엇을 뜻하나요?', opts:['색이 매우 선명하다','색이 비교적 차분·탁하다','그림이 어둡다','객체가 41개다'], a:1, ex:'채도가 낮을수록(0에 가까울수록) 색이 회색에 가까워 차분하고 가라앉은 인상을 줍니다.' },
+    { type:'reading', q:'감정 강도 0.88, 시선 집중 0.57인 작품. 가장 적절한 비평 질문은?', opts:['왜 이렇게 못 그렸나요?','이 색은 몇 번 썼나요?','강한 감정을 좌하단 집중으로 의도했나요?','크기가 몇 픽셀인가요?'], a:2, ex:'좋은 데이터 비평은 숫자(0.88·0.57)를 근거로, 단정 대신 작가의 의도를 묻습니다.' },
+    { type:'ethics', q:'AI 객체 감지가 ‘사람’을 놓쳤을 때 올바른 태도는?', opts:['기계가 맞으니 무시한다','데이터엔 한계·편향이 있음을 안다','분석을 포기한다','점수를 0점 준다'], a:1, ex:'데이터와 AI에는 항상 한계와 편향이 있어요. 무엇을 놓쳤는지 묻는 것이 데이터 윤리의 시작입니다.' },
+  ]; }
+  renderVals(){
+    const S=this.state, qs=this.quizzes();
+    if(S.done){
+      const pct=Math.round(S.score/qs.length*100);
+      const msg = pct>=80?'데이터의 눈이 날카로워요!':pct>=50?'좋아요, 조금만 더!':'다시 한 번 도전해봐요.';
+      const quizCard=React.createElement('div',{style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'24px',padding:'40px',textAlign:'center',boxShadow:'0 30px 60px -42px rgba(14,21,35,0.34)'}},[
+        React.createElement('div',{key:'h',style:{width:'88px',height:'88px',clipPath:'polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)',background:'linear-gradient(135deg,#2F6BE0,#2FB6A8)',margin:'0 auto',display:'flex',alignItems:'center',justifyContent:'center',color:'#fff',fontSize:'34px',fontWeight:800}},'★'),
+        React.createElement('div',{key:'s',style:{fontSize:'44px',fontWeight:800,letterSpacing:'-0.03em',marginTop:'20px',fontVariantNumeric:'tabular-nums'}},S.score+' / '+qs.length),
+        React.createElement('div',{key:'m',style:{fontSize:'17px',fontWeight:700,color:'#3A4F7A',marginTop:'6px'}},msg),
+        React.createElement('div',{key:'d',style:{fontSize:'14px',color:'#667080',marginTop:'8px'}},'정답률 '+pct+'% · ‘색의 언어’ 배지를 획득했어요'),
+        React.createElement('div',{key:'b',style:{display:'flex',gap:'10px',justifyContent:'center',marginTop:'28px',flexWrap:'wrap'}},[
+          React.createElement('button',{key:'r',onClick:()=>this.setState({q:0,picked:-1,answered:false,score:0,done:false}),style:{background:'#0E1523',color:'#fff',border:'none',borderRadius:'999px',padding:'14px 26px',fontSize:'15px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'다시 풀기'),
+          React.createElement('a',{key:'s',href:'색군집스튜디오.dc.html'}, React.createElement('button',{style:{background:'#EAF1FB',color:'#3A4F7A',border:'none',borderRadius:'999px',padding:'14px 24px',fontSize:'15px',fontWeight:600,fontFamily:'inherit',cursor:'pointer'}},'스튜디오에서 실습 →')),
+        ]),
+      ]);
+      return { progressText:'완료', progressPct:100, quizCard };
+    }
+    const Q=qs[S.q];
+    const seg=(arr)=>arr.map((p,i)=>React.createElement('div',{key:i,style:{flex:p[1],background:p[0]}}));
+    const visual = Q.type==='palette' ? React.createElement('div',{style:{display:'flex',height:'130px',borderRadius:'14px',overflow:'hidden',marginBottom:'22px'}}, seg(Q.pal)) : null;
+
+    const opts=React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:'10px'}}, Q.opts.map((o,i)=>{
+      let bg='#F4F8FD',bd='#E4EAF2',col='#0E1523',icon=null;
+      if(S.answered){ if(i===Q.a){ bg='#E6F4EC'; bd='#8FC0B5'; col='#1c5b3f'; icon='✓'; } else if(i===S.picked){ bg='#FBEAEA'; bd='#E8A0A0'; col='#9c3a3a'; icon='✕'; } else { bg='#F8FAFC'; col='#9AA6B6'; } }
+      else if(i===S.picked){ bg='#EAF1FB'; bd='#2F6BE0'; }
+      return React.createElement('div',{key:i,onClick:()=>{ if(!S.answered) this.setState({picked:i}); },style:{display:'flex',alignItems:'center',justifyContent:'space-between',gap:'12px',padding:'16px 18px',borderRadius:'14px',background:bg,border:'1.5px solid '+bd,cursor:S.answered?'default':'pointer',fontSize:'15px',fontWeight:600,color:col,transition:'all .15s ease'}},[
+        React.createElement('span',{key:'t'},o),
+        icon?React.createElement('span',{key:'i',style:{fontWeight:800}},icon):null,
+      ]);
+    }));
+
+    const explain = S.answered ? React.createElement('div',{style:{marginTop:'18px',background:S.picked===Q.a?'#E6F4EC':'#FBF1E8',border:'1px solid '+(S.picked===Q.a?'#bfe0cd':'#f0d6b8'),borderRadius:'14px',padding:'16px 18px'}},[
+      React.createElement('div',{key:'l',style:{fontSize:'12.5px',fontWeight:700,color:S.picked===Q.a?'#1c5b3f':'#9a6a2a'}}, S.picked===Q.a?'정답!':'아쉬워요'),
+      React.createElement('div',{key:'t',style:{fontSize:'14px',lineHeight:1.65,color:'#3A4658',marginTop:'6px'}},Q.ex),
+    ]) : null;
+
+    const action = S.answered
+      ? React.createElement('button',{onClick:()=>{ const last=S.q>=qs.length-1; if(last) this.setState({done:true}); else this.setState({q:S.q+1,picked:-1,answered:false}); },style:{marginTop:'20px',width:'100%',background:'#0E1523',color:'#fff',border:'none',borderRadius:'12px',padding:'15px',fontSize:'15px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}}, S.q>=qs.length-1?'결과 보기 →':'다음 문제 →')
+      : React.createElement('button',{onClick:()=>{ if(S.picked<0) return; this.setState(st=>({answered:true,score:st.score+(st.picked===Q.a?1:0)})); },style:{marginTop:'20px',width:'100%',background:S.picked<0?'#C7D4EE':'#2F6BE0',color:'#fff',border:'none',borderRadius:'12px',padding:'15px',fontSize:'15px',fontWeight:700,fontFamily:'inherit',cursor:S.picked<0?'default':'pointer'}}, '정답 확인');
+
+    const quizCard=React.createElement('div',{style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'24px',padding:'32px',boxShadow:'0 30px 60px -42px rgba(14,21,35,0.34)'}},[
+      React.createElement('div',{key:'tag',style:{fontSize:'12px',fontWeight:700,color:'#3A4F7A',background:'#EAF1FB',borderRadius:'999px',padding:'5px 12px',display:'inline-block'}}, {palette:'팔레트 읽기',concept:'개념',chart:'데이터 해석',reading:'비평',ethics:'데이터 윤리'}[Q.type]),
+      React.createElement('h2',{key:'q',style:{fontSize:'23px',fontWeight:800,letterSpacing:'-0.02em',lineHeight:1.35,margin:'16px 0 22px'}},Q.q),
+      visual, opts, explain, action,
+    ]);
+    return { progressText:'문제 '+(S.q+1)+' / '+qs.length, progressPct:Math.round(S.q/qs.length*100), quizCard };
+  }
+}
+</script>
+</body>
+</html>

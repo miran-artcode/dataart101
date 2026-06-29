@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #D7DBDF; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#111A2B; }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; padding: 52px 36px 90px; background-color: #eef7ff">
+  <div style="max-width:1240px; margin:0 auto 50px;">
+    <div style="font-family:'Pretendard'; font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color:#6b7079; font-weight:600;">분석 결과 화면 · 두 스타일 비교</div>
+    <h1 style="font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin: 12px 0 0; color: #0e1523">같은 데이터, 두 가지 표현</h1>
+    <p style="font-size:16px; line-height:1.6; color:#454a51; max-width:680px; margin:14px 0 0;">작품을 올린 뒤 보게 될 "분석 결과"입니다. A는 미니멀의 연장(정제된 데이터 시각화), B는 3D·일러스트 대시보드. 끌리는 쪽을 고르시면 전체 도구 화면을 그 톤으로 만듭니다.</p>
+  </div>
+
+  <!-- ============== A · MINIMAL ============== -->
+  <div style="max-width:1240px; margin:0 auto 16px; display:flex; align-items:baseline; gap:14px;">
+    <div style="font-size:26px; font-weight:800; color:#111A2B;">A</div>
+    <div style="font-size:18px; font-weight:800;">미니멀 데이터비주얼 <span style="font-size:13px; color:#6b7079; font-weight:500; margin-left:6px;">현재 랜딩의 연장 · 무채색 크롬, 색은 작품에서만</span></div>
+  </div>
+  <div data-screen-label="A Minimal" style="max-width: 1240px; margin: 0 auto 64px; border: 1px solid rgba(20,18,14,0.06); border-radius: 26px; padding: 22px; box-shadow: 0 40px 80px -44px rgba(28,25,20,0.3); background-color: #fefeff; border-color: #f5fcff0f">
+    <!-- top bar -->
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 18px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="font-size:14px; color:#666C75; font-weight:500;">← 둘러보기</div>
+        <div style="font-size:18px; font-weight:700; letter-spacing:-0.01em;">작품 분석 · 〈무제〉</div>
+      </div>
+      <div style="font-size:13px; color:#98A0AA; font-weight:500;">학생 A · 2026.06.13</div>
+    </div>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(300px,1fr)); gap:16px;">
+      <!-- artwork with boxes -->
+      <div style="background:#fff; border-radius:18px; padding:16px; box-shadow:0 18px 40px -30px rgba(28,25,20,0.3);">
+        <div style="position:relative; height:330px; border-radius:12px; overflow:hidden; background:#EAEEF4;">
+          <div style="position:absolute; inset:0; display:grid; grid-template-columns:repeat(6,1fr); grid-template-rows:repeat(4,1fr);">{{ artGridA }}</div>
+          <div style="position:absolute; left:14%; top:18%; width:32%; height:46%; border:1.5px solid #111A2B; border-radius:4px;"><span style="position:absolute; top:-20px; left:0; font-size:11px; font-weight:600; background:#111A2B; color:#fff; padding:2px 6px; border-radius:4px;">인물 · 0.92</span></div>
+          <div style="position:absolute; left:58%; top:48%; width:26%; height:34%; border:1.5px solid #111A2B; border-radius:4px;"><span style="position:absolute; top:-20px; left:0; font-size:11px; font-weight:600; background:#111A2B; color:#fff; padding:2px 6px; border-radius:4px;">사물 · 0.78</span></div>
+        </div>
+        <div style="display:flex; justify-content:space-between; margin-top:14px; padding:0 4px;">
+          <div><div style="font-size:24px; font-weight:700; font-variant-numeric:tabular-nums;">12</div><div style="font-size:12px; color:#98A0AA;">감지 객체</div></div>
+          <div><div style="font-size:24px; font-weight:700; font-variant-numeric:tabular-nums;">0.71</div><div style="font-size:12px; color:#98A0AA;">평균 명도</div></div>
+          <div><div style="font-size:24px; font-weight:700; font-variant-numeric:tabular-nums;">0.43</div><div style="font-size:12px; color:#98A0AA;">채도</div></div>
+        </div>
+      </div>
+      <!-- right column panels -->
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <!-- color clusters -->
+        <div style="background:#fff; border-radius:18px; padding:22px; box-shadow:0 18px 40px -30px rgba(28,25,20,0.3);">
+          <div style="font-size:15px; font-weight:700;">색 군집 <span style="font-size:13px; color:#98A0AA; font-weight:500;">6개 · 비중순</span></div>
+          <div style="display:flex; height:14px; border-radius:7px; overflow:hidden; margin-top:14px;">{{ clusterBarA }}</div>
+          <div style="margin-top:16px; display:flex; flex-direction:column; gap:10px;">{{ clusterListA }}</div>
+        </div>
+        <!-- 7 lenses -->
+        <div style="background:#fff; border-radius:18px; padding:22px; box-shadow:0 18px 40px -30px rgba(28,25,20,0.3);">
+          <div style="font-size:15px; font-weight:700;">7가지 분석 렌즈</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:11px;">{{ lensRowsA }}</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+      <button style="background:#111A2B; color:#fff; border:none; border-radius:999px; padding:14px 26px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#1E2A42;">이 데이터로 다시 그리기 →</button>
+    </div>
+  </div>
+
+  <!-- ============== B · 3D / ILLUSTRATIVE ============== -->
+  <div style="max-width:1240px; margin:0 auto 16px; display:flex; align-items:baseline; gap:14px;">
+    <div style="font-size:26px; font-weight:800; color:#7B6BF0;">B</div>
+    <div style="font-size:18px; font-weight:800;">3D 일러스트 대시보드 <span style="font-size:13px; color:#6b7079; font-weight:500; margin-left:6px;">입체 위젯·컬러풀·놀이 같은 톤 (학생 친화)</span></div>
+  </div>
+  <div data-screen-label="B 3D" style="max-width:1240px; margin:0 auto 30px; background:#EEE9FF; border:1px solid rgba(40,30,80,0.06); border-radius:30px; padding:26px; box-shadow:0 50px 90px -50px rgba(40,30,80,0.4);">
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 8px 22px;">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <div style="width:38px; height:38px; border-radius:12px; background:#7B6BF0; box-shadow:5px 6px 0 #4B3FB0;"></div>
+        <div style="font-size:20px; font-weight:800; color:#241B3D; letter-spacing:-0.01em;">작품 분석 · 〈무제〉</div>
+      </div>
+      <div style="background:#fff; border-radius:999px; padding:8px 16px; font-size:13px; font-weight:700; color:#7B6BF0; box-shadow:0 8px 18px -10px rgba(40,30,80,0.4);">학생 A</div>
+    </div>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px,1fr)); gap:18px;">
+      <!-- color orb card -->
+      <div style="background:#fff; border-radius:26px; padding:26px; box-shadow:14px 16px 0 rgba(123,107,240,0.18); position:relative; overflow:hidden;">
+        <div style="font-size:15px; font-weight:800; color:#241B3D;">색의 분포</div>
+        <div style="font-size:13px; color:#9089A8; margin-top:2px;">주요 6색의 비중</div>
+        <div style="position:relative; height:200px; display:flex; align-items:center; justify-content:center; margin-top:8px;">{{ orbB }}</div>
+        <div style="display:flex; gap:6px; justify-content:center; flex-wrap:wrap;">{{ orbLegendB }}</div>
+      </div>
+      <!-- floating stat tiles -->
+      <div style="display:flex; flex-direction:column; gap:18px;">
+        <div style="background:#FF6B5A; border-radius:24px; padding:22px 24px; color:#fff; box-shadow:12px 14px 0 rgba(214,74,58,0.4); transform: rotate(-1.5deg);">
+          <div style="font-size:46px; font-weight:800; letter-spacing:-0.03em; line-height:1;">12</div>
+          <div style="font-size:14px; font-weight:600; opacity:0.92; margin-top:6px;">감지된 객체</div>
+          <div style="display:flex; gap:6px; margin-top:14px;">{{ objDotsB }}</div>
+        </div>
+        <div style="display:flex; gap:18px;">
+          <div style="flex:1; background:#34D5A1; border-radius:24px; padding:20px; color:#06301F; box-shadow:10px 12px 0 rgba(20,150,110,0.4);">
+            <div style="font-size:34px; font-weight:800; line-height:1;">0.71</div>
+            <div style="font-size:13px; font-weight:600; margin-top:6px;">평균 명도</div>
+          </div>
+          <div style="flex:1; background:#FFC24B; border-radius:24px; padding:20px; color:#4A3000; box-shadow:10px 12px 0 rgba(214,160,40,0.4);">
+            <div style="font-size:34px; font-weight:800; line-height:1;">0.43</div>
+            <div style="font-size:13px; font-weight:600; margin-top:6px;">채도</div>
+          </div>
+        </div>
+      </div>
+      <!-- 7 lens 3d bars -->
+      <div style="background:#241B3D; border-radius:26px; padding:26px; box-shadow:14px 16px 0 rgba(36,27,61,0.35);">
+        <div style="font-size:15px; font-weight:800; color:#fff;">7가지 분석 렌즈</div>
+        <div style="font-size:13px; color:#9D94C4; margin-top:2px;">렌즈마다 다른 숫자</div>
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:8px; height:150px; margin-top:24px;">{{ lensBars3D }}</div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+      <div style="font-size:14px; color:#6A6388; font-weight:500;">숫자가 끝나는 곳에서, 예술이 시작된다.</div>
+      <button style="background:#7B6BF0; color:#fff; border:none; border-radius:999px; padding:15px 30px; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; box-shadow:7px 8px 0 #4B3FB0; transition:transform .12s ease, box-shadow .12s ease;" style-hover="transform:translate(3px,4px); box-shadow:3px 3px 0 #4B3FB0;">이 데이터로 다시 그리기 →</button>
+    </div>
+  </div>
+
+  <div style="max-width:1240px; margin:40px auto 0; font-size:14px; color:#454a51;">A는 작품 색만 컬러로 두고 크롬은 무채색 — 미술관 톤. B는 위젯마다 색·입체감을 줘 활기차고 게임 같은 톤. 둘을 섞을 수도 있어요(예: A 레이아웃 + B의 컬러 오브 하나).</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  rand(s){ const x=Math.sin(s*99.13)*43758.5453; return x-Math.floor(x); }
+
+  renderVals(){
+    // ---- A minimal ----
+    const museum = ['#2E3A4A','#7C8B7A','#C9A24C','#9C6E5B','#8C93A2','#E4DED0'];
+    const pcts = [31,22,17,12,10,8];
+    const names = ['청회색','세이지','오커','테라코타','연보라','본'];
+
+    const artGridA = React.createElement(React.Fragment, {}, Array.from({length:24}).map((_,i)=>{
+      const c = museum[Math.floor(this.rand(i+2)*museum.length)];
+      return React.createElement('div',{key:i,style:{background:c, opacity:0.55+this.rand(i+9)*0.4}});
+    }));
+
+    const clusterBarA = React.createElement(React.Fragment, {}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{width:pcts[i]+'%', background:c}})));
+
+    const clusterListA = React.createElement(React.Fragment, {}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'10px'}},[
+        React.createElement('div',{key:'s',style:{width:'18px',height:'18px',borderRadius:'5px',background:c,border:'1px solid rgba(0,0,0,0.06)'}}),
+        React.createElement('div',{key:'n',style:{fontSize:'14px',fontWeight:600,flex:1}},names[i]),
+        React.createElement('div',{key:'h',style:{fontSize:'12px',color:'#98A0AA'}},c),
+        React.createElement('div',{key:'p',style:{fontSize:'14px',fontWeight:700,fontVariantNumeric:'tabular-nums',width:'42px',textAlign:'right'}},pcts[i]+'%'),
+      ])));
+
+    const lenses = [['색 대비',0.82],['구도 균형',0.64],['명도 분포',0.71],['질감 밀도',0.48],['감정 강도',0.9],['시선 집중',0.57],['공간 깊이',0.66]];
+    const lensRowsA = React.createElement(React.Fragment, {}, lenses.map((l,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'12px'}},[
+        React.createElement('div',{key:'n',style:{fontSize:'13px',fontWeight:600,width:'76px',color:'#535963'}},l[0]),
+        React.createElement('div',{key:'t',style:{flex:1,height:'8px',borderRadius:'4px',background:'#E8ECF0',overflow:'hidden'}},
+          React.createElement('div',{style:{width:(l[1]*100)+'%',height:'100%',borderRadius:'4px',background: i===4?'#111A2B':'#111A2B'}})),
+        React.createElement('div',{key:'v',style:{fontSize:'13px',fontWeight:700,fontVariantNumeric:'tabular-nums',width:'34px',textAlign:'right'}},l[1].toFixed(2)),
+      ])));
+
+    // ---- B 3D donut ----
+    const orbColors = ['#7B6BF0','#FF6B5A','#34D5A1','#FFC24B','#4ABBFF','#F06BB0'];
+    const orbPcts = [28,22,18,14,10,8];
+    const r=58, sw=30, size=2*r+sw, cx=size/2, C=2*Math.PI*r;
+    const makeDonut = (offY, darken) => {
+      let acc=0;
+      const circles = orbColors.map((c,i)=>{
+        const len = orbPcts[i]/100*C;
+        const el = React.createElement('circle',{key:i, cx:cx, cy:cx, r:r, fill:'none',
+          stroke: darken ? this.shade(c,-30) : c, strokeWidth:sw,
+          strokeDasharray: len+' '+(C-len), strokeDashoffset:(-acc),
+          transform:'rotate(-90 '+cx+' '+cx+')'});
+        acc+=len; return el;
+      });
+      return React.createElement('svg',{width:size,height:size,style:{position:'absolute',top:(offY)+'px',left:'50%',transform:'translateX(-50%)'}}, circles);
+    };
+    const orbB = React.createElement(React.Fragment, {}, [
+      makeDonut(28, true),
+      makeDonut(14, false),
+      React.createElement('div',{key:'hole',style:{position:'absolute',top:'14px',left:'50%',transform:'translateX(-50%)',width:size+'px',height:size+'px',display:'flex',alignItems:'center',justifyContent:'center'}},
+        React.createElement('div',{style:{textAlign:'center'}},[
+          React.createElement('div',{key:'a',style:{fontSize:'26px',fontWeight:800,color:'#241B3D',lineHeight:1}},'6'),
+          React.createElement('div',{key:'b',style:{fontSize:'11px',color:'#9089A8',fontWeight:600}},'색 군집')
+        ]))
+    ]);
+    const orbLegendB = React.createElement(React.Fragment, {}, orbColors.map((c,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'5px'}},[
+        React.createElement('div',{key:'d',style:{width:'12px',height:'12px',borderRadius:'4px',background:c}}),
+        React.createElement('div',{key:'p',style:{fontSize:'12px',fontWeight:700,color:'#6A6388'}},orbPcts[i]+'%')
+      ])));
+
+    const objDotsB = React.createElement(React.Fragment, {}, Array.from({length:12}).map((_,i)=>
+      React.createElement('div',{key:i,style:{width:'14px',height:'14px',borderRadius:'5px',background:'rgba(255,255,255,0.45)'}})));
+
+    const lensVals = [0.82,0.64,0.71,0.48,0.9,0.57,0.66];
+    const lensColors = ['#FF6B5A','#34D5A1','#FFC24B','#4ABBFF','#F06BB0','#7B6BF0','#FF9F45'];
+    const lensBars3D = React.createElement(React.Fragment, {}, lensVals.map((v,i)=>
+      React.createElement('div',{key:i,style:{flex:1,display:'flex',flexDirection:'column',alignItems:'center',gap:'8px'}},[
+        React.createElement('div',{key:'b',style:{width:'100%',maxWidth:'26px',height:(v*120)+'px',borderRadius:'8px 8px 4px 4px',background:lensColors[i],boxShadow:'4px 5px 0 '+this.shade(lensColors[i],-34)}}),
+        React.createElement('div',{key:'n',style:{fontSize:'10px',color:'#9D94C4',fontWeight:600}},['색','구도','명도','질감','감정','시선','공간'][i])
+      ])));
+
+    return { artGridA, clusterBarA, clusterListA, lensRowsA, orbB, orbLegendB, objDotsB, lensBars3D };
+  }
+
+  shade(hex, amt){
+    const n=parseInt(hex.slice(1),16);
+    let r=(n>>16)+amt, g=((n>>8)&255)+amt, b=(n&255)+amt;
+    r=Math.max(0,Math.min(255,r)); g=Math.max(0,Math.min(255,g)); b=Math.max(0,Math.min(255,b));
+    return '#'+((1<<24)+(r<<16)+(g<<8)+b).toString(16).slice(1);
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #EEF7FF; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+</style>
+</helmet>
+
+<div style="min-height:100vh; background:#EEF7FF; padding:54px 40px 90px;">
+  <div style="max-width:1200px; margin:0 auto;">
+
+    <!-- header -->
+    <div style="margin-bottom:42px;">
+      <div style="font-size:12px; letter-spacing:0.2em; text-transform:uppercase; color:#6B7686; font-weight:700;">사이트 설계 · 구조 & 시스템 정리</div>
+      <h1 style="font-size:44px; font-weight:800; letter-spacing:-0.03em; margin:12px 0 0;">색·폰트는 끝. 이제 <span style="color:#3B6FE0;">구조</span>를 잡습니다.</h1>
+      <p style="font-size:16px; line-height:1.7; color:#46505F; max-width:680px; margin:14px 0 0;">디자인 정리는 위→아래 순서로 합니다: ① 디자인 시스템(잠금) → ② 정보 구조(어떤 화면이 어떻게 연결되나) → ③ 컴포넌트(반복 조각 표준화) → ④ 화면 제작. 지금 ②③을 한눈에 정리했어요.</p>
+    </div>
+
+    <!-- 1. design system locked -->
+    <div style="margin-bottom:20px; font-size:13px; font-weight:700; letter-spacing:0.08em; color:#6B7686; text-transform:uppercase;">01 · 디자인 시스템 (확정)</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:14px; margin-bottom:46px;">
+      <div style="background:#fff; border-radius:18px; padding:22px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="font-size:14px; font-weight:700;">컬러</div>
+        <div style="display:flex; gap:7px; margin-top:14px;">
+          <div style="flex:1; height:40px; border-radius:8px; background:#EEF7FF; border:1px solid #d4e3f5;"></div>
+          <div style="flex:1; height:40px; border-radius:8px; background:#fff; border:1px solid #e2e8f0;"></div>
+          <div style="flex:1; height:40px; border-radius:8px; background:#0E1523;"></div>
+        </div>
+        <div style="font-size:12.5px; color:#6B7686; margin-top:12px; line-height:1.6;">연블루 배경 · 흰 카드 · 딥 네이비 잉크. <b style="color:#0E1523;">컬러는 작품에서만.</b></div>
+      </div>
+      <div style="background:#fff; border-radius:18px; padding:22px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="font-size:14px; font-weight:700;">타입</div>
+        <div style="font-size:30px; font-weight:800; letter-spacing:-0.02em; margin-top:10px;">Pretendard</div>
+        <div style="font-size:12.5px; color:#6B7686; margin-top:8px; line-height:1.6;">모듈러 스케일 · 13·16·20·25·31·39·49px. 굵기로 위계.</div>
+      </div>
+      <div style="background:#fff; border-radius:18px; padding:22px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="font-size:14px; font-weight:700;">공간 · 모양</div>
+        <div style="display:flex; gap:8px; align-items:flex-end; margin-top:14px;">
+          <div style="width:24px; height:24px; border-radius:8px; background:#EEF7FF; border:1.5px solid #0E1523;"></div>
+          <div style="width:36px; height:36px; border-radius:12px; background:#EEF7FF; border:1.5px solid #0E1523;"></div>
+          <div style="width:48px; height:48px; border-radius:16px; background:#EEF7FF; border:1.5px solid #0E1523;"></div>
+        </div>
+        <div style="font-size:12.5px; color:#6B7686; margin-top:12px; line-height:1.6;">8 기반 간격 · radius 12–26 · 부드러운 그림자 한 단계.</div>
+      </div>
+      <div style="background:#fff; border-radius:18px; padding:22px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="font-size:14px; font-weight:700;">톤</div>
+        <div style="font-size:12.5px; color:#46505F; margin-top:12px; line-height:1.7;">미술관처럼 차분·차가운 뉴트럴. 크롬은 무채색, 데이터·작품이 색을 가져온다.</div>
+      </div>
+    </div>
+
+    <!-- 2. IA / sitemap -->
+    <div style="margin-bottom:20px; font-size:13px; font-weight:700; letter-spacing:0.08em; color:#6B7686; text-transform:uppercase;">02 · 정보 구조 (사이트맵 · 학생 플로우)</div>
+    <div style="background:#fff; border-radius:24px; padding:34px 30px; box-shadow:0 40px 80px -44px rgba(14,21,35,0.35); margin-bottom:46px;">
+      <!-- pipeline -->
+      <div style="display:flex; align-items:stretch; gap:0; flex-wrap:wrap;">
+        {{ pipeline }}
+      </div>
+      <!-- AI coach band -->
+      <div style="margin-top:22px; border:1.5px dashed #B8CBE6; border-radius:16px; padding:16px 20px; display:flex; align-items:center; gap:14px; background:#F6FAFF;">
+        <div style="font-size:14px; font-weight:800; color:#3B6FE0; white-space:nowrap;">AI 감상 코치</div>
+        <div style="font-size:13px; color:#46505F; line-height:1.5;">정답 대신 질문을 건다 — <b>모든 단계에 보조로 관통</b>(읽기·재창조·비평 어디서든 호출).</div>
+      </div>
+      <!-- side nodes -->
+      <div style="display:flex; gap:14px; margin-top:18px; flex-wrap:wrap;">
+        <div style="flex:1; min-width:220px; background:#0E1523; color:#EAF1FB; border-radius:14px; padding:16px 18px;">
+          <div style="font-size:13px; font-weight:800;">내 작업 · 프로필 <span style="font-weight:500; color:#8FA3BE;">(학생)</span></div>
+          <div style="font-size:12.5px; color:#A9B8CC; margin-top:5px; line-height:1.5;">저장한 분석·작품·전시 출품 모음.</div>
+        </div>
+        <div style="flex:1; min-width:220px; background:#0E1523; color:#EAF1FB; border-radius:14px; padding:16px 18px;">
+          <div style="font-size:13px; font-weight:800;">교사 대시보드 <span style="font-weight:500; color:#8FA3BE;">(교사)</span></div>
+          <div style="font-size:12.5px; color:#A9B8CC; margin-top:5px; line-height:1.5;">반·학생별 진행, 제출물 검토·피드백, 전시 큐레이션.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. screen list + priority -->
+    <div style="margin-bottom:20px; font-size:13px; font-weight:700; letter-spacing:0.08em; color:#6B7686; text-transform:uppercase;">03 · 화면 목록 & 제작 순서</div>
+    <div style="background:#fff; border-radius:24px; padding:10px 30px; box-shadow:0 40px 80px -44px rgba(14,21,35,0.35); margin-bottom:46px;">
+      {{ screens }}
+    </div>
+
+    <!-- 4. components -->
+    <div style="margin-bottom:20px; font-size:13px; font-weight:700; letter-spacing:0.08em; color:#6B7686; text-transform:uppercase;">04 · 핵심 컴포넌트 (한 번 만들고 재사용)</div>
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px; margin-bottom:40px;">
+      <div style="background:#fff; border-radius:16px; padding:20px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="height:30px; display:flex; align-items:center; justify-content:space-between; border:1px solid #e2e8f0; border-radius:999px; padding:0 10px;"><div style="width:14px; height:14px; border-radius:5px; background:#0E1523;"></div><div style="width:38px; height:12px; border-radius:999px; background:#0E1523;"></div></div>
+        <div style="font-size:13.5px; font-weight:700; margin-top:14px;">내비게이션</div>
+        <div style="font-size:12px; color:#6B7686; margin-top:3px;">플로팅 바 · 시작하기 Pill</div>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:20px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="height:30px; border:1px solid #e2e8f0; border-radius:10px;"></div>
+        <div style="font-size:13.5px; font-weight:700; margin-top:14px;">카드</div>
+        <div style="font-size:12px; color:#6B7686; margin-top:3px;">흰 카드 · radius · soft shadow</div>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:20px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="height:30px; display:flex; gap:6px;"><div style="background:#0E1523; border-radius:999px; flex:1;"></div><div style="border:1px solid #cdd6e2; border-radius:999px; flex:1;"></div></div>
+        <div style="font-size:13.5px; font-weight:700; margin-top:14px;">버튼</div>
+        <div style="font-size:12px; color:#6B7686; margin-top:3px;">Primary(네이비) · Ghost</div>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:20px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="height:30px; border:1px solid #e2e8f0; border-radius:8px; background:#F4F8FD;"></div>
+        <div style="font-size:13.5px; font-weight:700; margin-top:14px;">입력 · 폼</div>
+        <div style="font-size:12px; color:#6B7686; margin-top:3px;">좌표형 라벨 · 역할 토글</div>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:20px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="height:30px; display:flex; gap:4px; align-items:flex-end;"><div style="flex:1; height:60%; background:#0E1523; border-radius:3px;"></div><div style="flex:1; height:100%; background:#0E1523; border-radius:3px;"></div><div style="flex:1; height:40%; background:#0E1523; border-radius:3px;"></div><div style="flex:1; height:80%; background:#0E1523; border-radius:3px;"></div></div>
+        <div style="font-size:13.5px; font-weight:700; margin-top:14px;">데이터 위젯</div>
+        <div style="font-size:12px; color:#6B7686; margin-top:3px;">색 군집·렌즈 바·객체 박스</div>
+      </div>
+      <div style="background:#fff; border-radius:16px; padding:20px; box-shadow:0 20px 44px -34px rgba(14,21,35,0.35);">
+        <div style="height:30px; display:flex; gap:6px; align-items:center;"><div style="border:1px solid #cdd6e2; border-radius:999px; padding:4px 8px; font-size:10px; color:#6B7686;">태그</div><div style="border:1px solid #cdd6e2; border-radius:999px; padding:4px 8px; font-size:10px; color:#6B7686;">칩</div></div>
+        <div style="font-size:13.5px; font-weight:700; margin-top:14px;">칩 · 배지</div>
+        <div style="font-size:12px; color:#6B7686; margin-top:3px;">상태·필터·렌즈 라벨</div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid #cfdcec; padding-top:24px; font-size:15px; line-height:1.7; color:#46505F;">
+      <b style="color:#0E1523;">추천 제작 순서:</b> 허브(둘러보기) → 분석 도구 1종(그림→결과) → 작업실 → 전시 → AI 코치. 허브를 먼저 만들면 모든 화면의 '골격'(내비·카드·간격)이 거기서 정해져 나머지가 빨라져요.<br>
+      <span style="color:#3B6FE0; font-weight:600;">→ "허브부터" 한마디면 바로 시작합니다.</span>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    const stages = [
+      ['01','로그인 · 시작','이름·PIN으로 계정. 역할(학생/교사) 선택.'],
+      ['02','허브 · 둘러보기','전체 진입점. 분석 도구·내 작업·전시로 분기.'],
+      ['03','분석 도구','그림·소리·내 삶·사회 — 데이터로 읽기 → 분석 결과.'],
+      ['04','작업실 · 재창조','읽은 데이터를 재료로 미디어아트 제작.'],
+      ['05','전시 · 비평','작품 갤러리 출품 · 서로의 의도를 읽고 비평.'],
+    ];
+    const els = [];
+    stages.forEach((s,i)=>{
+      els.push(React.createElement('div',{key:'n'+i,style:{
+        flex:'1 1 170px', background:'#F6FAFF', border:'1.5px solid #D3E2F4', borderRadius:'16px',
+        padding:'18px 16px', minWidth:'160px'}},[
+        React.createElement('div',{key:'a',style:{fontSize:'12px',fontWeight:800,color:'#3B6FE0'}},s[0]),
+        React.createElement('div',{key:'b',style:{fontSize:'16px',fontWeight:800,marginTop:'8px',color:'#0E1523',letterSpacing:'-0.01em'}},s[1]),
+        React.createElement('div',{key:'c',style:{fontSize:'12px',color:'#5A6577',marginTop:'7px',lineHeight:1.5}},s[2]),
+      ]));
+      if(i<stages.length-1){
+        els.push(React.createElement('div',{key:'arr'+i,style:{
+          display:'flex',alignItems:'center',justifyContent:'center',padding:'0 6px',
+          color:'#9DB4D2',fontSize:'22px',fontWeight:700}},'›'));
+      }
+    });
+    const pipeline = React.createElement(React.Fragment,{},els);
+
+    const rows = [
+      ['1','허브 (둘러보기)','전체 진입점·내비 골격','학생·교사','최우선'],
+      ['2','분석 도구 — 그림','작품 업로드 → 색·객체·렌즈 결과','학생','우선'],
+      ['3','작업실 (재창조)','분석 데이터로 미디어아트 만들기','학생','다음'],
+      ['4','전시 · 비평','갤러리·출품·코멘트','학생·교사','다음'],
+      ['5','AI 감상 코치','질문형 대화(전 단계 보조)','학생','병행'],
+      ['6','분석 도구 — 소리/내삶/사회','그림 도구 패턴 복제','학생','확장'],
+      ['7','교사 대시보드','반·제출물 관리','교사','확장'],
+    ];
+    const prColor = {'최우선':'#3B6FE0','우선':'#0E1523','다음':'#6B7686','병행':'#3B6FE0','확장':'#9DB4D2'};
+    const screens = React.createElement(React.Fragment,{}, rows.map((r,i)=>
+      React.createElement('div',{key:i,style:{
+        display:'grid', gridTemplateColumns:'34px 1.4fr 2fr 1fr 84px', gap:'14px', alignItems:'center',
+        padding:'16px 4px', borderBottom: i<rows.length-1?'1px solid #e8eef6':'none'}},[
+        React.createElement('div',{key:'n',style:{fontSize:'15px',fontWeight:800,color:'#9DB4D2',fontVariantNumeric:'tabular-nums'}},r[0]),
+        React.createElement('div',{key:'t',style:{fontSize:'15px',fontWeight:700,color:'#0E1523'}},r[1]),
+        React.createElement('div',{key:'d',style:{fontSize:'13.5px',color:'#5A6577'}},r[2]),
+        React.createElement('div',{key:'r',style:{fontSize:'12.5px',color:'#6B7686'}},r[3]),
+        React.createElement('div',{key:'p',style:{justifySelf:'end',fontSize:'12px',fontWeight:700,color:'#fff',background:prColor[r[4]],borderRadius:'999px',padding:'5px 11px',whiteSpace:'nowrap'}},r[4]),
+      ])
+    ));
+
+    return { pipeline, screens };
+  }
+}
+</script>
+</body>
+</html>

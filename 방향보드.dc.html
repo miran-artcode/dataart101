@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #ECE7DA; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color: #15140F; }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; background: #ECE7DA; padding: 0; color: #15140F;">
+
+  <!-- top bar -->
+  <div style="border-bottom: 1.5px solid #15140F; padding: 16px 40px; display:flex; justify-content: space-between; align-items: center; font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;">
+    <div>DESIGN DIRECTION / 방향 보드 — v0</div>
+    <div>서울미술고 · 데이터 미디어아트 · 2026</div>
+  </div>
+
+  <!-- masthead -->
+  <div style="padding: 44px 40px 30px; border-bottom: 1.5px solid #15140F;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color:#6b6557;">화면을 만들기 전에 — 색·면·타입을 먼저 확정</div>
+      <h1 style="font-family:'Syne',sans-serif; font-size: 92px; line-height: 0.92; font-weight: 800; letter-spacing: -0.03em; margin: 14px 0 0;">KILL THE<br>DEFAULTS.</h1>
+      <p style="font-size: 16px; line-height: 1.7; max-width: 640px; margin: 22px 0 0; color:#3a352b;">"AI 기본값" 6가지를 버리고 그 반대 원칙으로 다시 짭니다. 아래에서 <b>1~6 항목만 정해 주시면</b> 그 규칙으로 한 화면을 제대로 만들어 옵니다.</p>
+    </div>
+  </div>
+
+  <!-- DON'T -> DO -->
+  <div style="padding: 40px; border-bottom: 1.5px solid #15140F;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color:#6b6557; margin-bottom: 22px;">01 · 버린다 → 대신</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1.5px solid #15140F;">{{ rules }}</div>
+    </div>
+  </div>
+
+  <!-- TYPE -->
+  <div style="padding: 40px; border-bottom: 1.5px solid #15140F;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color:#6b6557; margin-bottom: 22px;">02 · 타입 시스템 — Syne(디스플레이) + Pretendard(국문·본문) + Space Mono(데이터)</div>
+      <div style="display:grid; grid-template-columns: 1.1fr 0.9fr; gap: 0; border: 1.5px solid #15140F;">
+        <div style="padding: 30px 32px; border-right: 1.5px solid #15140F;">
+          <div style="font-family:'Syne',sans-serif; font-size: 70px; font-weight: 800; line-height: 0.95; letter-spacing: -0.02em;">DATA → ART</div>
+          <div style="font-family:'Syne',sans-serif; font-size: 40px; font-weight: 600; letter-spacing: 0.02em; margin-top: 18px;">0123456789</div>
+          <div style="font-size: 13px; color:#6b6557; margin-top: 14px; font-family:'Space Mono',monospace;">SYNE — 아트·갤러리 그로테스크. 큰 제목·숫자에.</div>
+        </div>
+        <div style="padding: 30px 32px;">
+          <div style="font-size: 38px; font-weight: 800; line-height: 1.08; letter-spacing: -0.02em;">데이터의 눈으로<br>그림을 읽다</div>
+          <p style="font-size: 15px; line-height: 1.7; color:#3a352b; margin: 18px 0 0;">Pretendard로 국문 제목과 본문을 또렷하게. 손맛은 폰트의 장식이 아니라 <b>크기 대비·여백·정렬</b>에서.</p>
+          <div style="font-family:'Space Mono',monospace; font-size: 13px; color:#15140F; margin-top: 18px; padding-top: 14px; border-top: 1px solid rgba(21,20,15,0.2);">X:0.62  Y:0.18  CLUSTER:04  Δ:+0.09</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- COLOR -->
+  <div style="padding: 40px; border-bottom: 1.5px solid #15140F;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color:#6b6557; margin-bottom: 22px;">03 · 컬러 입장 — 종이 + 잉크 + 시그니처 <b style="color:#15140F;">단 1색</b> (그라데이션 없음)</div>
+      <div style="display:flex; gap: 0; border: 1.5px solid #15140F; flex-wrap: wrap;">{{ swatches }}</div>
+      <div style="font-size: 13px; color:#6b6557; margin-top: 12px; font-family:'Space Mono',monospace;">→ 한 화면엔 시그니처 1색만. 아래 후보 중 하나를 고르거나 직접 지정.</div>
+    </div>
+  </div>
+
+  <!-- SHAPE / STRUCTURE -->
+  <div style="padding: 40px; border-bottom: 1.5px solid #15140F;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color:#6b6557; margin-bottom: 22px;">04 · 모양·구조 언어 — 직각 / 헤어라인 / 좌표 그리드</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap: 0; border: 1.5px solid #15140F;">
+        <div style="padding: 26px; border-right: 1.5px solid #15140F;">
+          <div style="width: 100%; height: 90px; background:#15140F;"></div>
+          <div style="font-size: 13px; margin-top: 14px;"><b>직각 모서리 · 그림자 0</b><br><span style="color:#6b6557;">면은 불투명하게 꽉. radius 0px.</span></div>
+        </div>
+        <div style="padding: 26px; border-right: 1.5px solid #15140F;">
+          <div style="height: 90px; display:flex; flex-direction:column; justify-content: space-between;">
+            <div style="height:1px; background:#15140F;"></div>
+            <div style="height:1px; background:rgba(21,20,15,0.4);"></div>
+            <div style="height:1px; background:rgba(21,20,15,0.4);"></div>
+            <div style="height:1px; background:#15140F;"></div>
+          </div>
+          <div style="font-size: 13px; margin-top: 14px;"><b>1px 헤어라인으로 깊이</b><br><span style="color:#6b6557;">그림자 대신 선과 면 분할.</span></div>
+        </div>
+        <div style="padding: 26px;">
+          <div style="position: relative; height: 90px; border: 1px solid rgba(21,20,15,0.4);">{{ coordSample }}</div>
+          <div style="font-size: 13px; margin-top: 14px;"><b>좌표·등록 마크 모티프</b><br><span style="color:#6b6557;">'데이터' 느낌을 인쇄적으로.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SURFACE FORK -->
+  <div style="padding: 40px; border-bottom: 1.5px solid #15140F;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color:#6b6557; margin-bottom: 22px;">05 · 베이스 면 — 같은 규칙, 두 바탕. 어느 쪽?</div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 18px;">
+        <!-- dark -->
+        <div style="border: 1.5px solid #15140F;">
+          <div style="background:#0C0C0E; padding: 30px 28px; min-height: 220px; display:flex; flex-direction: column; justify-content: space-between;">
+            <div style="font-family:'Space Mono',monospace; font-size: 11px; letter-spacing: 0.16em; color:#8a8a90; text-transform: uppercase;">서울미술고 · AI 미술수업</div>
+            <div>
+              <div style="font-family:'Syne',sans-serif; font-size: 44px; font-weight: 800; color:#F3F0E7; line-height: 0.96; letter-spacing: -0.02em;">READ AS<br>DATA.</div>
+              <div style="display:inline-block; margin-top: 16px; background:#E5322B; color:#fff; font-size: 13px; font-weight: 700; padding: 9px 16px;">시작하기 →</div>
+            </div>
+          </div>
+          <div style="padding: 12px 16px; font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.1em;">A · 다크 갤러리</div>
+        </div>
+        <!-- light -->
+        <div style="border: 1.5px solid #15140F;">
+          <div style="background:#F3F0E7; padding: 30px 28px; min-height: 220px; display:flex; flex-direction: column; justify-content: space-between; border-bottom: 1.5px solid #15140F;">
+            <div style="font-family:'Space Mono',monospace; font-size: 11px; letter-spacing: 0.16em; color:#6b6557; text-transform: uppercase;">서울미술고 · AI 미술수업</div>
+            <div>
+              <div style="font-family:'Syne',sans-serif; font-size: 44px; font-weight: 800; color:#15140F; line-height: 0.96; letter-spacing: -0.02em;">READ AS<br>DATA.</div>
+              <div style="display:inline-block; margin-top: 16px; background:#15140F; color:#F3F0E7; font-size: 13px; font-weight: 700; padding: 9px 16px;">시작하기 →</div>
+            </div>
+          </div>
+          <div style="padding: 12px 16px; font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.1em;">B · 라이트 에디토리얼</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DECISIONS -->
+  <div style="padding: 40px 40px 70px;">
+    <div style="max-width: 1180px; margin: 0 auto;">
+      <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color:#6b6557; margin-bottom: 22px;">06 · 같이 정할 것 — 답만 주시면 바로 적용</div>
+      <div style="border-top: 1.5px solid #15140F;">{{ decisions }}</div>
+      <p style="font-size: 15px; line-height: 1.7; margin: 26px 0 0; color:#3a352b;">이 6가지만 합의되면, 다음엔 <b>랜딩(로그인) 한 화면</b>을 이 규칙으로 완성해 보여드리고 → 허브·분석 도구·전시·AI 코치로 확장합니다.</p>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  cell(content, opts) {
+    return React.createElement('div', { style: Object.assign({
+      padding: '22px 24px', fontSize: '15px', lineHeight: '1.5'
+    }, opts) }, content);
+  }
+
+  renderVals() {
+    const ink = '#15140F';
+    const rulesData = [
+      ['보라→파랑 그라데이션', '플랫 잉크 + 종이 + 시그니처 1색'],
+      ['글래스모피즘 카드', '불투명 면 · 1px 헤어라인으로 깊이'],
+      ['떠다니는 그라데이션 블롭', '고정 그리드 · 좌표/등록 마크'],
+      ['둥근 모서리 + 은은한 그림자', '직각(90°) · 그림자 0'],
+      ['Inter 같은 기본 산세', 'Syne + Pretendard'],
+      ['가운데 그라데이션 텍스트', '비대칭 좌측 정렬 · 단색 큰 타입'],
+    ];
+    const rules = [];
+    rulesData.forEach((row, i) => {
+      const lastRow = i === rulesData.length - 1;
+      rules.push(React.createElement('div', { key: 'd' + i, style: {
+        padding: '20px 24px', borderRight: '1.5px solid ' + ink,
+        borderBottom: lastRow ? 'none' : '1.5px solid ' + ink, background: 'transparent'
+      } }, [
+        React.createElement('div', { key: 'x', style: { fontFamily: "'Space Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: '#b04a3a', textTransform: 'uppercase', marginBottom: '8px' } }, '✕ 버린다'),
+        React.createElement('div', { key: 't', style: { fontSize: '16px', textDecoration: 'line-through', textDecorationColor: 'rgba(176,74,58,0.7)', color: '#8a8478' } }, row[0])
+      ]));
+      rules.push(React.createElement('div', { key: 'o' + i, style: {
+        padding: '20px 24px', borderBottom: lastRow ? 'none' : '1.5px solid ' + ink
+      } }, [
+        React.createElement('div', { key: 'x', style: { fontFamily: "'Space Mono', monospace", fontSize: '10px', letterSpacing: '0.14em', color: '#1f5c3d', textTransform: 'uppercase', marginBottom: '8px' } }, '→ 대신'),
+        React.createElement('div', { key: 't', style: { fontSize: '16px', fontWeight: 700 } }, row[1])
+      ]));
+    });
+
+    const sw = [
+      { n: 'PAPER', h: '#F3F0E7', dark: false },
+      { n: 'INK', h: '#15140F', dark: true },
+      { n: 'REG. RED', h: '#E5322B', dark: true, sig: true },
+      { n: 'COBALT', h: '#2F40E8', dark: true, sig: true },
+      { n: 'PERSIMMON', h: '#F0531F', dark: true, sig: true },
+      { n: 'ACID', h: '#C7E92E', dark: false, sig: true },
+      { n: 'DEEP GREEN', h: '#1F5C3D', dark: true, sig: true },
+      { n: 'MAGENTA', h: '#F0317E', dark: true, sig: true },
+    ];
+    const swatches = sw.map((s, i) =>
+      React.createElement('div', { key: i, style: {
+        flex: '1 1 0', minWidth: '120px', borderRight: i === sw.length - 1 ? 'none' : '1.5px solid ' + ink
+      } }, [
+        React.createElement('div', { key: 'c', style: { height: '88px', background: s.h } }),
+        React.createElement('div', { key: 'l', style: { padding: '10px 12px', borderTop: '1.5px solid ' + ink, fontFamily: "'Space Mono', monospace", fontSize: '11px', letterSpacing: '0.06em' } }, [
+          React.createElement('div', { key: 'n', style: { fontWeight: 700 } }, s.n + (s.sig ? ' ◆' : '')),
+          React.createElement('div', { key: 'h', style: { color: '#6b6557', marginTop: '2px' } }, s.h)
+        ])
+      ])
+    );
+
+    // coordinate sample (ticks + node)
+    const coord = [];
+    for (let i = 1; i < 6; i++) coord.push(React.createElement('div', { key: 'vt' + i, style: { position: 'absolute', left: (i / 6 * 100) + '%', bottom: 0, width: '1px', height: '7px', background: 'rgba(21,20,15,0.5)' } }));
+    for (let j = 1; j < 4; j++) coord.push(React.createElement('div', { key: 'ht' + j, style: { position: 'absolute', top: (j / 4 * 100) + '%', left: 0, width: '7px', height: '1px', background: 'rgba(21,20,15,0.5)' } }));
+    coord.push(React.createElement('div', { key: 'node', style: { position: 'absolute', left: '58%', top: '34%', width: '11px', height: '11px', background: '#E5322B', transform: 'translate(-50%,-50%)' } }));
+    coord.push(React.createElement('div', { key: 'cross', style: { position: 'absolute', right: '8px', top: '8px', fontFamily: "'Space Mono', monospace", fontSize: '12px', color: '#15140F' } }, '+'));
+
+    const decData = [
+      ['베이스 면', 'A 다크 갤러리  ·  B 라이트 에디토리얼', '추천: 콘텐츠가 그림(색)이라 A 다크가 색을 살림'],
+      ['시그니처 색', '위 ◆ 후보 1개 · 또는 직접 지정', '추천: REG. RED 또는 PERSIMMON (강하고 인쇄적)'],
+      ['모서리', '완전 직각 0px  ·  최소 2px', '추천: 0px (가장 단호)'],
+      ['타입 개성', '차분한 그로테스크  ·  아트 디스플레이(Syne)', '추천: 제목만 Syne, 나머지 Pretendard'],
+      ['질감', '깨끗한 플랫  ·  인쇄 질감(그레인·하프톤)', '추천: 약한 인쇄 질감 — 디지털 매끈함 탈피'],
+      ['모션', '스냅/기계적 컷  ·  모션 없음', '추천: 스냅(데이터가 갱신되듯)'],
+    ];
+    const decisions = decData.map((d, i) =>
+      React.createElement('div', { key: i, style: {
+        display: 'grid', gridTemplateColumns: '46px 150px 1fr', gap: '16px', alignItems: 'baseline',
+        padding: '16px 4px', borderBottom: '1.5px solid #15140F'
+      } }, [
+        React.createElement('div', { key: 'n', style: { fontFamily: "'Syne', sans-serif", fontSize: '20px', fontWeight: 700 } }, '0' + (i + 1)),
+        React.createElement('div', { key: 'l', style: { fontSize: '15px', fontWeight: 700 } }, d[0]),
+        React.createElement('div', { key: 'r' }, [
+          React.createElement('div', { key: 'o', style: { fontSize: '15px' } }, d[1]),
+          React.createElement('div', { key: 'rec', style: { fontFamily: "'Space Mono', monospace", fontSize: '12px', color: '#6b6557', marginTop: '4px' } }, d[2])
+        ])
+      ])
+    );
+
+    return {
+      rules: React.createElement(React.Fragment, {}, rules),
+      swatches: React.createElement(React.Fragment, {}, swatches),
+      coordSample: React.createElement(React.Fragment, {}, coord),
+      decisions: React.createElement(React.Fragment, {}, decisions),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="전시" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="hub.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#2C3A52; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #EEF7FF; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#EEF7FF; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <a href="hub.html" style="color:#667080;" style-hover="color:#0E1523;">둘러보기</a>
+          <a href="analyze.html" style="color:#667080;" style-hover="color:#0E1523;">분석 도구</a>
+          <span style="color:#0E1523;">전시</span>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2C3A52; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header style="padding:40px 6px 22px;">
+      <a href="hub.html" style="font-size:14px; font-weight:600; color:#667080;">← 둘러보기</a>
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-top:10px;">
+        <div>
+          <h1 style="font-size:40px; font-weight:800; letter-spacing:-0.03em; margin:0;">전시 · 비평</h1>
+          <div style="font-size:15px; color:#667080; margin-top:8px;">친구들의 작품을 데이터로 읽고, 서로의 의도에 질문을 건넵니다.</div>
+        </div>
+        <div style="display:flex; gap:8px;">{{ filters }}</div>
+      </div>
+    </header>
+
+    <!-- gallery grid -->
+    <section style="display:grid; grid-template-columns:repeat(auto-fill,minmax(266px,1fr)); gap:16px; padding-bottom:18px;">{{ gallery }}</section>
+
+    <!-- critique highlight -->
+    <section style="margin:26px 0 60px;">
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:24px; padding:30px; box-shadow:0 30px 60px -42px rgba(14,21,35,0.34); display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:26px;">
+        <div>
+          <div style="font-size:13px; font-weight:700; color:#4C6CA6; letter-spacing:0.04em;">오늘의 비평</div>
+          <div style="font-size:24px; font-weight:700; letter-spacing:-0.02em; margin-top:8px;">데이터는 근거, 해석은 너의 몫</div>
+          <p style="font-size:14.5px; line-height:1.7; color:#51607A; margin:12px 0 0;">"채도 0.43, 청회색 31% — 차분한 색을 의도적으로 골랐네요. 그 선택이 어떤 감정을 향하나요?" 숫자를 근거로, 서로의 의도를 묻습니다.</p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; gap:10px; align-items:flex-start;">
+            <div style="width:30px; height:30px; border-radius:50%; background:#7C8B7A; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">민</div>
+            <div style="background:#F2F6FC; border-radius:14px 14px 14px 4px; padding:11px 15px; font-size:13.5px; line-height:1.5; color:#3A4658;">청회색을 이렇게 크게 쓴 건 외로움인가요?</div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:flex-start; flex-direction:row-reverse;">
+            <div style="width:30px; height:30px; border-radius:50%; background:#2C3A52; color:#fff; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0;">A</div>
+            <div style="background:#2C3A52; color:#fff; border-radius:14px 14px 4px 14px; padding:11px 15px; font-size:13.5px; line-height:1.5;">네, 비 오는 날의 거리감을 담고 싶었어요.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    const fs = ['전체','색 군집','객체','감정','명도'];
+    const filters = React.createElement(React.Fragment,{}, fs.map((f,i)=>
+      React.createElement('div',{key:i,style:{
+        fontSize:'13px', fontWeight:600, cursor:'pointer',
+        color: i===0?'#fff':'#51607A', background: i===0?'#2C3A52':'#fff',
+        border:'1px solid '+(i===0?'#2C3A52':'#cdd8e6'), borderRadius:'999px', padding:'8px 15px', whiteSpace:'nowrap'}}, f)));
+
+    const works = [
+      ['〈비 오는 거리〉','김민서', ['#2E3A4A','#4C6CA6','#8C93A2','#E4DED0'], '감정 0.88', 24],
+      ['〈할머니의 부엌〉','이준','#', ['#9C6E5B','#C9A24C','#E4DED0','#7C8B7A'], '명도 0.74', 18],
+      ['〈교실의 오후〉','박서연', ['#C9A24C','#7C8B7A','#2E3A4A','#8C93A2'], '색대비 0.81', 31],
+      ['〈도시의 밤〉','정하늘', ['#2E3A4A','#33384a','#4C6CA6','#8C93A2'], '명도 0.32', 12],
+      ['〈엄마의 손〉','최유진', ['#9C6E5B','#E4DED0','#C9A24C','#7C8B7A'], '질감 0.69', 27],
+      ['〈창밖의 봄〉','한도윤', ['#7C8B7A','#C9A24C','#E4DED0','#8C93A2'], '구도 0.77', 15],
+    ];
+    const gallery = React.createElement(React.Fragment,{}, works.map((w,i)=>{
+      const cols = Array.isArray(w[2]) ? w[2] : w[3];
+      const tag = Array.isArray(w[2]) ? w[3] : w[4];
+      const likes = Array.isArray(w[2]) ? w[4] : w[5];
+      return React.createElement('div',{key:i,style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'20px',padding:'14px',boxShadow:'0 24px 50px -40px rgba(14,21,35,0.32)',cursor:'pointer'}},[
+        React.createElement('div',{key:'t',style:{display:'flex',height:'150px',borderRadius:'13px',overflow:'hidden'}}, cols.map((c,j)=>
+          React.createElement('div',{key:j,style:{flex:1,background:c}}))),
+        React.createElement('div',{key:'h',style:{display:'flex',justifyContent:'space-between',alignItems:'baseline',marginTop:'14px'}},[
+          React.createElement('div',{key:'n',style:{fontSize:'16px',fontWeight:700}},w[0]),
+          React.createElement('div',{key:'l',style:{fontSize:'12.5px',color:'#9AA6B6',fontWeight:600}},'♥ '+likes),
+        ]),
+        React.createElement('div',{key:'a',style:{fontSize:'13px',color:'#667080',marginTop:'3px'}},w[1]),
+        React.createElement('div',{key:'tag',style:{display:'inline-block',marginTop:'12px',fontSize:'12px',fontWeight:600,color:'#4C6CA6',background:'#EAF1FB',borderRadius:'999px',padding:'4px 10px'}},'주요 렌즈 · '+tag),
+      ]);
+    }));
+
+    return { filters, gallery };
+  }
+}
+</script>
+</body>
+</html>

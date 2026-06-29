@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="배움터" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="허브.dc.html" style="color:#667080;" style-hover="color:#0E1523;">허브</a>
+        <span style="color:#0E1523;">배움터</span>
+        <a href="학습여정.dc.html" style="color:#667080;" style-hover="color:#0E1523;">학습 여정</a>
+      </div>
+    </nav>
+
+    <header style="padding:40px 6px 26px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#667080;">← 허브</a>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A; margin-top:12px;">LEARN</div>
+        <h1 style="font-size:42px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">배움터</h1>
+        <div style="font-size:14.5px; color:#667080; margin-top:8px;">데이터로 그림을 읽는 법을, 개념부터 차근차근.</div>
+      </div>
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:18px; padding:18px 22px; text-align:center; box-shadow:0 22px 46px -38px rgba(14,21,35,0.3);">
+        <div style="font-size:13px; color:#667080;">전체 진행률</div>
+        <div style="font-size:32px; font-weight:800; letter-spacing:-0.03em; margin-top:2px; font-variant-numeric:tabular-nums;">{{ progress }}%</div>
+        <div style="width:140px; height:7px; border-radius:4px; background:#EAF0F7; overflow:hidden; margin-top:8px;"><div style="width:{{ progress }}%; height:100%; background:#2F6BE0; border-radius:4px;"></div></div>
+      </div>
+    </header>
+
+    <!-- module filter -->
+    <div style="display:flex; gap:8px; padding:0 6px 18px; flex-wrap:wrap;">{{ filterTabs }}</div>
+
+    <!-- modules grid -->
+    <section style="padding:0 6px;">
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:14px;">{{ modules }}</div>
+    </section>
+
+    <!-- featured lesson detail -->
+    <section style="padding:34px 6px 0;">
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:24px; padding:30px; box-shadow:0 30px 60px -42px rgba(14,21,35,0.34); display:grid; grid-template-columns:1.3fr 1fr; gap:30px; align-items:center;">
+        <div>
+          <div style="font-size:13px; font-weight:700; color:#3A4F7A;">이어서 학습 · 3차시</div>
+          <h2 style="font-size:28px; font-weight:800; letter-spacing:-0.025em; margin:10px 0 0;">색은 어떻게 데이터가 되는가</h2>
+          <p style="font-size:14.5px; line-height:1.7; color:#51607A; margin:14px 0 0;">RGB와 LAB 색공간, K-means 군집화로 한 점의 그림에서 대표색을 뽑아내는 원리를 배웁니다. 배운 즉시 색 군집 스튜디오에서 실습합니다.</p>
+          <div style="display:flex; gap:10px; margin-top:22px; flex-wrap:wrap;">
+            <a href="색군집스튜디오.dc.html"><button style="background:#0E1523; color:#fff; border:none; border-radius:999px; padding:13px 24px; font-size:14.5px; font-weight:700; font-family:inherit; cursor:pointer;" style-hover="transform:translateY(-1px);">학습 이어가기 →</button></a>
+            <a href="분석퀴즈.dc.html"><button style="background:#EAF1FB; color:#3A4F7A; border:none; border-radius:999px; padding:13px 22px; font-size:14.5px; font-weight:600; font-family:inherit; cursor:pointer;">퀴즈 풀기</button></a>
+          </div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px;">{{ lessonSteps }}</div>
+      </div>
+    </section>
+
+    <footer style="margin:40px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+          <a href="데이터비평.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">데이터 비평</a>
+          <a href="학습여정.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">학습 여정</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { filter:'all' };
+  renderVals(){
+    const S=this.state;
+    const mods=[
+      ['개념','데이터로 그림 읽기란?','데이터·시각화의 기초 개념','done',100,'#8FC0B5','색군집스튜디오.dc.html'],
+      ['개념','색의 언어 · RGB와 LAB','색을 숫자로 표현하는 법','done',100,'#8FC0B5','색군집스튜디오.dc.html'],
+      ['실습','색은 어떻게 데이터가 되는가','K-means 색 군집화','doing',45,'#2F6BE0','색군집스튜디오.dc.html'],
+      ['실습','데이터를 점으로 그리기','매핑으로 추상 데이터 시각화','todo',0,'#6E84B8','데이터점스튜디오.dc.html'],
+      ['실습','소리를 보다','파형·주파수 특징 추출','todo',0,'#6E84B8','소리스튜디오.dc.html'],
+      ['실습','나를 데이터로','일상 기록의 시각화','todo',0,'#6E84B8','내삶스튜디오.dc.html'],
+      ['비평','데이터에도 관점이 있다','편향과 윤리, 누구의 눈인가','todo',0,'#E6A85A','데이터비평.dc.html'],
+      ['비평','좋은 질문 던지기','데이터 근거로 비평하는 법','todo',0,'#E6A85A','데이터비평.dc.html'],
+    ];
+    const cats={all:'전체',개념:'개념',실습:'실습',비평:'비평'};
+    const filterTabs=React.createElement(React.Fragment,{}, Object.keys(cats).map(k=>
+      React.createElement('div',{key:k,onClick:()=>this.setState({filter:k}),style:{fontSize:'13px',fontWeight:700,cursor:'pointer',padding:'9px 16px',borderRadius:'999px',background:S.filter===k?'#0E1523':'#fff',border:'1px solid '+(S.filter===k?'#0E1523':'#E4EAF2'),color:S.filter===k?'#fff':'#51607A'}},cats[k])));
+
+    const shown=mods.filter(m=>S.filter==='all'||m[0]===S.filter);
+    const stMeta={done:['완료','#8FC0B5'],doing:['학습 중','#2F6BE0'],todo:['예정','#9AA6B6']};
+    const modules=React.createElement(React.Fragment,{}, shown.map((m,i)=>
+      React.createElement('a',{key:i,href:m[6],style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'20px',padding:'22px',boxShadow:'0 22px 46px -38px rgba(14,21,35,0.3)',cursor:'pointer',display:'flex',flexDirection:'column',minHeight:'168px'}},[
+        React.createElement('div',{key:'top',style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},[
+          React.createElement('span',{key:'c',style:{fontSize:'11.5px',fontWeight:700,color:m[5],background:m[5]+'22',borderRadius:'999px',padding:'4px 11px'}},m[0]),
+          React.createElement('span',{key:'s',style:{fontSize:'11.5px',fontWeight:600,color:stMeta[m[3]][1]}},stMeta[m[3]][0]),
+        ]),
+        React.createElement('div',{key:'t',style:{fontSize:'18px',fontWeight:700,letterSpacing:'-0.01em',marginTop:'14px',lineHeight:1.3}},m[1]),
+        React.createElement('div',{key:'d',style:{fontSize:'13px',color:'#667080',marginTop:'7px',lineHeight:1.5}},m[2]),
+        React.createElement('div',{key:'pr',style:{marginTop:'auto',paddingTop:'16px'}},[
+          React.createElement('div',{key:'b',style:{height:'6px',borderRadius:'4px',background:'#EAF0F7',overflow:'hidden'}}, React.createElement('div',{style:{width:m[4]+'%',height:'100%',background:m[5],borderRadius:'4px'}})),
+        ]),
+      ])));
+
+    const steps=[['01','개념 영상 보기','done'],['02','RGB/LAB 색공간 이해','done'],['03','K-means 원리 익히기','doing'],['04','색 군집 스튜디오 실습','todo'],['05','내 작품으로 분석하기','todo']];
+    const lessonSteps=React.createElement(React.Fragment,{}, steps.map((s,i)=>{
+      const c=s[2]==='done'?'#8FC0B5':s[2]==='doing'?'#2F6BE0':'#D6DEEA';
+      return React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'12px',padding:'11px 14px',background:s[2]==='doing'?'#EAF1FB':'#F4F8FD',borderRadius:'12px'}},[
+        React.createElement('div',{key:'n',style:{width:'26px',height:'26px',borderRadius:'50%',background:c,color:s[2]==='todo'?'#51607A':'#06231f',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'11px',fontWeight:700,flexShrink:0}},s[2]==='done'?'✓':s[0]),
+        React.createElement('span',{key:'t',style:{fontSize:'13.5px',fontWeight:600,color:'#0E1523'}},s[1]),
+      ]);
+    }));
+
+    return { progress:34, filterTabs, modules, lessonSteps };
+  }
+}
+</script>
+</body>
+</html>

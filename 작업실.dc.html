@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:17px; height:17px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; box-shadow:0 2px 8px rgba(0,0,0,0.5); }
+</style>
+</helmet>
+
+<div data-screen-label="작업실" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">둘러보기</a>
+          <a href="알고리즘분석실.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">분석 도구</a>
+          <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">전시</a>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2F6BE0; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header style="padding:36px 6px 22px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="그림분석.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 그림 분석</a>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8; margin-top:12px;">STUDIO</div>
+        <h1 style="font-size:38px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">작업실 · <span style="color:#93A4E8;">재창조</span></h1>
+        <div style="font-size:14px; color:#8794b0; margin-top:8px;">읽어낸 데이터를 재료로, 슬라이더와 매핑으로 세밀하게 다시 그립니다.</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        {{ modeToggle }}
+        <button style="background:#13151d; border:1px solid rgba(255,255,255,0.16); color:#E7ECF7; border-radius:999px; padding:13px 22px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:rgba(255,255,255,0.06);">임시저장</button>
+        <a href="전시.dc.html"><button style="background:#2F6BE0; color:#fff; border:none; border-radius:999px; padding:13px 24px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="transform:translateY(-1px);">전시에 출품 →</button></a>
+      </div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:280px 1fr 268px; gap:14px; padding-bottom:30px; align-items:start;">
+
+      <!-- left: data materials -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px; box-shadow:0 24px 50px -40px rgba(0,0,0,0.5);">
+          <div style="font-size:14px; font-weight:700;">재료 · 분석 데이터</div>
+          <div style="font-size:12.5px; color:#8794b0; margin-top:3px;">〈무제〉에서 가져옴</div>
+          <div style="margin-top:16px; font-size:12px; font-weight:600; color:#93A4E8;">색 군집</div>
+          <div style="display:flex; gap:6px; margin-top:8px;">{{ palette }}</div>
+          <div style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">{{ dataItems }}</div>
+        </div>
+        <div style="background:#16224a; border:1px solid #2a3a66; border-radius:20px; padding:20px;">
+          <div style="font-size:13px; font-weight:700; color:#E7ECF7;">생성 규칙</div>
+          <p style="font-size:12.5px; line-height:1.6; color:#A9B8DC; margin:8px 0 0;">데이터가 형태를 만듭니다. 무엇을 입력에 연결할지가 곧 당신의 선택이에요.</p>
+        </div>
+      </div>
+
+      <!-- center: canvas -->
+      <div style="background:#0E1523; border:1px solid #232734; border-radius:24px; padding:16px; box-shadow:0 40px 80px -44px rgba(0,0,0,0.7);">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 8px 14px; gap:12px; flex-wrap:wrap;">
+          <div style="font-size:13px; font-weight:600; color:#9DB3D6;">미리보기 · 제너러티브 캔버스</div>
+          <div style="display:flex; gap:7px; background:rgba(255,255,255,0.05); padding:4px; border-radius:999px;">{{ modeTabs }}</div>
+        </div>
+        <div style="position:relative; border-radius:14px; overflow:hidden; background:{{ canvasBg }}; height:440px;">{{ canvas }}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 8px 6px;">
+          <div style="font-size:12.5px; color:#8794b0;">실시간 — 슬라이더를 움직이면 즉시 반영</div>
+          <button onClick="{{ shuffle }}" style="background:#1E2A42; color:#cfe0f7; border:none; border-radius:999px; padding:9px 16px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#27344f;">↻ 다시 생성</button>
+        </div>
+      </div>
+
+      <!-- right: controls -->
+      <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:22px; box-shadow:0 24px 50px -40px rgba(0,0,0,0.5);">
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:14px; font-weight:700;">조절</div>
+          <button onClick="{{ reset }}" style="background:transparent; border:none; color:#8794b0; font-size:12px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="color:#E7ECF7;">초기화</button>
+        </div>
+        <div style="margin-top:18px; display:flex; flex-direction:column; gap:17px;">{{ sliders }}</div>
+
+        <div style="margin-top:22px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="font-size:12px; font-weight:600; color:#93A4E8;">옵션</div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:14px;">{{ options }}</div>
+        </div>
+
+        <div style="margin-top:22px; padding-top:18px; border-top:1px solid rgba(255,255,255,0.08);">
+          <div style="font-size:12px; font-weight:600; color:#93A4E8;">입력 연결 <span style="color:#7E89A8; font-weight:500;">데이터 → 형태</span></div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:9px;">{{ mappings }}</div>
+        </div>
+        {{ proPanel }}
+      </div>
+
+    </section>
+    <footer style="margin:4px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">둘러보기</a>
+          <a href="그림분석.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">분석 도구</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+          <a href="AI코치.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">AI 코치</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { density: 60, flow: 45, scale: 55, rotation: 0, contrast: 65, spacing: 60, mode: 0, colorMode: 'art', bg: 'dark', seed: 1, pro: false, blend: 'normal', expRes: '2x', channels: [true,true,true,true,true,true], layers: { bg:true, shape:true, detail:true } };
+  rand(s){ const x=Math.sin(s*99.13)*43758.5453; return x-Math.floor(x); }
+
+  renderVals(){
+    const museum = ['#182F49','#8FC0B5','#E6F5A6','#3A4F7A','#6E84B8','#CFE0D6'];
+    const { density, flow, scale, rotation, contrast, spacing, mode, colorMode, bg, seed, pro, blend, channels, expRes, layers } = this.state;
+
+    const pw=[2,1.2,1.6,1,1.4,1.1];
+    const palette = React.createElement(React.Fragment,{}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{flex:pw[i],height:'30px',borderRadius:'6px',background:c}})));
+
+    const items = [['평균 명도','0.71'],['채도','0.43'],['감지 객체','12'],['감정 강도','0.90']];
+    const dataItems = React.createElement(React.Fragment,{}, items.map((it,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'8px 11px',background:'rgba(255,255,255,0.05)',borderRadius:'9px'}},[
+        React.createElement('span',{key:'a',style:{color:'#9fb0d0'}},it[0]),
+        React.createElement('span',{key:'b',style:{fontWeight:700,fontVariantNumeric:'tabular-nums',color:'#fff'}},it[1]),
+      ])));
+
+    const modes = ['입자','선','격자'];
+    const modeTabs = React.createElement(React.Fragment,{}, modes.map((m,i)=>
+      React.createElement('div',{key:i,onClick:()=>this.setState({mode:i}),style:{
+        fontSize:'12px', fontWeight:600, cursor:'pointer', padding:'6px 14px', borderRadius:'999px',
+        background: mode===i?'#2F6BE0':'transparent', color: mode===i?'#fff':'#9fb0d0'}}, m)));
+
+    // pick color by source mode
+    const cpoolBase = museum.filter((_,i)=>channels[i]); const cpool = cpoolBase.length?cpoolBase:museum;
+    const pickColor = (i)=>{
+      if(colorMode==='mono') return '#8FC0B5';
+      if(colorMode==='comp') return (i%2) ? '#E6F5A6' : '#3A4F7A';
+      return cpool[Math.floor(this.rand(i+seed+200)*cpool.length)];
+    };
+    const canvasBg = bg==='dark' ? '#070B12' : '#101a30';
+
+    // generative canvas — responds to every control
+    const n = Math.round(24 + density*1.7);
+    const spread = 0.34 + spacing/100*0.62;
+    const baseOp = 0.18 + contrast/100*0.72;
+    const els = [];
+    for(let i=0;i<n;i++){
+      const r1=this.rand(i+seed*13.1), r2=this.rand(i+seed*7.3+50), r3=this.rand(i+seed*3.7+99);
+      const c = pickColor(i);
+      const op = Math.min(1, baseOp*(0.55+r3*0.55));
+      const sz = (3 + r3*scale*0.5);
+      if(mode===0){
+        const x=(50+(r1-0.5)*100*spread), y=(50+(r2-0.5)*100*spread);
+        const rot = rotation*3.6 + r2*40;
+        els.push(React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:sz+'px',height:sz+'px',borderRadius:'50%',background:c,opacity:op,transform:'translate(-50%,-50%) rotate('+rot+'deg)'}}));
+      } else if(mode===1){
+        const x=(50+(r1-0.5)*100*spread), y=(50+(r2-0.5)*100*spread);
+        const ang=(r2*120+flow*1.6+rotation*3.4);
+        els.push(React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:(sz*2.6)+'px',height:'2px',borderRadius:'2px',background:c,opacity:op,transform:'translate(-50%,-50%) rotate('+ang+'deg)'}}));
+      } else {
+        const cols=10, gap=6+(100-spacing)/100*7;
+        const gx=(i%cols), gy=Math.floor(i/cols);
+        els.push(React.createElement('div',{key:i,style:{position:'absolute',left:(gx*gap+5)+'%',top:(gy*gap+5)+'%',width:sz+'px',height:sz+'px',borderRadius:'3px',background:c,opacity:op,transform:'rotate('+(rotation*3.6)+'deg)'}}));
+      }
+    }
+    const canvas = React.createElement('div',{style:{position:'absolute',inset:0,mixBlendMode:blend,isolation:'isolate'}}, els);
+
+    // sliders
+    const mk = (label, key, val, unit) => React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',alignItems:'center',fontSize:'12.5px',marginBottom:'8px'}},[
+        React.createElement('span',{key:'a',style:{fontWeight:600,color:'#cdd9ef'}},label),
+        React.createElement('span',{key:'b',style:{fontWeight:700,fontVariantNumeric:'tabular-nums',color:'#fff',background:'rgba(255,255,255,0.07)',borderRadius:'6px',padding:'2px 8px',fontSize:'11.5px'}},val+(unit||'')),
+      ]),
+      React.createElement('input',{key:'i',type:'range',min:0,max:100,value:val,
+        onChange:(e)=>this.setState({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+    const sliders = React.createElement(React.Fragment,{}, [
+      mk('밀도 · 객체 수','density',density),
+      mk('흐름 · 감정 강도','flow',flow),
+      mk('크기 · 명도','scale',scale),
+      mk('회전','rotation',rotation,'°'),
+      mk('대비 · 투명도','contrast',contrast),
+      mk('여백 · 분포','spacing',spacing),
+    ]);
+
+    // options (segmented)
+    const seg = (val, opts, onPick) => React.createElement('div',{style:{display:'flex',gap:'5px',background:'rgba(255,255,255,0.05)',padding:'4px',borderRadius:'10px'}}, opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>onPick(o[0]),style:{flex:1,textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 4px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0'}}, o[1])));
+    const options = React.createElement(React.Fragment,{}, [
+      React.createElement('div',{key:'cm'},[
+        React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#9fb0d0',marginBottom:'7px'}},'색 소스'),
+        seg(colorMode, [['art','작품색'],['mono','단색'],['comp','보색']], (v)=>this.setState({colorMode:v})),
+      ]),
+      React.createElement('div',{key:'bg'},[
+        React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#9fb0d0',marginBottom:'7px'}},'배경'),
+        seg(bg, [['dark','어둡게'],['light','밝게']], (v)=>this.setState({bg:v})),
+      ]),
+    ]);
+
+    // mappings (aligned)
+    const maps = [['밀도','감지 객체','12'],['색','색 군집','6'],['흐름','감정 강도','0.90'],['크기','평균 명도','0.71']];
+    const mappings = React.createElement(React.Fragment,{}, maps.map((m,i)=>
+      React.createElement('div',{key:i,style:{display:'grid',gridTemplateColumns:'42px 12px 1fr auto',alignItems:'center',gap:'8px',fontSize:'12px'}},[
+        React.createElement('span',{key:'a',style:{fontWeight:700,color:'#E7ECF7'}},m[0]),
+        React.createElement('span',{key:'b',style:{color:'#6E84B8'}},'←'),
+        React.createElement('span',{key:'c',style:{color:'#9fb0d0'}},m[1]),
+        React.createElement('span',{key:'d',style:{fontWeight:700,color:'#cdd9ef',fontVariantNumeric:'tabular-nums'}},m[2]),
+      ])));
+
+    const seg2 = (val, opts, onPick) => React.createElement('div',{style:{display:'flex',gap:'5px',background:'rgba(255,255,255,0.05)',padding:'4px',borderRadius:'10px'}}, opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>onPick(o[0]),style:{flex:1,textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 4px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0'}}, o[1])));
+    const modeToggle = React.createElement('div',{style:{display:'flex',gap:'4px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)',padding:'4px',borderRadius:'999px'}}, [['easy','따라해보기'],['pro','내 작품 만들기']].map((o,i)=>
+      React.createElement('div',{key:o[0],onClick:()=>this.setState({pro:o[0]==='pro'}),style:{display:'flex',alignItems:'center',gap:'7px',fontSize:'12.5px',fontWeight:700,cursor:'pointer',padding:'8px 15px',borderRadius:'999px',background:(pro===(o[0]==='pro'))?'#2F6BE0':'transparent',color:(pro===(o[0]==='pro'))?'#fff':'#9fb0d0'}}, [React.createElement('span',{key:'n',style:{width:'18px',height:'18px',borderRadius:'50%',background:(pro===(o[0]==='pro'))?'#fff':'rgba(255,255,255,0.12)',color:(pro===(o[0]==='pro'))?'#2F6BE0':'#9fb0d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',fontWeight:800}},i+1),o[1]])));
+
+    const grp = (title,child)=>React.createElement('div',{style:{marginTop:'22px',paddingTop:'18px',borderTop:'1px solid rgba(255,255,255,0.08)'}},[
+      React.createElement('div',{key:'t',style:{fontSize:'12px',fontWeight:600,color:'#93A4E8',marginBottom:'10px'}},title), child]);
+    let proPanel;
+    if(!pro){
+      proPanel = React.createElement('div',{style:{marginTop:'22px',paddingTop:'18px',borderTop:'1px solid rgba(255,255,255,0.08)',fontSize:'12px',color:'#7E89A8',lineHeight:1.6}}, '‘내 작품 만들기’를 누르면 레이어 · 채널 분리 · 블렌드 · 정밀 입력 · 내보내기가 펼쳐집니다.');
+    } else {
+      const chRow = React.createElement('div',{style:{display:'flex',gap:'5px'}}, museum.map((c,i)=>
+        React.createElement('div',{key:i,onClick:()=>{const ch=channels.slice();ch[i]=!ch[i];this.setState({channels:ch});},style:{flex:1,height:'26px',borderRadius:'6px',background:c,cursor:'pointer',opacity:channels[i]?1:0.22,boxShadow:channels[i]?'inset 0 0 0 2px #fff':'none'}})));
+      const layerRow = (key,label)=>React.createElement('div',{key:key,style:{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'8px 11px',background:'rgba(255,255,255,0.04)',borderRadius:'9px'}},[
+        React.createElement('span',{key:'l',style:{fontSize:'12.5px',color:'#E7ECF7'}},label),
+        React.createElement('div',{key:'t',onClick:()=>this.setState({layers:Object.assign({},layers,{[key]:!layers[key]})}),style:{width:'36px',height:'20px',borderRadius:'999px',background:layers[key]?'#2F6BE0':'rgba(255,255,255,0.14)',position:'relative',cursor:'pointer'}},
+          React.createElement('div',{style:{position:'absolute',top:'2px',left:layers[key]?'18px':'2px',width:'16px',height:'16px',borderRadius:'50%',background:'#fff'}})),
+      ]);
+      const numIn = (label,val,on)=>React.createElement('label',{style:{flex:1,fontSize:'11px',color:'#9fb0d0'}},[label,
+        React.createElement('input',{key:'i',type:'number',value:val,onChange:on,style:{width:'100%',marginTop:'5px',background:'rgba(255,255,255,0.05)',border:'1px solid #232734',borderRadius:'8px',padding:'8px',color:'#fff',fontFamily:'inherit',fontSize:'13px',outline:'none'}})]);
+      proPanel = React.createElement('div',{},[
+        React.createElement('div',{key:'badge',style:{marginTop:'18px',display:'inline-flex',alignItems:'center',gap:'6px',fontSize:'11px',fontWeight:700,color:'#2FB6A8',background:'rgba(47,182,168,0.12)',borderRadius:'999px',padding:'5px 11px'}},'STEP 2 · 내 작품 만들기'),
+        grp('레이어', React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:'7px'}},[layerRow('bg','배경'),layerRow('shape','형태'),layerRow('detail','디테일')])),
+        grp('채널 분리 · 색 군집 on/off', chRow),
+        grp('블렌드 모드', seg2(blend,[['normal','노멀'],['screen','스크린'],['multiply','곱하기']],(v)=>this.setState({blend:v}))),
+        grp('정밀 입력', React.createElement('div',{style:{display:'flex',gap:'8px'}},[
+          numIn('시드',seed,(e)=>this.setState({seed:+e.target.value||1})),
+          numIn('밀도',density,(e)=>this.setState({density:Math.max(0,Math.min(100,+e.target.value||0))})),
+        ])),
+        grp('내보내기', React.createElement('div',{},[
+          seg2(expRes,[['1x','1x'],['2x','2x'],['4k','4K']],(v)=>this.setState({expRes:v})),
+          React.createElement('div',{key:'b',style:{display:'flex',gap:'8px',marginTop:'10px'}},[
+            React.createElement('button',{key:'p',style:{flex:1,background:'#2F6BE0',color:'#fff',border:'none',borderRadius:'9px',padding:'10px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'PNG 내보내기'),
+            React.createElement('button',{key:'s',style:{flex:1,background:'rgba(255,255,255,0.06)',color:'#E7ECF7',border:'1px solid rgba(255,255,255,0.16)',borderRadius:'9px',padding:'10px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'SVG'),
+          ]),
+        ])),
+      ]);
+    }
+    return { palette, dataItems, modeTabs, canvas, canvasBg, sliders, options, mappings, modeToggle, proPanel,
+      shuffle: ()=>this.setState(s=>({seed:s.seed+1})),
+      reset: ()=>this.setState({ density:60, flow:45, scale:55, rotation:0, contrast:65, spacing:60, colorMode:'art', bg:'dark' }) };
+  }
+}
+</script>
+</body>
+</html>

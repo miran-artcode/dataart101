@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+  .si{ background:#F4F8FD; border:1px solid #E4EAF2; border-radius:10px; padding:11px 13px; color:#0E1523; font-family:inherit; font-size:14px; outline:none; width:100%; }
+  textarea.si{ resize:vertical; line-height:1.6; }
+</style>
+</helmet>
+
+<div data-screen-label="데이터비평" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="배움터.dc.html" style="color:#667080;" style-hover="color:#0E1523;">배움터</a>
+        <span style="color:#0E1523;">데이터 비평</span>
+        <a href="전시.dc.html" style="color:#667080;" style-hover="color:#0E1523;">전시</a>
+      </div>
+    </nav>
+
+    <header style="padding:40px 6px 22px;">
+      <a href="전시.dc.html" style="font-size:14px; font-weight:600; color:#667080;">← 전시</a>
+      <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A; margin-top:12px;">CRITIQUE · FELDMAN 4 STEPS</div>
+      <h1 style="font-size:42px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">데이터 비평</h1>
+      <div style="font-size:14.5px; color:#667080; margin-top:8px;">펠드먼의 4단계 — 기술 → 분석 → 해석 → 평가 — 를 데이터 근거로 따라가며 작품을 읽습니다.</div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:1.05fr 1fr; gap:14px; padding-bottom:30px; align-items:start;">
+
+      <!-- left: artwork + data -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:16px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px;">
+            <div style="font-size:14px; font-weight:700;">{{ workTitle }} <span style="font-size:13px; color:#9AA6B6; font-weight:500;">· {{ workAuthor }}</span></div>
+            <div style="display:flex; gap:6px;">{{ workTabs }}</div>
+          </div>
+          <div style="display:flex; height:240px; border-radius:14px; overflow:hidden;">{{ workArt }}</div>
+          <div style="display:flex; gap:6px; margin-top:12px;">{{ workPalette }}</div>
+        </div>
+
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="font-size:15px; font-weight:700;">이 단계의 데이터 근거</div>
+          <div style="font-size:12.5px; color:#667080; margin-top:3px;">{{ stepHint }}</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+            <sc-for list="{{ evidence }}" as="ev" hint-placeholder-count="3">
+              <div style="display:flex; gap:11px; align-items:center; padding:12px 14px; background:#F4F8FD; border-radius:12px;">
+                <span style="width:9px; height:9px; border-radius:50%; flex-shrink:0; background:{{ ev.color }};"></span>
+                <span style="font-size:13.5px; color:#0E1523; font-weight:500; flex:1;">{{ ev.text }}</span>
+                <sc-if value="{{ ev.hasGloss }}" hint-placeholder-val="{{ false }}">
+                  <dc-import name="설명아이콘" term="{{ ev.term }}" easy="{{ ev.easy }}" deep="{{ ev.deep }}" missed="{{ ev.missed }}" idea="{{ ev.idea }}" tone="light" hint-size="18px,18px"></dc-import>
+                </sc-if>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- docent -->
+        <div style="background:linear-gradient(150deg,#17234c 0%,#0f1730 100%); border:1px solid #2a3a66; border-radius:22px; padding:24px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:15px; font-weight:700; color:#fff;">🎧 도슨트 자동 해설</div>
+            <div style="display:flex; gap:8px;">
+              {{ docentPlayBtn }}
+              <button onClick="{{ genDocent }}" style="background:#fff; color:#0E1523; border:none; border-radius:999px; padding:9px 16px; font-size:12.5px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap;">{{ docentLabel }}</button>
+            </div>
+          </div>
+          <p style="font-size:14px; line-height:1.8; color:#cdd9ef; margin:14px 0 0;">{{ docentText }}</p>
+        </div>
+      </div>
+
+      <!-- right: feldman stepper -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="display:flex; gap:6px; margin-bottom:18px;">{{ stepTabs }}</div>
+          <div style="font-size:12px; font-weight:700; color:#3A4F7A; letter-spacing:0.05em;">{{ stepKicker }}</div>
+          <div style="display:flex; align-items:center; gap:8px; margin:8px 0 0; flex-wrap:nowrap;">
+            <h2 style="font-size:22px; font-weight:800; letter-spacing:-0.02em; margin:0; flex-shrink:0; white-space:nowrap;">{{ stepTitle }}</h2>
+            <dc-import name="설명아이콘" term="펠드먼 4단계 비평" easy="미술 작품을 읽는 순서예요. 무엇이 보이는지(기술)→어떻게 짜였는지(분석)→무슨 뜻인지(해석)→얼마나 잘했는지(평가)를 차례로 살펴요." deep="에드먼드 펠드먼이 제안한 미술 비평법으로, 주관적 인상으로 바로 건너뛰지 않고 객관적 관찰에서 가치 판단으로 단계적으로 나아갑니다." missed="단계를 기계적으로 따르면 작품의 직관적 감동을 놓칠 수 있어요. 데이터는 근거일 뿐, 내 느낌도 함께 적으세요." idea="같은 작품을 친구와 각자 4단계로 적고, 특히 해석이 어떻게 갈리는지 비교해 보세요." tone="light" hint-size="18px,18px"></dc-import>
+          </div>
+          <p style="font-size:13.5px; line-height:1.6; color:#51607A; margin:8px 0 0;">{{ stepDesc }}</p>
+
+          <div style="margin-top:18px; display:flex; flex-direction:column; gap:12px;">{{ prompts }}</div>
+
+          <div style="display:flex; justify-content:space-between; gap:10px; margin-top:20px;">
+            <button onClick="{{ prevStep }}" style="background:#F4F8FD; color:#51607A; border:1px solid #E4EAF2; border-radius:10px; padding:12px 18px; font-size:14px; font-weight:600; font-family:inherit; cursor:pointer; opacity:{{ prevOpacity }};">← 이전</button>
+            <button onClick="{{ nextStep }}" style="flex:1; background:#0E1523; color:#fff; border:none; border-radius:10px; padding:12px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer;">{{ nextLabel }}</button>
+          </div>
+        </div>
+
+        <!-- rating -->
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="font-size:14px; font-weight:700;">평가 · 별점 + 한마디</div>
+          <div style="display:flex; gap:7px; margin-top:14px;">{{ stars }}</div>
+          <div style="display:flex; gap:8px; margin-top:14px;">
+            <input placeholder="한마디 평가 (데이터 근거를 담아)" class="si" style="flex:1;" value="{{ myComment }}" onChange="{{ onComment }}">
+            <button onClick="{{ submitCrit }}" style="background:#0E1523; color:#fff; border:none; border-radius:10px; padding:0 18px; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap;">등록</button>
+          </div>
+        </div>
+
+        <!-- existing critiques -->
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <div style="font-size:15px; font-weight:700;">친구들의 비평 <span style="font-size:13px; color:#9AA6B6; font-weight:500;">{{ critiqueCount }}</span></div>
+            <div style="display:flex; gap:6px;">{{ sortTabs }}</div>
+          </div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px;">{{ critiques }}</div>
+        </div>
+      </div>
+    </section>
+
+    {{ doneOverlay }}
+
+    <footer style="margin:6px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="배움터.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">배움터</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+          <a href="작품단독.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">작품 단독</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { work:0, step:0, answers:{}, rating:0, sort:'new', docent:false, myComment:'', myCrits:[], likes:{}, speaking:false, done:false };
+  componentWillUnmount(){ if(window.speechSynthesis) window.speechSynthesis.cancel(); }
+  glossary(){ return [
+    ['채도', '채도 (Saturation)', '색이 얼마나 진하고 선명한지예요. 채도가 낮으면 회색에 가깝고, 높으면 형광펜처럼 쨍해요.', '한 색에서 회색 성분을 뺀 순수한 색의 양을 0~1로 나타냅니다. 같은 빨강도 채도가 낮으면 벽돌색, 높으면 새빨강이 됩니다.', '채도 수치만으로는 "왜 흐린 색을 골랐는가"를 알 수 없어요. 낮은 채도가 우울일 수도, 차분함일 수도 있습니다.', '같은 그림의 채도를 머릿속에서 두 배로 올려 보세요. 감정이 어떻게 달라지나요?'],
+    ['명도', '명도 (Value)', '색이 얼마나 밝은지 어두운지예요. 흑백사진으로 바꿨을 때의 밝기라고 생각하면 돼요.', '색의 밝기를 0(검정)~1(흰색)로 나타냅니다. 명도 차이가 클수록 형태가 또렷하게 드러나요.', '명도만 보면 색이 주는 따뜻함·차가움은 놓쳐요. 밝다고 다 즐거운 건 아닙니다.', '작품을 흑백으로 상상해 보세요. 명도만으로도 구도가 살아 있다면 잘 짜인 그림이에요.'],
+    ['대비', '색 대비 (Contrast)', '서로 다른 색·밝기가 만났을 때 얼마나 튀어 보이는지예요. 대비가 크면 눈에 확 들어와요.', '인접한 영역의 명도·색상 차이를 수치화한 값입니다. 대비가 높으면 시선을 강하게 끌고 긴장감을 줍니다.', '높은 대비가 늘 좋은 건 아니에요. 부드러운 저대비가 더 깊은 분위기를 낼 때도 있습니다.', '강조하고 싶은 한 곳만 대비를 높이고 나머지는 낮춰 보세요. 시선이 그곳으로 모입니다.'],
+    ['시선', '시선 집중도 (Saliency)', '그림을 봤을 때 눈이 어디로 먼저, 가장 오래 가는지를 나타내요.', '밝기·대비·색·형태로 "눈에 띔"을 예측한 지도(saliency map)에서 집중이 한 곳에 모인 정도를 0~1로 잰 값입니다.', '기계가 예측한 시선과 실제 사람의 시선은 다를 수 있어요. 이야기·관심사에 따라 우리는 다른 곳을 봅니다.', '내 시선이 처음 멈춘 곳과 데이터가 가리킨 곳을 비교해 보세요. 왜 다를까요?'],
+    ['감정 강도', '감정 강도 (Affect)', '작품이 얼마나 센 감정을 불러일으키는지 데이터로 어림한 값이에요.', '색조·채도·대비·구도 등을 학습된 감정 모델에 넣어 추정한 정서적 자극의 세기입니다. 높을수록 강한 인상을 줍니다.', '감정은 사람마다, 그날 기분마다 달라요. 0.88이라는 숫자가 내 마음을 대신할 순 없습니다.', '같은 작품에 친구와 각자 점수를 매겨 보세요. 데이터와 우리 둘, 누가 더 비슷한가요?'],
+  ]; }
+  works(){ return [
+    {t:'〈비 오는 거리〉',a:'김민서',pal:[['#182F49',42],['#3A4F7A',16],['#6E84B8',24],['#8FC0B5',18]],
+      data:{desc:['감지 객체: 우산·사람·창문 (12개)','주요 색: 감청 58% · 회청 18%','캔버스 비율: 세로 4:5'],
+            anal:['채도 0.41 (낮음) · 명도 0.71','시선 집중 0.57 · 좌하단 가중','색 대비 0.82 (높음)'],
+            interp:['감정 강도 0.88 (반 최고)','차가운 색 + 낮은 채도 = 고립감','좌하단 인물에 시선 유도'],
+            eval:['렌즈 7종 중 6종 채택','데이터-의도 일치도 높음']}},
+    {t:'〈엄마의 손〉',a:'최유진',pal:[['#8FC0B5',24],['#E6F5A6',40],['#CFE0D6',22],['#3A4F7A',14]],
+      data:{desc:['감지 객체: 손·빛·천 (8개)','주요 색: 연두 40% · 세이지 24%','캔버스 비율: 정사각 1:1'],
+            anal:['채도 0.62 · 명도 0.78 (밝음)','시선 집중 0.44 (분산)','질감 밀도 0.69'],
+            interp:['감정 강도 0.69 · 따뜻함','밝은 난색 = 포근함·안정','분산된 시선 = 일상의 평온'],
+            eval:['렌즈 7종 중 5종 채택','색-감정 매핑 명확']}},
+  ]; }
+  steps(){ return [
+    {k:'DESCRIBE',t:'기술 (Describe)',d:'보이는 것을 데이터로 객관적으로 적습니다. 해석은 아직 하지 않아요.',key:'desc',
+      prompts:['이 작품에서 데이터가 감지한 객체는 무엇인가요?','가장 비중이 큰 색과 그 비율은?']},
+    {k:'ANALYZE',t:'분석 (Analyze)',d:'요소들이 어떻게 구성·배치됐는지 데이터로 분석합니다.',key:'anal',
+      prompts:['채도·명도·대비 수치는 어떤 관계인가요?','시선은 어디로 모이나요? (집중도 수치)']},
+    {k:'INTERPRET',t:'해석 (Interpret)',d:'데이터를 근거로 작가의 의도·감정을 추론합니다.',key:'interp',
+      prompts:['이 색·구도 데이터는 어떤 감정을 향하나요?','작가는 무엇을 강조하려 했을까요?']},
+    {k:'JUDGE',t:'평가 (Judge)',d:'데이터와 의도가 얼마나 잘 맞는지, 작품의 성취를 평가합니다.',key:'eval',
+      prompts:['데이터와 작가 의도는 일치하나요?','이 작품에 별점과 근거를 남긴다면?']},
+  ]; }
+  renderVals(){
+    const S=this.state, W=this.works()[S.work], STP=this.steps(), cur=STP[S.step];
+    const seg=(arr)=>arr.map((p,i)=>React.createElement('div',{key:i,style:{flex:p[1],background:p[0]}}));
+    const workTabs=React.createElement(React.Fragment,{}, this.works().map((w,i)=>React.createElement('div',{key:i,onClick:()=>this.setState({work:i,docent:false}),style:{fontSize:'12px',fontWeight:600,cursor:'pointer',padding:'6px 11px',borderRadius:'999px',background:S.work===i?'#0E1523':'#F4F8FD',color:S.work===i?'#fff':'#51607A'}},'작품'+(i+1))));
+    const workArt=React.createElement(React.Fragment,{}, seg(W.pal));
+    const workPalette=React.createElement(React.Fragment,{}, W.pal.map((p,i)=>React.createElement('div',{key:i,style:{flex:p[1],height:'24px',borderRadius:'5px',background:p[0]}})));
+
+    const ev=W.data[cur.key];
+    const evColors=['#3A4F7A','#6E84B8','#8FC0B5','#2FB6A8'];
+    const GL=this.glossary();
+    const evidence=ev.map((e,i)=>{ const g=GL.find(x=>e.includes(x[0])); return { color:evColors[i%4], text:e, hasGloss:!!g, term:g?g[1]:'', easy:g?g[2]:'', deep:g?g[3]:'', missed:g?g[4]:'', idea:g?g[5]:'' }; });
+
+    const stepTabs=React.createElement(React.Fragment,{}, STP.map((st,i)=>{ const done=S.answers[i+'_0']||S.answers[i+'_1']; const active=S.step===i;
+      return React.createElement('div',{key:i,onClick:()=>this.setState({step:i}),style:{flex:1,textAlign:'center',fontSize:'12px',fontWeight:700,cursor:'pointer',padding:'10px 4px',borderRadius:'10px',background:active?'#2F6BE0':done?'#E6F4EC':'#F4F8FD',color:active?'#fff':done?'#1c5b3f':'#9AA6B6'}}, [
+        React.createElement('div',{key:'n',style:{fontSize:'15px',fontWeight:800}},done&&!active?'✓':(i+1)),
+        React.createElement('div',{key:'l',style:{marginTop:'3px'}},st.t.split(' ')[0]),
+      ]); }));
+
+    const prompts=React.createElement(React.Fragment,{}, cur.prompts.map((p,i)=>React.createElement('div',{key:i},[
+      React.createElement('div',{key:'q',style:{fontSize:'13px',fontWeight:600,color:'#3A4658',marginBottom:'7px'}},'· '+p),
+      React.createElement('textarea',{key:'a',className:'si',style:{minHeight:'58px'},placeholder:'데이터를 근거로 적어보세요',value:S.answers[S.step+'_'+i]||'',onChange:(e)=>this.setState({answers:Object.assign({},S.answers,{[S.step+'_'+i]:e.target.value})})}),
+    ])));
+
+    const stars=React.createElement(React.Fragment,{}, [1,2,3,4,5].map(n=>React.createElement('div',{key:n,onClick:()=>this.setState({rating:n}),style:{fontSize:'30px',cursor:'pointer',color:n<=S.rating?'#E6A85A':'#D6DEEA',lineHeight:1}},'★')));
+
+    const baseCrits=[
+      {id:'b0',ini:'민',name:'김민서',text:'감청을 58%나 쓴 건 의도된 외로움인가요? 채도가 낮아 더 쓸쓸해 보여요.',bg:'#8FC0B5',likes:7,stars:4},
+      {id:'b1',ini:'준',name:'이준',text:'시선이 좌하단에 몰려 있어요(0.57). 그곳에 무엇을 두고 싶었나요?',bg:'#6E84B8',likes:4,stars:5},
+      {id:'b2',ini:'서',name:'박서연',text:'감정 강도 0.88은 반에서 가장 높아요. 색보다 구도가 그렇게 만든 걸까요?',bg:'#3A4F7A',likes:9,stars:5},
+    ];
+    const allCrits=S.myCrits.concat(baseCrits).map(c=>{ const ex=S.likes[c.id]?1:0; return Object.assign({},c,{_likes:c.likes+ex,_liked:!!S.likes[c.id]}); });
+    const sorted=S.sort==='top'?allCrits.slice().sort((a,b)=>b._likes-a._likes):allCrits;
+    const sortTabs=React.createElement(React.Fragment,{}, [['new','최신'],['top','공감순']].map(o=>React.createElement('div',{key:o[0],onClick:()=>this.setState({sort:o[0]}),style:{fontSize:'12px',fontWeight:600,cursor:'pointer',padding:'6px 11px',borderRadius:'999px',whiteSpace:'nowrap',flexShrink:0,background:S.sort===o[0]?'#0E1523':'#F4F8FD',color:S.sort===o[0]?'#fff':'#51607A'}},o[1])));
+    const toggleLike=(id)=>this.setState(s=>({likes:Object.assign({},s.likes,{[id]:!s.likes[id]})}));
+    const critiques=React.createElement(React.Fragment,{}, sorted.map((c)=>React.createElement('div',{key:c.id,style:{display:'flex',gap:'11px',alignItems:'flex-start',padding:'13px 14px',background:c.me?'#EEF6F0':'#F4F8FD',border:c.me?'1px solid #CDE7D6':'1px solid transparent',borderRadius:'14px'}},[
+      React.createElement('div',{key:'av',style:{width:'30px',height:'30px',borderRadius:'50%',background:c.bg,color:'#0E1523',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:700,flexShrink:0}},c.ini),
+      React.createElement('div',{key:'c',style:{flex:1}},[
+        React.createElement('div',{key:'n',style:{display:'flex',justifyContent:'space-between',alignItems:'center',gap:'8px'}},[React.createElement('span',{key:'a',style:{fontSize:'13px',fontWeight:700}},c.name),React.createElement('span',{key:'s',style:{fontSize:'11px',color:'#E6A85A'}},c.stars?'★'.repeat(c.stars):'')]),
+        React.createElement('div',{key:'t',style:{fontSize:'13.5px',color:'#3A4658',marginTop:'3px',lineHeight:1.55}},c.text),
+        React.createElement('div',{key:'l',onClick:()=>toggleLike(c.id),style:{display:'inline-flex',alignItems:'center',gap:'5px',fontSize:'12px',color:c._liked?'#D8557A':'#9AA6B6',fontWeight:c._liked?700:500,marginTop:'7px',cursor:'pointer',userSelect:'none'}},(c._liked?'♥':'♡')+' 공감 '+c._likes),
+      ]),
+    ])));
+    const submitCrit=()=>{ const t=(S.myComment||'').trim(); if(!t) return; const c={id:'me'+Date.now(),ini:'나',name:'나 (관람객)',text:t,bg:'#E6C84A',likes:0,stars:S.rating||0,me:true}; this.setState(s=>({myCrits:[c].concat(s.myCrits),myComment:'',sort:'new'})); };
+
+    // docent text
+    let docentText='도슨트 버튼을 누르면, 지금까지 입력한 비평과 작품 데이터를 모아 전시 안내 해설을 자동으로 만들어 드려요.';
+    if(S.docent){ const a=(k)=>S.answers[k]||''; 
+      docentText='〈'+W.t+'〉, '+W.a+'. '+(a('0_1')||'감청 계열이 화면을 지배하는 이 작품은')+' '+(a('1_0')||'낮은 채도와 높은 대비로 긴장을 만들고')+', '+(a('2_0')||'차가운 색조를 통해 고요한 고립감을 향합니다')+'. '+(a('3_0')||'데이터와 작가의 의도가 맞닿는 지점에서, 관람객은 자신의 비 오는 날을 떠올리게 됩니다')+'.';
+    }
+
+    const speak=()=>{ if(!window.speechSynthesis) return; if(S.speaking){ window.speechSynthesis.cancel(); this.setState({speaking:false}); return; } window.speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(docentText); u.lang='ko-KR'; u.rate=0.96; u.pitch=1; u.onend=()=>this.setState({speaking:false}); u.onerror=()=>this.setState({speaking:false}); this.setState({speaking:true}); window.speechSynthesis.speak(u); };
+    const docentPlayBtn = S.docent ? React.createElement('button',{onClick:speak,style:{background:'rgba(255,255,255,0.14)',color:'#fff',border:'1px solid rgba(255,255,255,0.18)',borderRadius:'999px',padding:'9px 14px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}}, S.speaking?'⏸ 멈춤':'▶ 듣기') : null;
+
+    let doneOverlay=null;
+    if(S.done){
+      doneOverlay=React.createElement('div',{style:{position:'fixed',inset:0,zIndex:200,background:'rgba(10,14,38,0.55)',backdropFilter:'blur(6px)',WebkitBackdropFilter:'blur(6px)',display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'},onClick:()=>this.setState({done:false})},
+        React.createElement('div',{onClick:(e)=>e.stopPropagation(),style:{width:'min(560px,100%)',maxHeight:'88vh',overflowY:'auto',background:'#fff',borderRadius:'24px',padding:'32px',boxShadow:'0 40px 90px -30px rgba(10,14,38,0.6)'}},[
+          React.createElement('div',{key:'h',style:{display:'flex',alignItems:'center',gap:'13px'}},[
+            React.createElement('div',{key:'b',style:{width:'42px',height:'42px',borderRadius:'13px',background:'#E6F4EC',color:'#1c5b3f',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'21px',fontWeight:800,flexShrink:0}},'✓'),
+            React.createElement('div',{key:'t'},[
+              React.createElement('div',{key:'1',style:{fontSize:'21px',fontWeight:800,letterSpacing:'-0.02em'}},'비평 완성!'),
+              React.createElement('div',{key:'2',style:{fontSize:'13px',color:'#667080',marginTop:'2px'}},W.t+' · '+W.a),
+            ]),
+          ]),
+          React.createElement('div',{key:'st',style:{marginTop:'22px',display:'flex',flexDirection:'column',gap:'10px'}}, STP.map((st,i)=>{
+            const filled=S.answers[i+'_0']||S.answers[i+'_1'];
+            const ans=[S.answers[i+'_0'],S.answers[i+'_1']].filter(Boolean).join(' · ')||'(미작성)';
+            return React.createElement('div',{key:i,style:{padding:'14px 16px',background:'#F4F8FD',borderRadius:'14px'}},[
+              React.createElement('div',{key:'k',style:{fontSize:'11px',fontWeight:800,color:'#3A4F7A',letterSpacing:'0.04em'}},(i+1)+'. '+st.t),
+              React.createElement('div',{key:'a',style:{fontSize:'13.5px',color:filled?'#0E1523':'#9AA6B6',marginTop:'5px',lineHeight:1.55}},ans),
+            ]);
+          })),
+          React.createElement('div',{key:'r',style:{marginTop:'12px',padding:'15px 16px',background:'#FBF6EC',borderRadius:'14px',display:'flex',alignItems:'center',justifyContent:'space-between',gap:'10px'}},[
+            React.createElement('span',{key:'l',style:{fontSize:'13px',fontWeight:700,color:'#7a5a1e'}},'나의 별점'),
+            React.createElement('span',{key:'s',style:{fontSize:'19px',color:'#E6A85A',letterSpacing:'2px'}}, S.rating?('★'.repeat(S.rating)+'☆'.repeat(5-S.rating)):'아직 별점이 없어요'),
+          ]),
+          React.createElement('div',{key:'btn',style:{display:'flex',gap:'10px',marginTop:'20px'}},[
+            React.createElement('button',{key:'c',onClick:()=>this.setState({done:false}),style:{flex:1,background:'#F4F8FD',color:'#51607A',border:'1px solid #E4EAF2',borderRadius:'12px',padding:'13px',fontSize:'14px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'← 다시 보기'),
+            React.createElement('a',{key:'g',href:'전시.dc.html',style:{flex:1,textAlign:'center',background:'#0E1523',color:'#fff',borderRadius:'12px',padding:'13px',fontSize:'14px',fontWeight:700}},'전시로 →'),
+          ]),
+        ])
+      );
+    }
+
+    return { workTitle:W.t, workAuthor:W.a, workTabs, workArt, workPalette,
+      stepHint:cur.k+' 단계의 데이터를 참고하세요', evidence,
+      stepTabs, stepKicker:cur.k, stepTitle:cur.t, stepDesc:cur.d, prompts,
+      prevStep:()=>this.setState(s=>({step:Math.max(0,s.step-1)})),
+      nextStep:()=>{ if(S.step>=3){ this.setState({done:true}); } else { this.setState(s=>({step:s.step+1})); } },
+      prevOpacity:S.step===0?0.4:1, nextLabel:S.step>=3?'비평 완성':'다음 단계 →',
+      stars, critiqueCount:allCrits.length+'개', sortTabs, critiques,
+      myComment:S.myComment, onComment:(e)=>this.setState({myComment:e.target.value}), submitCrit,
+      genDocent:()=>{ if(window.speechSynthesis) window.speechSynthesis.cancel(); this.setState({docent:true,speaking:false}); }, docentLabel:S.docent?'다시 생성':'해설 생성', docentText, docentPlayBtn, doneOverlay };
+  }
+}
+</script>
+</body>
+</html>

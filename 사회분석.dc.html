@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:17px; height:17px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; }
+</style>
+</helmet>
+
+<div data-screen-label="사회분석" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:rgba(20,22,32,0.72); backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.08); border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 24px 50px -30px rgba(0,0,0,0.8);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em; color:#fff;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#fff;">둘러보기</a>
+          <span style="color:#fff;">분석 도구</span>
+          <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#fff;">전시</a>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2F6BE0; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header style="padding:40px 6px 26px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 둘러보기</a>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#2FB6A8; margin-top:14px;">SOCIETY</div>
+        <h1 style="font-size:40px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0; color:#fff;">사회 분석 · <span style="color:#93A4E8;">〈우리 동네〉</span></h1>
+        <div style="font-size:14px; color:#8794b0; margin-top:8px;">관점·관계·맥락 — 우리가 사는 세계를 데이터로 비평합니다.</div>
+      </div>
+      <div style="display:flex; gap:10px; align-items:center;">
+        {{ modeToggle }}
+        <a href="전시.dc.html"><button style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.16); color:#E7ECF7; border-radius:999px; padding:13px 22px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:rgba(255,255,255,0.12);">전시에 출품</button></a>
+        <a href="작업실.dc.html"><button style="background:#fff; color:#0E1523; border:none; border-radius:999px; padding:13px 24px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer;" style-hover="transform:translateY(-1px);">이 데이터로 다시 그리기 →</button></a>
+      </div>
+    </header>
+
+    <!-- top: artwork + summary -->
+    <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px;">
+      <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:16px; box-shadow:0 40px 70px -44px rgba(0,0,0,0.8);">
+        <div style="position:relative; height:360px; border-radius:14px; overflow:hidden; background:#0c0f18;">
+          {{ hero }}
+        </div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:linear-gradient(150deg,#17234c 0%,#0f1730 100%); border:1px solid #2a3a66; border-radius:22px; padding:26px;">
+          <div style="font-size:13px; font-weight:700; color:#7FB0FF; letter-spacing:0.04em;">한눈에</div>
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:18px;">
+            <div><div style="font-size:34px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; color:#fff;">8</div><div style="font-size:12.5px; color:#9fb0d0; margin-top:2px;">관점 수</div></div>
+            <div><div style="font-size:34px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; color:#fff;">0.55</div><div style="font-size:12.5px; color:#9fb0d0; margin-top:2px;">공감도</div></div>
+            <div><div style="font-size:34px; font-weight:800; letter-spacing:-0.03em; font-variant-numeric:tabular-nums; color:#fff;">0.38</div><div style="font-size:12.5px; color:#9fb0d0; margin-top:2px;">대립도</div></div>
+          </div>
+        </div>
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:24px; flex:1;">
+          <div style="font-size:15px; font-weight:700; color:#fff;">관점 분포 <span style="font-size:13px; color:#7E89A8; font-weight:500;">6관점 · 비중순</span></div>
+          <div style="display:flex; height:14px; border-radius:7px; overflow:hidden; margin-top:14px;">{{ clusterBar }}</div>
+          <div style="margin-top:16px; display:flex; flex-direction:column; gap:9px;">{{ clusterList }}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- lenses + objects -->
+    <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:14px; margin-top:14px;">
+      <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:26px;">
+        <div style="font-size:15px; font-weight:700; color:#fff;">7가지 비평 렌즈</div>
+        <div style="font-size:13px; color:#8794b0; margin-top:3px;">같은 이슈도 렌즈마다 다르게 보입니다.</div>
+        <div style="margin-top:18px; display:flex; flex-direction:column; gap:12px;">{{ lensRows }}</div>
+      </div>
+      <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:26px;">
+        <div style="font-size:15px; font-weight:700; color:#fff;">쟁점별 입장 <span style="font-size:13px; color:#7E89A8; font-weight:500;">3건</span></div>
+        <div style="margin-top:16px;">{{ relations }}</div>
+        <div style="display:flex; flex-wrap:wrap; gap:7px; margin-top:16px;">{{ objChips }}</div>
+      </div>
+    </section>
+
+    {{ proPanel }}
+
+    <!-- next step -->
+    <section style="margin-top:14px;">
+      <div style="position:relative; overflow:hidden; background:linear-gradient(135deg,#1c2a5c 0%,#0f1730 100%); border:1px solid #2a3a66; border-radius:24px; padding:34px 34px; display:flex; justify-content:space-between; align-items:center; gap:24px; flex-wrap:wrap; box-shadow:0 50px 90px -50px rgba(8,8,30,0.9);">
+        <div style="position:absolute; right:-4%; top:-30%; width:380px; height:280px; filter:blur(60px); opacity:0.5; pointer-events:none; background:radial-gradient(50% 60% at 50% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 70% 60%, #2FB6A8, transparent 72%);"></div>
+        <div style="position:relative;">
+          <div style="font-size:13px; font-weight:700; color:#8FB6FF; letter-spacing:0.05em;">다음 단계</div>
+          <div style="font-size:26px; font-weight:700; color:#fff; letter-spacing:-0.02em; margin-top:8px;">이 데이터를 재료로, 나만의 미디어아트를 만들어요</div>
+          <div style="font-size:14px; color:#A9B8DC; margin-top:8px;">무엇을 강조할지는 작가인 당신의 선택입니다.</div>
+        </div>
+        <a href="작업실.dc.html" style="position:relative;"><button style="background:#fff; color:#0E1523; border:none; border-radius:999px; padding:16px 28px; font-size:16px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap;" style-hover="transform:translateY(-1px);">작업실로 →</button></a>
+      </div>
+    </section>
+
+    <footer style="margin:14px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">둘러보기</a>
+          <a href="그림분석.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">분석 도구</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+          <a href="AI코치.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">AI 코치</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { stage:'follow', threshold:50, confidence:60 };
+  rand(s){ const x=Math.sin(s*99.13)*43758.5453; return x-Math.floor(x); }
+  renderVals(){
+    const museum = ['#182F49','#8FC0B5','#E6F5A6','#3A4F7A','#6E84B8','#CFE0D6'];
+    const pcts = [31,22,17,12,10,8];
+    const names = ['감청','세이지','연두','회청','연보라','본'];
+
+    const clusterBar = React.createElement(React.Fragment,{}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{width:pcts[i]+'%',background:c}})));
+
+    const clusterList = React.createElement(React.Fragment,{}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'10px'}},[
+        React.createElement('div',{key:'s',style:{width:'18px',height:'18px',borderRadius:'5px',background:c,border:'1px solid rgba(255,255,255,0.1)'}}),
+        React.createElement('div',{key:'n',style:{fontSize:'14px',fontWeight:600,flex:1,color:'#E7ECF7'}},names[i]),
+        React.createElement('div',{key:'h',style:{fontSize:'12px',color:'#6E7791'}},c),
+        React.createElement('div',{key:'p',style:{fontSize:'14px',fontWeight:700,fontVariantNumeric:'tabular-nums',width:'40px',textAlign:'right',color:'#fff'}},pcts[i]+'%'),
+      ])));
+
+    const lenses = [['공감',0.7],['대립',0.5],['형평',0.62],['참여',0.55],['책임',0.8],['연대',0.58],['지속가능',0.66]];
+    const lensRows = React.createElement(React.Fragment,{}, lenses.map((l,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'12px'}},[
+        React.createElement('div',{key:'n',style:{fontSize:'13px',fontWeight:600,width:'74px',color:'#9fb0d0'}},l[0]),
+        React.createElement('div',{key:'t',style:{flex:1,height:'8px',borderRadius:'4px',background:'rgba(255,255,255,0.08)',overflow:'hidden'}},
+          React.createElement('div',{style:{width:(l[1]*100)+'%',height:'100%',borderRadius:'4px',background:i===4?'#2FB6A8':'#5673D8'}})),
+        React.createElement('div',{key:'v',style:{fontSize:'13px',fontWeight:700,fontVariantNumeric:'tabular-nums',width:'34px',textAlign:'right',color:'#fff'}},l[1].toFixed(2)),
+      ])));
+
+    const artGrid = React.createElement(React.Fragment,{}, Array.from({length:18}).map((_,i)=>{
+      const c = museum[Math.floor(this.rand(i+2)*museum.length)];
+      return React.createElement('div',{key:i,style:{background:c,opacity:0.55+this.rand(i+9)*0.4}});
+    }));
+
+    const objs = ['이웃','학교','환경','세대','일자리','안전','문화','참여'];
+    const objChips = React.createElement(React.Fragment,{}, objs.map((o,i)=>
+      React.createElement('div',{key:i,style:{fontSize:'12.5px',fontWeight:600,color:'#C2CBE0',background:'rgba(255,255,255,0.05)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'999px',padding:'5px 11px'}},o)));
+
+    // 관계망 그래프
+    const nodes=[['이웃',50,28,18,'#2FB6A8'],['학교',24,50,15,'#5673D8'],['상점',76,46,13,'#8FC0B5'],['청소년',40,76,16,'#E6F5A6'],['노인',66,78,14,'#6E84B8'],['환경',84,24,12,'#93A4E8'],['시청',16,24,12,'#cdd9ef']];
+    const edges=[[0,1],[0,2],[0,3],[0,4],[1,3],[2,4],[0,5],[1,6],[5,2],[6,0]];
+    const hero = React.createElement('div',{style:{position:'absolute',inset:0,padding:'18px'}},[
+      React.createElement('div',{key:'top',style:{display:'flex',justifyContent:'space-between',fontSize:'11.5px',color:'#7E89A8'}},[
+        React.createElement('span',{key:'a',style:{color:'#cdd9ef'}},'〈우리 동네〉 · 관계망'),
+        React.createElement('span',{key:'b'},'7 주체')]),
+      React.createElement('div',{key:'g',style:{position:'absolute',left:'18px',right:'18px',top:'48px',bottom:'18px'}},
+        [React.createElement('svg',{key:'e',viewBox:'0 0 100 100',preserveAspectRatio:'none',style:{position:'absolute',inset:0,width:'100%',height:'100%'}},
+          edges.map((e,i)=>React.createElement('line',{key:i,x1:nodes[e[0]][1],y1:nodes[e[0]][2],x2:nodes[e[1]][1],y2:nodes[e[1]][2],stroke:'rgba(143,164,232,0.3)',strokeWidth:0.6})))
+        ].concat(nodes.map((nd,i)=>React.createElement('div',{key:i,style:{position:'absolute',left:nd[1]+'%',top:nd[2]+'%',transform:'translate(-50%,-50%)',display:'flex',flexDirection:'column',alignItems:'center',gap:'3px'}},[
+          React.createElement('div',{key:'c',style:{width:nd[3]+'px',height:nd[3]+'px',borderRadius:'50%',background:nd[4],boxShadow:'0 0 0 4px rgba(255,255,255,0.04)'}}),
+          React.createElement('div',{key:'l',style:{fontSize:'10.5px',color:'#cdd9ef',whiteSpace:'nowrap'}},nd[0]),
+        ])))),
+    ]);
+    // 쟁점별 입장
+    const issues=[['놀이터 이전',[55,25,20]],['야간 소음',[30,20,50]],['벽화 사업',[70,18,12]]];
+    const relations = React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:'14px',paddingTop:'4px'}}, issues.map((it,i)=>
+      React.createElement('div',{key:i},[
+        React.createElement('div',{key:'t',style:{display:'flex',justifyContent:'space-between',fontSize:'12.5px',marginBottom:'6px'}},[
+          React.createElement('span',{key:'a',style:{color:'#E7ECF7',fontWeight:600}},it[0]),
+          React.createElement('span',{key:'b',style:{color:'#7E89A8'}},'찬성 '+it[1][0]+'%')]),
+        React.createElement('div',{key:'b',style:{display:'flex',height:'10px',borderRadius:'5px',overflow:'hidden'}},[
+          React.createElement('div',{key:0,style:{width:it[1][0]+'%',background:'#2FB6A8'}}),
+          React.createElement('div',{key:1,style:{width:it[1][1]+'%',background:'#3a557c'}}),
+          React.createElement('div',{key:2,style:{width:it[1][2]+'%',background:'#5673D8'}}),
+        ]),
+      ])));
+    const _stage = this.state.stage, _thr = this.state.threshold, _conf = this.state.confidence;
+    const _steps = [['follow','따라해보기'],['create','내 작품 만들기']];
+    const _idx = {follow:0,create:1}[_stage];
+    const modeToggle = React.createElement('div',{style:{display:'flex',alignItems:'center',gap:'6px',background:'#13151d',border:'1px solid #232734',borderRadius:'999px',padding:'5px'}}, _steps.flatMap((st,i)=>{
+      const active=i===_idx, done=i<_idx;
+      const chip=React.createElement('div',{key:st[0],onClick:()=>this.setState({stage:st[0]}),style:{display:'flex',alignItems:'center',gap:'7px',cursor:'pointer',padding:'8px 15px',borderRadius:'999px',background:active?'#2F6BE0':'transparent'}},[
+        React.createElement('span',{key:'n',style:{width:'18px',height:'18px',borderRadius:'50%',background:active?'#fff':done?'#2FB6A8':'rgba(255,255,255,0.12)',color:active?'#2F6BE0':done?'#06231f':'#9fb0d0',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'10px',fontWeight:800}},done?'✓':(i+1)),
+        React.createElement('span',{key:'t',style:{fontSize:'12.5px',fontWeight:700,color:active?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},st[1]),
+      ]);
+      return i<_steps.length-1 ? [chip, React.createElement('span',{key:'a'+i,style:{color:'#3a4658',fontSize:'12px'}},'→')] : [chip];
+    }));
+
+    const _sld=(label,key,val)=>React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'12.5px',marginBottom:'7px'}},[React.createElement('span',{key:'a',style:{color:'#cdd9ef',fontWeight:600}},label),React.createElement('span',{key:'b',style:{color:'#fff',fontWeight:700}},val)]),
+      React.createElement('input',{key:'i',type:'range',min:0,max:100,value:val,onChange:(e)=>this.setState({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+    const _badge=(txt,sub)=>React.createElement('div',{key:'h',style:{display:'flex',alignItems:'center',gap:'10px',flexWrap:'wrap'}},[
+      React.createElement('span',{key:'b',style:{fontSize:'11px',fontWeight:700,color:'#2FB6A8',background:'rgba(47,182,168,0.12)',borderRadius:'999px',padding:'5px 11px'}},txt),
+      React.createElement('span',{key:'t',style:{fontSize:'15px',fontWeight:700,color:'#fff'}},sub),
+    ]);
+    const _accepted = lenses.filter(l=>l[1]*100>=_thr);
+    let _inner;
+    if(_stage==='follow'){
+      const _rows = lenses.map((l,i)=>React.createElement('div',{key:i,style:{display:'grid',gridTemplateColumns:'1fr auto auto',gap:'12px',alignItems:'center',padding:'9px 0',borderBottom:i<lenses.length-1?'1px solid rgba(255,255,255,0.06)':'none'}},[
+        React.createElement('span',{key:'a',style:{fontSize:'13px',color:'#cdd9ef'}},l[0]),
+        React.createElement('span',{key:'b',style:{fontSize:'12.5px',color:(l[1]*100>=_conf)?'#2FB6A8':'#6E7791',fontWeight:700,fontVariantNumeric:'tabular-nums'}},l[1].toFixed(2)),
+        React.createElement('span',{key:'c',style:{fontSize:'11px',fontWeight:600,color:(l[1]*100>=_thr)?'#2FB6A8':'#7E89A8'}},(l[1]*100>=_thr)?'채택':'제외'),
+      ]));
+      _inner = React.createElement('div',{},[
+        _badge('STEP 1 · 따라해보기','선생님과 함께 데이터 읽기'),
+        React.createElement('div',{key:'g',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'30px',marginTop:'20px'}},[
+          React.createElement('div',{key:'ctl',style:{display:'flex',flexDirection:'column',gap:'20px'}},[
+            _sld('임계값 · 채택 기준','threshold',_thr),
+            _sld('신뢰도 필터','confidence',_conf),
+            React.createElement('div',{key:'note',style:{fontSize:'12px',color:'#8794b0',lineHeight:1.6}},'슬라이더를 움직여 보세요. 임계값 이상만 \'채택\'됩니다. 현재 '+_accepted.length+'/'+lenses.length+'개 렌즈가 채택되었어요.'),
+            React.createElement('button',{key:'nx',onClick:()=>this.setState({stage:'create'}),style:{background:'#2F6BE0',color:'#fff',border:'none',borderRadius:'10px',padding:'12px 20px',fontSize:'13.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'이제 내 작품 만들기 →'),
+          ]),
+          React.createElement('div',{key:'tbl'},[
+            React.createElement('div',{key:'th',style:{display:'grid',gridTemplateColumns:'1fr auto auto',gap:'12px',fontSize:'11px',fontWeight:700,color:'#7E89A8',letterSpacing:'0.04em',paddingBottom:'7px',borderBottom:'1px solid rgba(255,255,255,0.12)'}},[React.createElement('span',{key:'a'},'렌즈'),React.createElement('span',{key:'b'},'값'),React.createElement('span',{key:'c'},'상태')]),
+            React.createElement('div',{key:'rows'},_rows),
+          ]),
+        ]),
+      ]);
+    } else {
+      const _btn=(label,primary)=>React.createElement('button',{key:label,style:{flex:'1 1 auto',background:primary?'#2F6BE0':'rgba(255,255,255,0.06)',color:primary?'#fff':'#E7ECF7',border:primary?'none':'1px solid rgba(255,255,255,0.16)',borderRadius:'10px',padding:'13px 10px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},label);
+      _inner = React.createElement('div',{},[
+        _badge('STEP 2 · 내 작품 만들기','채택 데이터를 작품·전시로'),
+        React.createElement('div',{key:'sum',style:{fontSize:'13px',color:'#A9B8DC',lineHeight:1.6,marginTop:'16px'}},'채택된 '+_accepted.length+'개 렌즈('+_accepted.map(l=>l[0]).join(', ')+')가 재창조·전시의 재료가 됩니다.'),
+        React.createElement('div',{key:'ex',style:{display:'flex',gap:'8px',marginTop:'18px',flexWrap:'wrap'}},[_btn('CSV 내보내기',true),_btn('JSON'),_btn('PNG'),_btn('리포트 MD')]),
+        React.createElement('div',{key:'go',style:{display:'flex',gap:'8px',marginTop:'10px',flexWrap:'wrap'}},[
+          React.createElement('a',{key:'s',href:'작업실.dc.html',style:{flex:'1 1 auto'}}, React.createElement('button',{style:{width:'100%',background:'rgba(47,182,168,0.14)',color:'#7FE0C8',border:'1px solid rgba(47,182,168,0.3)',borderRadius:'10px',padding:'13px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'작업실로 재창조 →')),
+          React.createElement('a',{key:'e',href:'전시.dc.html',style:{flex:'1 1 auto'}}, React.createElement('button',{style:{width:'100%',background:'#fff',color:'#0E1523',border:'none',borderRadius:'10px',padding:'13px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'전시에 출품 →')),
+        ]),
+      ]);
+    }
+    const proPanel = React.createElement('section',{style:{marginTop:'14px'}}, React.createElement('div',{style:{background:'#13151d',border:'1px solid #232734',borderRadius:'22px',padding:'26px'}}, _inner));
+    return { modeToggle, proPanel, clusterBar, clusterList, lensRows, artGrid, objChips, hero, relations };
+  }
+}
+</script>
+</body>
+</html>

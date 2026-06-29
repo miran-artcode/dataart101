@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div style="min-width:100%; width:max-content; min-height:100vh; box-sizing:border-box; padding:48px; background:#e7e5df;">
+  <div style="display:flex; gap:48px; align-items:flex-start;">
+
+    <!-- ===== 변형 A · 그리드 갤러리 ===== -->
+    <div style="flex:none; width:720px;">
+      <div style="font-size:13px; font-weight:700; color:#6b6b66; letter-spacing:0.04em; margin-bottom:12px;">A · 그리드 갤러리</div>
+      <div data-screen-label="내작업 A" style="background:#f6fbff; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); padding:34px 32px; min-height:620px;">
+        <a href="허브.dc.html" style="font-size:13.5px; font-weight:600; color:#667080;">← 허브</a>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A; margin-top:14px;">MY WORKS</div>
+        <div style="display:flex; align-items:flex-end; justify-content:space-between; gap:16px; margin-top:6px;">
+          <h2 style="font-size:30px; font-weight:800; letter-spacing:-0.025em; margin:0;">내 작업</h2>
+          <div style="font-size:13.5px; color:#667080;">작품 8 · 분석 6 · 출품 3</div>
+        </div>
+        <div style="display:flex; gap:8px; margin-top:20px;">{{ filtersA }}</div>
+        <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:18px;">{{ gridA }}</div>
+      </div>
+    </div>
+
+    <!-- ===== 변형 B · 프로필 + 리스트 ===== -->
+    <div style="flex:none; width:760px;">
+      <div style="font-size:13px; font-weight:700; color:#6b6b66; letter-spacing:0.04em; margin-bottom:12px;">B · 프로필 + 리스트</div>
+      <div data-screen-label="내작업 B" style="background:#f6fbff; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); padding:34px 32px; min-height:620px; display:grid; grid-template-columns:236px 1fr; gap:22px;">
+
+        <!-- profile -->
+        <div>
+          <a href="허브.dc.html" style="font-size:13.5px; font-weight:600; color:#667080;">← 허브</a>
+          <div style="background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:24px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3); margin-top:14px; text-align:center;">
+            <div style="width:64px; height:64px; border-radius:50%; background:#0E1523; color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; font-weight:800; margin:0 auto;">A</div>
+            <div style="font-size:17px; font-weight:800; margin-top:14px;">학생 A</div>
+            <div style="font-size:13px; color:#667080; margin-top:2px;">2학년 3반</div>
+            <div style="display:flex; gap:6px; margin-top:18px;">
+              <div style="flex:1; background:#F4F8FD; border-radius:12px; padding:12px 0;"><div style="font-size:20px; font-weight:800; font-variant-numeric:tabular-nums;">8</div><div style="font-size:11px; color:#667080;">작품</div></div>
+              <div style="flex:1; background:#F4F8FD; border-radius:12px; padding:12px 0;"><div style="font-size:20px; font-weight:800; font-variant-numeric:tabular-nums;">6</div><div style="font-size:11px; color:#667080;">분석</div></div>
+              <div style="flex:1; background:#F4F8FD; border-radius:12px; padding:12px 0;"><div style="font-size:20px; font-weight:800; font-variant-numeric:tabular-nums;">3</div><div style="font-size:11px; color:#667080;">출품</div></div>
+            </div>
+          </div>
+          <div style="background:#dfeafe; border-radius:20px; padding:18px; margin-top:14px;">
+            <div style="font-size:13px; font-weight:700; color:#0E1523;">나의 색 성향</div>
+            <div style="display:flex; height:12px; border-radius:6px; overflow:hidden; margin-top:12px;">{{ myColorBar }}</div>
+            <div style="font-size:12px; color:#51607A; margin-top:10px; line-height:1.5;">감청·세이지를 즐겨 씁니다.</div>
+          </div>
+        </div>
+
+        <!-- list -->
+        <div>
+          <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A;">MY WORKS</div>
+          <h2 style="font-size:26px; font-weight:800; letter-spacing:-0.02em; margin:6px 0 16px;">내 작업</h2>
+          <div style="background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:6px 20px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">{{ listB }}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    // [title, status, date, [[color,weight]...]]
+    const works = [
+      ['〈무제〉','출품','어제', [['#182F49',46],['#3A4F7A',14],['#8FC0B5',26],['#E6F5A6',14]]],
+      ['〈도시의 밤〉','분석 완료','3일 전', [['#0A0820',40],['#182F49',24],['#3A4F7A',22],['#6E84B8',14]]],
+      ['〈엄마의 손〉','재창조 중','지난주', [['#8FC0B5',24],['#E6F5A6',40],['#CFE0D6',22],['#3A4F7A',14]]],
+      ['〈창밖의 봄〉','출품','지난주', [['#8FC0B5',30],['#E6F5A6',24],['#CFE0D6',22],['#6E84B8',24]]],
+      ['〈교실의 오후〉','분석 완료','2주 전', [['#E6F5A6',34],['#8FC0B5',22],['#182F49',28],['#6E84B8',16]]],
+      ['〈비 오는 날〉','초안','2주 전', [['#182F49',42],['#3A4F7A',20],['#6E84B8',24],['#8FC0B5',14]]],
+    ];
+    const stColor = { '출품':'#182F49', '분석 완료':'#3A4F7A', '재창조 중':'#8FC0B5', '초안':'#9AA6B6' };
+
+    const filtersA = React.createElement(React.Fragment,{}, ['전체','출품','분석 완료','재창조 중','초안'].map((f,i)=>
+      React.createElement('div',{key:i,style:{fontSize:'13px',fontWeight:600,cursor:'pointer',color:i===0?'#fff':'#51607A',background:i===0?'#0E1523':'#fff',border:'1px solid '+(i===0?'#0E1523':'#E4EAF2'),borderRadius:'999px',padding:'7px 14px',whiteSpace:'nowrap'}},f)));
+
+    const seg = (arr)=> arr.map((s,j)=>React.createElement('div',{key:j,style:{flex:s[1],background:s[0]}}));
+
+    const gridA = React.createElement(React.Fragment,{}, works.map((w,i)=>
+      React.createElement('a',{key:i,href:'그림분석.dc.html',style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'16px',padding:'12px',boxShadow:'0 22px 46px -40px rgba(14,21,35,0.3)',cursor:'pointer',display:'block'}},[
+        React.createElement('div',{key:'t',style:{display:'flex',height:'104px',borderRadius:'11px',overflow:'hidden'}}, seg(w[3])),
+        React.createElement('div',{key:'n',style:{fontSize:'14px',fontWeight:700,marginTop:'11px'}},w[0]),
+        React.createElement('div',{key:'m',style:{display:'flex',alignItems:'center',gap:'7px',marginTop:'7px'}},[
+          React.createElement('span',{key:'b',style:{width:'7px',height:'7px',borderRadius:'50%',background:stColor[w[1]]}}),
+          React.createElement('span',{key:'s',style:{fontSize:'12px',color:'#51607A'}},w[1]),
+          React.createElement('span',{key:'d',style:{fontSize:'12px',color:'#9AA6B6',marginLeft:'auto'}},w[2]),
+        ]),
+      ])));
+
+    const listB = React.createElement(React.Fragment,{}, works.map((w,i)=>
+      React.createElement('a',{key:i,href:'그림분석.dc.html',style:{display:'grid',gridTemplateColumns:'56px 1fr auto',gap:'14px',alignItems:'center',padding:'14px 0',borderBottom:i<works.length-1?'1px solid #F1F4F9':'none',cursor:'pointer'}},[
+        React.createElement('div',{key:'t',style:{display:'flex',height:'40px',borderRadius:'8px',overflow:'hidden'}}, seg(w[3])),
+        React.createElement('div',{key:'m'},[
+          React.createElement('div',{key:'n',style:{fontSize:'14.5px',fontWeight:700}},w[0]),
+          React.createElement('div',{key:'s',style:{fontSize:'12.5px',color:'#667080',marginTop:'2px',display:'flex',alignItems:'center',gap:'6px'}},[
+            React.createElement('span',{key:'b',style:{width:'7px',height:'7px',borderRadius:'50%',background:stColor[w[1]]}}),
+            w[1]]),
+        ]),
+        React.createElement('div',{key:'d',style:{fontSize:'12.5px',color:'#9AA6B6'}},w[2]),
+      ])));
+
+    const my=[['#182F49',34],['#8FC0B5',26],['#3A4F7A',18],['#E6F5A6',12],['#6E84B8',10]];
+    const myColorBar = React.createElement(React.Fragment,{}, my.map((s,i)=>React.createElement('div',{key:i,style:{flex:s[1],background:s[0]}})));
+
+    return { filtersA, gridA, listB, myColorBar };
+  }
+}
+</script>
+</body>
+</html>

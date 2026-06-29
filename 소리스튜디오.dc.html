@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; }
+  .si{ background:rgba(255,255,255,0.05); border:1px solid #232734; border-radius:8px; padding:9px 11px; color:#fff; font-family:inherit; font-size:13px; outline:none; width:100%; }
+</style>
+</helmet>
+
+<div data-screen-label="소리스튜디오" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(0,0,0,0.5);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="데이터점스튜디오.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">데이터 점</a>
+        <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">허브</a>
+        <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">전시</a>
+      </div>
+    </nav>
+
+    <header style="padding:34px 6px 20px;">
+      <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 허브</a>
+      <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8; margin-top:12px;">STUDIO · SOUND</div>
+      <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">소리 스튜디오</h1>
+      <div style="font-size:14px; color:#8794b0; margin-top:8px;">마이크·업로드 소리를 실시간 파형·주파수로 분석하고, 특징을 추출해 시각 작품과 데이터로 옮깁니다.</div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:1fr 348px; gap:14px; padding-bottom:30px; align-items:start;">
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <!-- transport -->
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:18px;">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <button onClick="{{ togglePlay }}" style="width:52px; height:52px; border-radius:50%; border:none; background:#2F6BE0; color:#fff; font-size:20px; cursor:pointer; flex-shrink:0;">{{ playIcon }}</button>
+            <div style="flex:1; min-width:160px;">
+              <div style="font-size:14px; font-weight:700;">{{ sourceName }}</div>
+              <div style="font-size:12px; color:#8794b0; margin-top:2px;">{{ transportLine }}</div>
+            </div>
+            <div style="display:flex; gap:7px; flex-wrap:wrap;">{{ srcBtns }}</div>
+          </div>
+          <div style="position:relative; height:8px; border-radius:4px; background:rgba(255,255,255,0.08); margin-top:14px; overflow:hidden;">
+            <div style="position:absolute; left:0; top:0; bottom:0; width:{{ progressPct }}%; background:linear-gradient(90deg,#2F6BE0,#2FB6A8);"></div>
+          </div>
+        </div>
+
+        <!-- visualizers -->
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:13px; font-weight:600; color:#9DB3D6;">분석 뷰</div>
+            <div style="display:flex; gap:6px; background:rgba(255,255,255,0.05); padding:4px; border-radius:999px;">{{ viewTabs }}</div>
+          </div>
+          <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:300px;">{{ vizStage }}</div>
+        </div>
+
+        <!-- generative visual -->
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:13px; font-weight:600; color:#9DB3D6;">소리 → 시각 생성</div>
+            <div style="display:flex; gap:6px; background:rgba(255,255,255,0.05); padding:4px; border-radius:999px;">{{ genTabs }}</div>
+          </div>
+          <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:240px;">{{ genStage }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">입력</div>
+          <div style="display:flex; gap:6px; margin-top:12px; flex-wrap:wrap;">{{ inputBtns }}</div>
+          <input type="file" accept="audio/*" onChange="{{ onFile }}" class="si" style="padding:8px; margin-top:10px;">
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">추출된 특징 <span style="color:#7E89A8; font-weight:500;">실시간</span></div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:10px;">{{ features }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">분석 설정</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:15px;">{{ analysisSliders }}</div>
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">FFT 크기</div>{{ fftSeg }}
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">시각 매핑 <span style="color:#7E89A8; font-weight:500;">소리 특징 → 형태</span></div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:9px;">{{ mapList }}</div>
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">색 팔레트</div>{{ paletteSeg }}
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">내보내기 · 전송</div>
+          <div style="margin-top:12px; display:flex; gap:6px; flex-wrap:wrap;">{{ exportBtns }}</div>
+          <button onClick="{{ sendCsv }}" style="margin-top:10px; width:100%; background:rgba(47,182,168,0.14); color:#7FE0C8; border:1px solid rgba(47,182,168,0.3); border-radius:9px; padding:11px; font-size:12.5px; font-weight:700; font-family:inherit; cursor:pointer;">데이터 점 스튜디오로 CSV 전송 →</button>
+        </div>
+
+        <div style="background:#16224a; border:1px solid #2a3a66; border-radius:20px; padding:20px;">
+          <div style="font-size:13px; font-weight:700; color:#fff;">AI 감상 코치</div>
+          <div style="font-size:12.5px; color:#A9B8DC; line-height:1.6; margin-top:8px;">{{ coachLine }}</div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer style="margin:4px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="데이터점스튜디오.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">데이터 점</a>
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { src:'rain', playing:false, t:0, view:'wave', gen:'rings', smoothing:60, gain:55, fft:'1024', palette:'cool', mapSize:'volume', mapColor:'pitch', mapMotion:'tempo', seed:1 };
+  componentDidMount(){ this.timer=setInterval(()=>{ if(this.state.playing) this.setState(s=>({t:(s.t+0.05)%1, seed:s.seed+1})); },100); }
+  componentWillUnmount(){ clearInterval(this.timer); }
+  r(s){ const x=Math.sin((s+this.state.seed*3.7)*99.13)*43758.5453; return x-Math.floor(x); }
+
+  // synthetic spectra per source
+  spectrum(){
+    const S=this.state, N=64, arr=[];
+    const profiles={ rain:{bass:0.3,mid:0.5,treble:0.85,beat:0.2}, music:{bass:0.85,mid:0.6,treble:0.45,beat:0.9}, voice:{bass:0.4,mid:0.9,treble:0.5,beat:0.3}, city:{bass:0.7,mid:0.55,treble:0.4,beat:0.5}, mic:{bass:0.5,mid:0.6,treble:0.55,beat:0.4} };
+    const p=profiles[S.src]||profiles.rain;
+    for(let i=0;i<N;i++){ const f=i/N; let band = f<0.33?p.bass : f<0.66?p.mid : p.treble;
+      const beat=1+Math.sin(S.t*Math.PI*2*4)*p.beat*0.4; const noise=0.6+this.r(i+1)*0.5;
+      arr.push(Math.max(0.03, band*beat*noise*(S.gain/55)*(1-f*0.35))); }
+    return arr;
+  }
+  waveform(){ const S=this.state, N=90, arr=[]; const profiles={rain:0.25,music:0.7,voice:0.5,city:0.55,mic:0.45}; const amp=profiles[S.src]||0.4;
+    for(let i=0;i<N;i++){ const ph=i/N*Math.PI*2*6 + S.t*Math.PI*2*3; arr.push(Math.sin(ph)*amp*(0.6+this.r(i+1)*0.7)*(S.gain/55)); } return arr; }
+
+  renderVals(){
+    const S=this.state, spec=this.spectrum(), wave=this.waveform();
+    const palettes={ cool:['#0E0A2E','#182F49','#3A4F7A','#6E84B8','#8FC0B5','#E6F5A6'], fire:['#182F49','#3A4F7A','#8FC0B5','#f0c85a','#f0a85a','#d56b5a'], mono:['#1a2233','#34465f','#52688a','#8198ba','#b6c6e0','#e6eefb'] };
+    const PC=palettes[S.palette];
+    const colorAt=(t)=>{ const x=t*(PC.length-1); const i=Math.floor(x),f=x-i; const a=PC[i],b=PC[Math.min(PC.length-1,i+1)]; const mix=(u,v)=>Math.round(parseInt(a.slice(u,v),16)*(1-f)+parseInt(b.slice(u,v),16)*f); return '#'+[mix(1,3),mix(3,5),mix(5,7)].map(v=>('0'+v.toString(16)).slice(-2)).join(''); };
+
+    const seg=(val,opts,on)=>React.createElement('div',{style:{display:'flex',gap:'5px',background:'rgba(255,255,255,0.05)',padding:'4px',borderRadius:'10px',flexWrap:'wrap'}},opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>on(o[0]),style:{flex:'1 1 auto',textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 8px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},o[1])));
+    const sld=(label,key,val,unit)=>React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'12.5px',marginBottom:'7px'}},[React.createElement('span',{key:'a',style:{color:'#cdd9ef',fontWeight:600}},label),React.createElement('span',{key:'b',style:{color:'#fff',fontWeight:700}},val+(unit||''))]),
+      React.createElement('input',{key:'i',type:'range',min:0,max:100,value:val,onChange:(e)=>this.setState({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+
+    // viz stage
+    const viewTabs=seg(S.view,[['wave','파형'],['spectrum','주파수'],['spectro','스펙트로그램']],(v)=>this.setState({view:v}));
+    let vizStage;
+    if(S.view==='wave'){
+      vizStage=React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'center',gap:'1px',padding:'0 6px'}}, wave.map((v,i)=>
+        React.createElement('div',{key:i,style:{flex:1,height:Math.abs(v)*130+'px',background:colorAt(i/wave.length),opacity:0.85,borderRadius:'2px',alignSelf:'center'}})));
+    } else if(S.view==='spectrum'){
+      vizStage=React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'flex-end',gap:'2px',padding:'10px 6px 0'}}, spec.map((v,i)=>
+        React.createElement('div',{key:i,style:{flex:1,height:(v*100)+'%',background:colorAt(i/spec.length),borderRadius:'2px 2px 0 0'}})));
+    } else {
+      const cols=28; vizStage=React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',gap:'1px'}}, Array.from({length:cols}).map((_,c)=>
+        React.createElement('div',{key:c,style:{flex:1,display:'flex',flexDirection:'column-reverse',gap:'1px'}}, spec.filter((_,i)=>i%2===0).map((v,r)=>{
+          const intensity=Math.max(0,Math.min(1, v*(0.5+this.r(c*3+r)*0.9))); return React.createElement('div',{key:r,style:{flex:1,background:colorAt(intensity),opacity:0.25+intensity*0.75}});
+        }))));
+    }
+
+    // generative
+    const genTabs=seg(S.gen,[['rings','파동 링'],['bars','방사 막대'],['particles','입자']],(v)=>this.setState({gen:v}));
+    const vol=spec.reduce((a,b)=>a+b,0)/spec.length; const treble=spec.slice(42).reduce((a,b)=>a+b,0)/22;
+    let genStage;
+    if(S.gen==='rings'){
+      genStage=React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center'}}, [0,1,2,3,4].map(i=>{
+        const sz=40+i*46+vol*70; return React.createElement('div',{key:i,style:{position:'absolute',width:sz+'px',height:sz+'px',borderRadius:'50%',border:'2px solid '+colorAt(i/5),opacity:Math.max(0.1,0.8-i*0.15-vol*0.1)}});
+      }));
+    } else if(S.gen==='bars'){
+      genStage=React.createElement('div',{style:{position:'absolute',inset:0}}, spec.filter((_,i)=>i%2===0).map((v,i,a)=>{
+        const ang=i/a.length*360; const len=20+v*90; return React.createElement('div',{key:i,style:{position:'absolute',left:'50%',top:'50%',width:'3px',height:len+'px',background:colorAt(i/a.length),transformOrigin:'center bottom',transform:'translate(-50%,-100%) rotate('+ang+'deg)',borderRadius:'2px',opacity:0.85}});
+      }));
+    } else {
+      const n=Math.round(20+vol*70); genStage=React.createElement('div',{style:{position:'absolute',inset:0}}, Array.from({length:n}).map((_,i)=>{
+        const a=this.r(i+1)*6.28, rad=this.r(i+2)*(20+vol*30); const sz=2+this.r(i+3)*(6+treble*16); return React.createElement('div',{key:i,style:{position:'absolute',left:(50+Math.cos(a)*rad)+'%',top:(50+Math.sin(a)*rad)+'%',width:sz+'px',height:sz+'px',borderRadius:'50%',background:colorAt(this.r(i+4)),transform:'translate(-50%,-50%)',opacity:0.5+this.r(i+5)*0.5}});
+      }));
+    }
+
+    const feat=[['음량 (RMS)',Math.round(vol*100),'%'],['피치 (주파수)',Math.round(180+treble*900),'Hz'],['템포',Math.round(70+vol*80),'BPM'],['음색 (밝기)',(0.3+treble*0.7).toFixed(2),''],['리듬 규칙성',(0.4+this.r(2)*0.5).toFixed(2),''],['다이내믹',(0.3+vol*0.6).toFixed(2),'']];
+    const features=React.createElement(React.Fragment,{}, feat.map((f,i)=>React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'10px'}},[
+      React.createElement('span',{key:'l',style:{fontSize:'12.5px',color:'#9fb0d0',width:'92px'}},f[0]),
+      React.createElement('div',{key:'b',style:{flex:1,height:'7px',borderRadius:'4px',background:'rgba(255,255,255,0.08)',overflow:'hidden'}}, React.createElement('div',{style:{width:Math.min(100,parseFloat(f[1])* (f[2]==='%'?1:f[2]==='Hz'?0.1:f[2]==='BPM'?0.6:60))+'%',height:'100%',background:'#2FB6A8'}})),
+      React.createElement('span',{key:'v',style:{fontSize:'12.5px',fontWeight:700,color:'#fff',width:'56px',textAlign:'right',fontVariantNumeric:'tabular-nums'}},f[1]+f[2]),
+    ])));
+
+    const analysisSliders=React.createElement(React.Fragment,{},[sld('스무딩','smoothing',S.smoothing),sld('게인','gain',S.gain)]);
+    const fftSeg=seg(S.fft,[['512','512'],['1024','1024'],['2048','2048'],['4096','4096']],(v)=>this.setState({fft:v}));
+    const mapSel=(label,key,opts)=>React.createElement('div',{key:key,style:{display:'grid',gridTemplateColumns:'52px 1fr',alignItems:'center',gap:'10px'}},[
+      React.createElement('span',{key:'l',style:{fontSize:'12.5px',fontWeight:700,color:'#E7ECF7'}},label),
+      React.createElement('select',{key:'s',value:S[key],onChange:(e)=>this.setState({[key]:e.target.value}),className:'si'}, opts.map(o=>React.createElement('option',{key:o,value:o,style:{background:'#13151d'}},o))),
+    ]);
+    const featNames=['volume','pitch','tempo','timbre','rhythm']; const featKo={volume:'음량',pitch:'피치',tempo:'템포',timbre:'음색',rhythm:'리듬'};
+    const mapList=React.createElement(React.Fragment,{},[
+      mapSel('크기','mapSize',featNames), mapSel('색','mapColor',featNames), mapSel('움직임','mapMotion',featNames)
+    ].map(()=>null) || []);
+    const mapList2=React.createElement(React.Fragment,{},[
+      React.createElement('div',{key:'1',style:{display:'grid',gridTemplateColumns:'52px 1fr',alignItems:'center',gap:'10px'}},[React.createElement('span',{key:'l',style:{fontSize:'12.5px',fontWeight:700}},'크기'),React.createElement('select',{key:'s',value:S.mapSize,onChange:(e)=>this.setState({mapSize:e.target.value}),className:'si'},featNames.map(o=>React.createElement('option',{key:o,value:o,style:{background:'#13151d'}},featKo[o])))]),
+      React.createElement('div',{key:'2',style:{display:'grid',gridTemplateColumns:'52px 1fr',alignItems:'center',gap:'10px'}},[React.createElement('span',{key:'l',style:{fontSize:'12.5px',fontWeight:700}},'색'),React.createElement('select',{key:'s',value:S.mapColor,onChange:(e)=>this.setState({mapColor:e.target.value}),className:'si'},featNames.map(o=>React.createElement('option',{key:o,value:o,style:{background:'#13151d'}},featKo[o])))]),
+      React.createElement('div',{key:'3',style:{display:'grid',gridTemplateColumns:'52px 1fr',alignItems:'center',gap:'10px'}},[React.createElement('span',{key:'l',style:{fontSize:'12.5px',fontWeight:700}},'움직임'),React.createElement('select',{key:'s',value:S.mapMotion,onChange:(e)=>this.setState({mapMotion:e.target.value}),className:'si'},featNames.map(o=>React.createElement('option',{key:o,value:o,style:{background:'#13151d'}},featKo[o])))]),
+    ]);
+    const paletteSeg=seg(S.palette,[['cool','쿨'],['fire','파이어'],['mono','모노']],(v)=>this.setState({palette:v}));
+
+    const inputBtns=React.createElement(React.Fragment,{}, [['mic','마이크'],['rain','빗소리'],['music','음악'],['voice','목소리'],['city','거리']].map(b=>
+      React.createElement('div',{key:b[0],onClick:()=>this.setState({src:b[0]}),style:{fontSize:'12.5px',fontWeight:600,cursor:'pointer',padding:'8px 13px',borderRadius:'999px',border:'1px solid '+(S.src===b[0]?'#2F6BE0':'rgba(255,255,255,0.14)'),background:S.src===b[0]?'rgba(47,107,224,0.18)':'transparent',color:S.src===b[0]?'#fff':'#9fb0d0'}},b[1])));
+
+    const srcBtns=React.createElement(React.Fragment,{}, [['rain','비'],['music','음악'],['voice','목소리']].map(b=>
+      React.createElement('div',{key:b[0],onClick:()=>this.setState({src:b[0]}),style:{fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'6px 11px',borderRadius:'999px',background:S.src===b[0]?'rgba(47,107,224,0.22)':'rgba(255,255,255,0.05)',color:S.src===b[0]?'#fff':'#9fb0d0'}},b[1])));
+
+    const eb=(label,primary)=>React.createElement('button',{key:label,onClick:()=>this.doExport(label),style:{flex:'1 1 auto',background:primary?'#2F6BE0':'rgba(255,255,255,0.06)',color:primary?'#fff':'#E7ECF7',border:primary?'none':'1px solid rgba(255,255,255,0.16)',borderRadius:'9px',padding:'10px 8px',fontSize:'11.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},label);
+    const exportBtns=React.createElement(React.Fragment,{},[eb('PNG',true),eb('CSV'),eb('JSON'),eb('작업노트')]);
+
+    const coachLine='지금 '+({mic:'마이크',rain:'빗소리',music:'음악',voice:'목소리',city:'거리 소음'}[S.src])+'를 듣고 있어요. 음량이 큰 순간과 작은 순간을 색·크기로 어떻게 다르게 보이게 했나요? 소리의 어떤 특징이 당신에게 가장 인상적이었나요?';
+    const transportLine = S.playing ? '재생 중 · FFT '+S.fft+' · 스무딩 '+S.smoothing+'%' : '일시정지 · 재생을 눌러 분석을 시작하세요';
+
+    return { playIcon:S.playing?'❚❚':'▶', togglePlay:()=>this.setState(s=>({playing:!s.playing})),
+      sourceName:({mic:'마이크 입력',rain:'빗소리.wav',music:'음악.mp3',voice:'목소리.wav',city:'거리.wav'}[S.src]), transportLine, progressPct:Math.round(S.t*100),
+      srcBtns, viewTabs, vizStage, genTabs, genStage, inputBtns, onFile:()=>{}, features, analysisSliders, fftSeg, mapList:mapList2, paletteSeg, exportBtns,
+      sendCsv:()=>this.doExport('CSV'), coachLine };
+  }
+  doExport(kind){ try{
+    const feat=this.spectrum(); const vol=feat.reduce((a,b)=>a+b,0)/feat.length;
+    if(kind==='CSV'){ let rows='time,volume,pitch,tempo,timbre\n'; for(let i=0;i<24;i++){ const t=i/24; rows+=[t.toFixed(2),(0.3+this.r(i+1)*0.6).toFixed(3),(180+this.r(i+2)*900).toFixed(0),(70+this.r(i+3)*80).toFixed(0),(0.3+this.r(i+4)*0.6).toFixed(3)].join(',')+'\n'; } const blob=new Blob([rows],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sound-features.csv'; a.click(); }
+    else if(kind==='JSON'){ const blob=new Blob([JSON.stringify({source:this.state.src,settings:this.state},null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='sound.json'; a.click(); }
+  }catch(e){} }
+}
+</script>
+</body>
+</html>

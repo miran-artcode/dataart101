@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; }
+  .si{ background:rgba(255,255,255,0.05); border:1px solid #232734; border-radius:8px; padding:9px 11px; color:#fff; font-family:inherit; font-size:13px; outline:none; width:100%; }
+</style>
+</helmet>
+
+<div data-screen-label="데이터점스튜디오" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  {{ infoModal }}
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(0,0,0,0.5);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="색군집스튜디오.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">색 군집</a>
+        <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">허브</a>
+        <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">전시</a>
+      </div>
+    </nav>
+
+    <header style="padding:34px 6px 20px;">
+      <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 허브</a>
+      <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8; margin-top:12px;">STUDIO · DATA</div>
+      <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">데이터 점 스튜디오</h1>
+      <div style="font-size:14px; color:#8794b0; margin-top:8px;">데이터의 각 열을 점의 위치·크기·색·모양에 연결(매핑)해, 추상 데이터를 시각 작품으로 옮깁니다.</div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:1fr 348px; gap:14px; padding-bottom:30px; align-items:start;">
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:13px; font-weight:600; color:#9DB3D6;">캔버스 · {{ rowCount }}개 점</div>
+            <div style="display:flex; gap:6px; background:rgba(255,255,255,0.05); padding:4px; border-radius:999px;">{{ layoutTabs }}</div>
+          </div>
+          <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:430px;">{{ stage }}{{ gridOverlay }}{{ axisLabels }}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 6px 4px; gap:8px; flex-wrap:wrap;">
+            <div style="font-size:12px; color:#8794b0;">{{ statusLine }}</div>
+            <div style="display:flex; gap:7px;">
+              <button onClick="{{ toggleAB }}" style="background:rgba(255,255,255,0.06); color:#cdd9ef; border:1px solid rgba(255,255,255,0.16); border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; font-family:inherit; cursor:pointer;">A/B 비교: {{ abLabel }}</button>
+              <button onClick="{{ reseed }}" style="background:#1E2A42; color:#cfe0f7; border:none; border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; font-family:inherit; cursor:pointer;">↻ 재배치</button>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:15px; font-weight:700;">데이터셋 <span style="font-size:13px; color:#7E89A8; font-weight:500;">{{ dsName }} · {{ rowCount }}행 {{ colCount }}열</span></div>
+            <div style="font-size:12.5px; color:#93A4E8; font-weight:600; cursor:pointer;">미리보기 전체 →</div>
+          </div>
+          <div style="overflow-x:auto; margin-top:14px;">{{ table }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="font-size:15px; font-weight:700; color:#fff;">작가의 의도 <span style="font-size:12.5px; color:#7E89A8; font-weight:500;">— 무엇을, 왜</span></div>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px;">
+            <div>
+              <div style="font-size:11.5px; color:#93A4E8; font-weight:600; margin-bottom:6px;">데이터 주제 (제목)</div>
+              <input id="in-dataname" type="text" placeholder="예) 우리 동네가 점점 뜨거워진다" class="si" style="padding:10px 12px;">
+            </div>
+            <div>
+              <div style="font-size:11.5px; color:#93A4E8; font-weight:600; margin-bottom:6px;">한 문장 의도 — 관람객이 무엇을 느끼길 바라나요?</div>
+              <textarea id="in-intent" rows="2" placeholder="예) 숫자로만 보던 폭염을, 숨 막히는 점들의 밀도로 체감하게 하고 싶다." class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+            <div>
+              <div style="font-size:11.5px; color:#93A4E8; font-weight:600; margin-bottom:6px;">조형·데이터 근거 — 왜 이 매핑/색/움직임인가?</div>
+              <textarea id="in-evidence" rows="2" placeholder="예) 탄소배출을 붉은 색에 둔 건 위기를, 떠다니는 움직임은 불안정함을 몸으로 보여주기 위해서." class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="font-size:15px; font-weight:700; color:#fff;">제작 문서 <span style="font-size:12.5px; color:#7E89A8; font-weight:500;">— 메타비평 · 작가노트</span></div>
+            <span onClick="{{ openRecord }}" style="margin-left:auto; cursor:pointer; width:18px; height:18px; border-radius:50%; border:1px solid #3a4660; color:#9DB3D6; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;" style-hover="background:#1E2A42; color:#fff;">ⓘ</span>
+          </div>
+          <div style="font-size:12px; color:#8794b0; line-height:1.6; margin-top:8px;">‘객관적 데이터’ 뒤에 숨은 <b style="color:#9DB3D6;">나의 선택</b>을 기록하세요. 무엇을 세고 무엇을 뺐는지가 곧 창작입니다.</div>
+          <div style="display:flex; flex-direction:column; gap:12px; margin-top:15px;">
+            <div>
+              <div style="font-size:11.5px; color:#C8B6F0; font-weight:600; margin-bottom:6px;">1. 감각 먼저 — 이 데이터를 처음 봤을 때 어떤 감각/감정이 떠올랐나요?</div>
+              <textarea id="rec-sense" rows="2" placeholder="자유롭게…" class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+            <div>
+              <div style="font-size:11.5px; color:#C8B6F0; font-weight:600; margin-bottom:6px;">2. 무엇을 셌나요? — 어떤 값을 골라 작품에 넣었나요?</div>
+              <textarea id="rec-count" rows="2" placeholder="자유롭게…" class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+            <div>
+              <div style="font-size:11.5px; color:#C8B6F0; font-weight:600; margin-bottom:6px;">3. 무엇을 뺐/숨겼나요? — 일부러 빼거나 약하게 둔 것은?</div>
+              <textarea id="rec-omit" rows="2" placeholder="자유롭게…" class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+            <div>
+              <div style="font-size:11.5px; color:#C8B6F0; font-weight:600; margin-bottom:6px;">4. 왜 이 척도·매핑인가요? — 크기/색/배치 선택의 이유</div>
+              <textarea id="rec-scale" rows="2" placeholder="자유롭게…" class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+            <div>
+              <div style="font-size:11.5px; color:#C8B6F0; font-weight:600; margin-bottom:6px;">5. 데이터가 놓친 내 삶의 진실은? — 숫자로 담기지 않은 것</div>
+              <textarea id="rec-miss" rows="2" placeholder="자유롭게…" class="si" style="padding:10px 12px; resize:vertical; line-height:1.6;"></textarea>
+            </div>
+          </div>
+          <div style="margin-top:14px; font-size:11.5px; color:#E0A96D; line-height:1.6; background:rgba(224,169,109,0.08); border:1px solid rgba(224,169,109,0.22); border-radius:12px; padding:11px 13px;">{{ ethicsLine }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:7px;">
+            <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">1 · 데이터 소스</div>
+            <span style="font-size:11px; font-weight:700; color:#7E89A8; border:1px solid #2a3142; border-radius:999px; padding:1px 8px;">{{ dsCat }}</span>
+            <span onClick="{{ openHumanism }}" style="margin-left:auto; cursor:pointer; width:18px; height:18px; border-radius:50%; border:1px solid #3a4660; color:#9DB3D6; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;" style-hover="background:#1E2A42; color:#fff;">ⓘ</span>
+          </div>
+          <div style="display:flex; gap:6px; margin-top:12px; flex-wrap:wrap;">{{ dsBtns }}</div>
+          <div style="display:flex; gap:5px; margin-top:11px; flex-wrap:wrap;">{{ fieldChips }}</div>
+          <input type="file" accept=".csv,text/csv" onChange="{{ onFile }}" class="si" style="padding:8px; margin-top:11px;">
+          <div style="font-size:11.5px; color:#7E89A8; margin-top:8px;">CSV 업로드 또는 분석실에서 전송된 데이터 사용 · 매핑은 ‘효과’가 아니라 <b style="color:#9DB3D6;">해석</b>이에요.</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:7px;">
+            <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">2 · 매핑 설계 <span style="color:#7E89A8; font-weight:500;">열 → 시각 속성</span></div>
+            <span onClick="{{ openSize }}" style="margin-left:auto; cursor:pointer; width:18px; height:18px; border-radius:50%; border:1px solid #3a4660; color:#9DB3D6; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;" style-hover="background:#1E2A42; color:#fff;">ⓘ</span>
+            <span onClick="{{ openColor }}" style="cursor:pointer; width:18px; height:18px; border-radius:50%; border:1px solid #3a4660; color:#9DB3D6; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;" style-hover="background:#1E2A42; color:#fff;">색</span>
+          </div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:12px;">{{ mapRows }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:7px;"><div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">3 · 배치 · 모양</div><span onClick="{{ openLayout }}" style="margin-left:auto; cursor:pointer; width:18px; height:18px; border-radius:50%; border:1px solid #3a4660; color:#9DB3D6; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;" style-hover="background:#1E2A42; color:#fff;">ⓘ</span></div>
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">점 모양</div>{{ shapeSeg }}
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:15px;">{{ layoutSliders }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:7px;"><div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">4 · 움직임</div><span onClick="{{ openMotion }}" style="margin-left:auto; cursor:pointer; width:18px; height:18px; border-radius:50%; border:1px solid #3a4660; color:#9DB3D6; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center;" style-hover="background:#1E2A42; color:#fff;">ⓘ</span></div>
+          <div style="margin-top:12px;">{{ motionSeg }}</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:15px;">{{ motionSliders }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">색 스케일</div>
+          <div style="margin-top:12px;">{{ scaleSeg }}</div>
+          <div style="display:flex; gap:5px; margin-top:12px;">{{ scalePreview }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">내보내기</div>
+          <div style="margin-top:12px; display:flex; gap:6px; flex-wrap:wrap;">{{ exportBtns }}</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">{{ saveBtns }}</div>
+        </div>
+
+        <div style="background:#16224a; border:1px solid #2a3a66; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:8px;">
+            <div style="font-size:13px; font-weight:700; color:#fff;">AI 감상 코치</div>
+            <span style="font-size:10.5px; color:#8FA6D6; border:1px solid #2a3a66; border-radius:999px; padding:1px 8px;">소크라테스식 질문</span>
+          </div>
+          <div style="font-size:12.5px; color:#A9B8DC; line-height:1.6; margin-top:8px;">{{ coachLine }}</div>
+          <div style="margin-top:12px; background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.08); border-radius:14px; padding:13px 14px;">
+            <div style="font-size:10.5px; font-weight:700; color:#7FB6E8; letter-spacing:0.05em; margin-bottom:6px;">코치의 질문</div>
+            <div style="font-size:13px; color:#E6ECFA; line-height:1.65;">{{ coachQ }}</div>
+          </div>
+          <button onClick="{{ coachAsk }}" style="margin-top:12px; width:100%; background:rgba(255,255,255,0.08); color:#cfe0f7; border:1px solid rgba(255,255,255,0.16); border-radius:999px; padding:9px 15px; font-size:12.5px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:rgba(255,255,255,0.14);">↻ 다른 질문 받기</button>
+        </div>
+
+      </div>
+    </section>
+
+    <footer style="margin:4px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="색군집스튜디오.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">색 군집</a>
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { ds:'climate', mapX:0, mapY:1, mapSize:2, mapColor:3, shape:'circle', layout:'scatter', spread:60, jitter:15, opacity:80, sizeScale:55, motion:'float', speed:40, amp:35, scale:'cool', ab:'A', seed:1, info:null };
+  datasets(){
+    return {
+      climate:{ emoji:'🌡', name:'기후위기 · 평균기온', cat:'사회', cols:['연도','평균기온','폭염일수','이상기후','탄소배출'], rows:Array.from({length:30},(_,i)=>[
+        1995+i, 12+i*0.12+this.r(i+2)*2.4, 4+this.r(i+3)*36, this.r(i+4)*20, 60+i*1.4+this.r(i+5)*30 ]) },
+      finedust:{ emoji:'😷', name:'대기오염 · 미세먼지', cat:'사회', cols:['월','초미세먼지','오존','마스크착용','외출자제'], rows:Array.from({length:24},(_,i)=>[
+        1+(i%12), 10+this.r(i+2)*70, 10+this.r(i+3)*60, this.r(i+4)*100, this.r(i+5)*100 ]) },
+      inequality:{ emoji:'⚖', name:'소득 불평등', cat:'사회', cols:['소득분위','월소득','주거비','저축','여가시간'], rows:Array.from({length:20},(_,i)=>[
+        1+i*0.5, 80+i*i*0.9+this.r(i+2)*40, 30+this.r(i+3)*50, this.r(i+4)*i*4, 8+this.r(i+5)*40 ]) },
+      extinction:{ emoji:'🏚', name:'지역소멸 · 인구', cat:'사회', cols:['연도','인구','출생','청년비율','빈집'], rows:Array.from({length:26},(_,i)=>[
+        2000+i, 100-i*1.6+this.r(i+2)*8, 12-i*0.3+this.r(i+3)*4, 32-i*0.6+this.r(i+4)*6, i*0.8+this.r(i+5)*10 ]) },
+      animal:{ emoji:'🐾', name:'동물권 · 유기동물', cat:'사회', cols:['월','유기수','입양','안락사','후원'], rows:Array.from({length:24},(_,i)=>[
+        1+(i%12), 200+this.r(i+2)*400, this.r(i+3)*200, this.r(i+4)*120, this.r(i+5)*300 ]) },
+      emotion:{ emoji:'🙂', name:'우리 반 감정', cat:'개인', cols:['시간','감정온도','활동량','집중','피로'], rows:Array.from({length:24},(_,i)=>[
+        9+i*0.5, 1+this.r(i+2)*4, this.r(i+3)*100, this.r(i+4)*10, this.r(i+5)*10 ]) },
+    };
+  }
+  explains(){ return {
+    'data-humanism':['데이터 휴머니즘 · Dear Data','조르자 루피와 스테파니 포사벡은 1년간 손으로 그린 엽서로 일상 데이터를 주고받았어요(Dear Data). 핵심은 “정확함”이 아니라 “주관적 선택” — 무엇을 셀지, 무엇을 뺄지가 곧 작가의 시선입니다. 같은 숫자도 누가 어떻게 고르느냐에 따라 다른 진실을 말합니다.'],
+    'map-size':['크기 매핑','수치가 클수록 점을 크게. 강조하고 싶은 양(量)을 크기로 두면 한눈에 “많고 적음”이 읽혀요.'],
+    'map-color':['색 매핑','수치를 색 스케일로. 색은 감정·온도를 강하게 전달하니, 메시지의 핵심 변수를 색에 두는 경우가 많아요.'],
+    'data-layout':['배치 — 점이 어디에 살지','산점=두 축의 관계, 격자=균등 비교, 원형/나선=순환·시간, 흐름=서사적 진행. 배치는 “관계의 종류”를 정합니다.'],
+    'data-motion':['움직임 — 어떻게 움직일지','정지=정적 인쇄, 떠다님=불안정·생동, 맥동=심장박동·긴장, 공전=순환. 움직임은 효과가 아니라 데이터의 “성질”을 몸으로 보여주는 해석이에요.'],
+    'data-record':['제작 문서 = 작가노트','“객관적 데이터” 뒤의 나의 선택을 기록해요. 무엇을 세고 무엇을 뺐는지가 곧 창작 — 프롬프트가 작가노트가 되는 메타비평입니다.'],
+  };}
+  r(s){ const x=Math.sin((s+this.state.seed*5.1)*99.13)*43758.5453; return x-Math.floor(x); }
+  scales(){ return {
+    cool:['#0E0A2E','#182F49','#3A4F7A','#6E84B8','#8FC0B5','#E6F5A6'],
+    warmcool:['#182F49','#3A4F7A','#8FC0B5','#E6F5A6','#f0a85a','#d56b5a'],
+    mono:['#0E1523','#28354c','#42566f','#6E84B8','#a9bbd8','#dde7f5'],
+    spectral:['#3A4F7A','#2FB6A8','#8FC0B5','#E6F5A6','#f0c85a','#d56b5a'],
+  };}
+  norm(rows,ci){ const vs=rows.map(r=>r[ci]); const mn=Math.min(...vs),mx=Math.max(...vs); return v=>mx>mn?(v-mn)/(mx-mn):0.5; }
+
+  renderVals(){
+    const S=this.state, DS=this.datasets()[S.ds], cols=DS.cols, rows=DS.rows, SC=this.scales()[S.scale];
+    const nX=this.norm(rows,S.mapX), nY=this.norm(rows,S.mapY), nS=this.norm(rows,S.mapSize), nC=this.norm(rows,S.mapColor);
+
+    const seg=(val,opts,on)=>React.createElement('div',{style:{display:'flex',gap:'5px',background:'rgba(255,255,255,0.05)',padding:'4px',borderRadius:'10px',flexWrap:'wrap'}},opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>on(o[0]),style:{flex:'1 1 auto',textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 8px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},o[1])));
+    const sld=(label,key,val,unit)=>React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'12.5px',marginBottom:'7px'}},[React.createElement('span',{key:'a',style:{color:'#cdd9ef',fontWeight:600}},label),React.createElement('span',{key:'b',style:{color:'#fff',fontWeight:700}},val+(unit||''))]),
+      React.createElement('input',{key:'i',type:'range',min:0,max:100,value:val,onChange:(e)=>this.setState({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+
+    // positions per layout
+    const pos=(i,r)=>{
+      const n=rows.length; const sp=S.spread/100; const jx=(this.r(i+11)-0.5)*S.jitter*0.7, jy=(this.r(i+22)-0.5)*S.jitter*0.7;
+      if(S.layout==='scatter') return [10+nX(r[S.mapX])*80*sp+jx+ (1-sp)*40, 86-nY(r[S.mapY])*78*sp - (1-sp)*8 +jy];
+      if(S.layout==='grid'){ const c=Math.ceil(Math.sqrt(n)); return [12+(i%c)/(c-1||1)*76+jx*0.4, 12+Math.floor(i/c)/(c-1||1)*76+jy*0.4]; }
+      if(S.layout==='circle'){ const a=i/n*Math.PI*2; const rad=22+nS(r[S.mapSize])*22*sp; return [50+Math.cos(a)*rad+jx*0.3, 50+Math.sin(a)*rad+jy*0.3]; }
+      if(S.layout==='spiral'){ const a=i*0.5; const rad=4+i/n*40; return [50+Math.cos(a)*rad+jx*0.3, 50+Math.sin(a)*rad+jy*0.3]; }
+      // flow
+      return [10+ (i/n)*80 + jx, 50 - Math.sin(i*0.5+nC(r[S.mapColor])*6)*30*sp + jy];
+    };
+    const colorAt=(t)=>{ const x=t*(SC.length-1); const i=Math.floor(x), f=x-i; const a=SC[i], b=SC[Math.min(SC.length-1,i+1)]; const mix=(u,v)=>Math.round(parseInt(a.slice(u,v),16)*(1-f)+parseInt(b.slice(u,v),16)*f); return '#'+[mix(1,3),mix(3,5),mix(5,7)].map(v=>('0'+v.toString(16)).slice(-2)).join(''); };
+
+    const dots=rows.map((r,i)=>{
+      const [x,y]=pos(i,r); const sz=4+nS(r[S.mapSize])*(8+S.sizeScale*0.34); const col=colorAt(nC(r[S.mapColor])); const op=(S.opacity/100)*(0.5+nS(r[S.mapSize])*0.5);
+      const phase=this.r(i+3)*6.28; const dur=(3.2 - S.speed/100*2.4).toFixed(2);
+      const base={position:'absolute',left:x+'%',top:y+'%',width:sz+'px',height:sz+'px',background:col,opacity:op,transform:'translate(-50%,-50%)'};
+      if(S.shape==='circle') base.borderRadius='50%';
+      else if(S.shape==='square') base.borderRadius='2px';
+      else if(S.shape==='diamond'){ base.borderRadius='2px'; base.transform='translate(-50%,-50%) rotate(45deg)'; }
+      else if(S.shape==='ring'){ base.borderRadius='50%'; base.background='transparent'; base.border='2px solid '+col; }
+      else if(S.shape==='cross'){ base.background='transparent'; }
+      if(S.motion!=='still'){ base.animation=`dp${i%6} ${dur}s ease-in-out ${(phase*0.1).toFixed(2)}s infinite alternate`; }
+      if(S.shape==='cross'){
+        return React.createElement('div',{key:i,style:Object.assign({},base,{width:sz+'px',height:sz+'px'})},[
+          React.createElement('div',{key:'h',style:{position:'absolute',top:'45%',left:0,right:0,height:'10%',background:col}}),
+          React.createElement('div',{key:'v',style:{position:'absolute',left:'45%',top:0,bottom:0,width:'10%',background:col}}),
+        ]);
+      }
+      return React.createElement('div',{key:i,style:base});
+    });
+
+    // keyframes for motion
+    const kf = S.motion==='still'? '' : `@keyframes dp0{to{transform:translate(-50%,calc(-50% - ${S.amp*0.3}px))}}@keyframes dp1{to{transform:translate(calc(-50% + ${S.amp*0.3}px),-50%)}}@keyframes dp2{to{transform:translate(-50%,calc(-50% + ${S.amp*0.3}px))}}@keyframes dp3{to{transform:translate(calc(-50% - ${S.amp*0.3}px),-50%)}}@keyframes dp4{to{transform:translate(-50%,-50%) scale(1.5)}}@keyframes dp5{to{transform:translate(-50%,-50%) scale(0.6)}}`;
+    const stage=React.createElement('div',{style:{position:'absolute',inset:0}},[
+      kf?React.createElement('style',{key:'kf'},kf):null,
+      React.createElement('div',{key:'d',style:{position:'absolute',inset:0}},dots)
+    ]);
+
+    const gridOverlay = S.layout==='scatter' ? React.createElement('div',{style:{position:'absolute',inset:0,pointerEvents:'none',backgroundImage:'linear-gradient(rgba(255,255,255,0.045) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.045) 1px,transparent 1px)',backgroundSize:'10% 10%'}}) : null;
+    const axisLabels = S.layout==='scatter' ? React.createElement('div',{style:{position:'absolute',inset:0,pointerEvents:'none'}},[
+      React.createElement('div',{key:'x',style:{position:'absolute',right:'12px',bottom:'8px',fontSize:'11px',fontWeight:600,color:'#6E84B8'}},'X · '+cols[S.mapX]),
+      React.createElement('div',{key:'y',style:{position:'absolute',left:'10px',top:'10px',fontSize:'11px',fontWeight:600,color:'#6E84B8'}},'Y · '+cols[S.mapY]),
+    ]) : null;
+
+    const layoutTabs=seg(S.layout,[['scatter','산점'],['grid','격자'],['circle','원형'],['spiral','나선'],['flow','흐름']],(v)=>this.setState({layout:v}));
+
+    // dataset table
+    const th=React.createElement('div',{style:{display:'flex',gap:'2px'}}, [React.createElement('div',{key:'i',style:{width:'30px',flexShrink:0,fontSize:'10.5px',color:'#7E89A8',padding:'5px'}},'#')].concat(cols.map((c,ci)=>
+      React.createElement('div',{key:ci,style:{flex:1,minWidth:'66px',fontSize:'11px',fontWeight:700,color:'#9fb0d0',padding:'5px 6px',background:'rgba(255,255,255,0.04)',borderRadius:'5px',whiteSpace:'nowrap'}},c))));
+    const trs=rows.slice(0,5).map((r,i)=>React.createElement('div',{key:i,style:{display:'flex',gap:'2px'}}, [React.createElement('div',{key:'i',style:{width:'30px',flexShrink:0,fontSize:'10.5px',color:'#7E89A8',padding:'5px'}},i+1)].concat(r.map((v,ci)=>
+      React.createElement('div',{key:ci,style:{flex:1,minWidth:'66px',fontSize:'11.5px',color:'#cdd9ef',padding:'5px 6px',fontVariantNumeric:'tabular-nums'}},(Math.round(v*10)/10)))) ));
+    const table=React.createElement('div',{style:{minWidth:'420px'}},[th].concat(trs).concat([React.createElement('div',{key:'more',style:{fontSize:'11px',color:'#7E89A8',padding:'7px 5px'}},'… 외 '+(rows.length-5)+'행')]));
+
+    // mapping rows
+    const colOpts=cols.map((c,ci)=>[ci,c]);
+    const mapSel=(label,key)=>React.createElement('div',{key:key,style:{display:'grid',gridTemplateColumns:'58px 1fr',alignItems:'center',gap:'10px'}},[
+      React.createElement('span',{key:'l',style:{fontSize:'12.5px',fontWeight:700,color:'#E7ECF7'}},label),
+      React.createElement('select',{key:'s',value:S[key],onChange:(e)=>this.setState({[key]:+e.target.value}),className:'si'}, colOpts.map(o=>React.createElement('option',{key:o[0],value:o[0],style:{background:'#13151d'}},o[1]))),
+    ]);
+    const mapRows=React.createElement(React.Fragment,{},[mapSel('X 위치','mapX'),mapSel('Y 위치','mapY'),mapSel('크기','mapSize'),mapSel('색','mapColor')]);
+
+    const shapeSeg=seg(S.shape,[['circle','원'],['square','사각'],['diamond','마름모'],['ring','링'],['cross','십자']],(v)=>this.setState({shape:v}));
+    const layoutSliders=React.createElement(React.Fragment,{},[sld('펼침','spread',S.spread),sld('흔들림','jitter',S.jitter),sld('불투명도','opacity',S.opacity),sld('크기 배율','sizeScale',S.sizeScale)]);
+    const motionSeg=seg(S.motion,[['still','정지'],['float','떠다님'],['pulse','맥동'],['orbit','공전']],(v)=>this.setState({motion:v}));
+    const motionSliders=React.createElement(React.Fragment,{},[sld('속도','speed',S.speed),sld('진폭','amp',S.amp)]);
+    const scaleSeg=seg(S.scale,[['cool','쿨'],['warmcool','쿨→웜'],['mono','모노'],['spectral','스펙트럴']],(v)=>this.setState({scale:v}));
+    const scalePreview=React.createElement(React.Fragment,{}, SC.map((c,i)=>React.createElement('div',{key:i,style:{flex:1,height:'18px',borderRadius:'4px',background:c}})));
+
+    const eb=(label,primary)=>React.createElement('button',{key:label,onClick:()=>this.doExport(label,DS),style:{flex:'1 1 auto',background:primary?'#2F6BE0':'rgba(255,255,255,0.06)',color:primary?'#fff':'#E7ECF7',border:primary?'none':'1px solid rgba(255,255,255,0.16)',borderRadius:'9px',padding:'10px 8px',fontSize:'11.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},label);
+    const exportBtns=React.createElement(React.Fragment,{},[eb('PNG',true),eb('JSON'),eb('매핑 MD')]);
+    const sb=(label)=>React.createElement('button',{key:label,style:{flex:1,background:'rgba(47,182,168,0.14)',color:'#7FE0C8',border:'1px solid rgba(47,182,168,0.3)',borderRadius:'9px',padding:'11px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},label);
+    const saveBtns=React.createElement(React.Fragment,{},[sb('작업노트 저장'),sb('갤러리 전시')]);
+
+    const coachLine='지금 X에 '+cols[S.mapX]+', 색에 '+cols[S.mapColor]+'을(를) 연결했어요. 같은 데이터라도 무엇을 위치로, 무엇을 색으로 둘지에 따라 전혀 다른 이야기가 됩니다. A/B로 바꿔보며 어떤 매핑이 당신의 메시지에 맞는지 견주어 보세요.';
+    const statusLine=S.layout+' · '+cols[S.mapX]+'→X, '+cols[S.mapY]+'→Y, '+cols[S.mapSize]+'→크기, '+cols[S.mapColor]+'→색';
+
+    const EX=this.explains();
+    const infoModal = S.info ? React.createElement('div',{onClick:()=>this.setState({info:null}),style:{position:'fixed',inset:0,zIndex:200,background:'rgba(4,6,14,0.68)',backdropFilter:'blur(2px)',display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'}},
+      React.createElement('div',{onClick:(e)=>e.stopPropagation(),style:{maxWidth:'440px',background:'#11131c',border:'1px solid #2a3142',borderRadius:'18px',padding:'22px 24px 20px',boxShadow:'0 30px 80px -30px rgba(0,0,0,0.85)'}},[
+        React.createElement('div',{key:'t',style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',gap:'12px'}},[
+          React.createElement('div',{key:'h',style:{fontSize:'16px',fontWeight:800,color:'#fff'}},(EX[S.info]||['',''])[0]),
+          React.createElement('div',{key:'x',onClick:()=>this.setState({info:null}),style:{cursor:'pointer',color:'#7E89A8',fontSize:'22px',lineHeight:1,marginTop:'-2px'}},'×')]),
+        React.createElement('div',{key:'b',style:{fontSize:'13.5px',lineHeight:1.72,color:'#C2CBE0',marginTop:'12px'}},(EX[S.info]||['',''])[1]),
+      ])) : null;
+    const openInfo=(k)=>()=>this.setState({info:k});
+
+    const fieldChips=React.createElement(React.Fragment,{}, cols.map((c,ci)=>React.createElement('div',{key:ci,style:{fontSize:'11px',padding:'3px 9px',borderRadius:'999px',border:'1px solid rgba(78,195,255,.38)',color:'#7FB6E8'}}, c+' · 수치')));
+
+    const coachQs=[
+      '관람객이 이 점들에서 가장 먼저 느꼈으면 하는 감정은 무엇인가요? 그 감정을 위해 크기·색·움직임 중 무엇을 더 밀어붙일 수 있을까요?',
+      '지금 색에 '+cols[S.mapColor]+'을(를) 두었어요. 만약 색과 크기를 맞바꾸면 작품의 주장이 어떻게 달라질까요? A/B로 견줘 보세요.',
+      '이 데이터가 일부러 ‘세지 않은 것’은 무엇인가요? 그 공백이 작품에서 보이게 하려면 어떤 장치가 필요할까요?',
+      '움직임을 '+S.motion+'으로 두었어요. 이 움직임이 데이터의 어떤 ‘성질’을 몸으로 보여주나요, 아니면 그저 예뻐서인가요?',
+    ];
+    const coachQ=coachQs[(S.coachI||0)%coachQs.length];
+    const coachAsk=()=>this.setState(s=>({coachI:(s.coachI||0)+1}));
+    const ethicsLine='⚠ 개인 데이터는 익명·집계로! 낙인찍지 않도록 설명은 상황·맥락 중심으로 적으세요.';
+
+    return { infoModal, fieldChips, coachQ, coachAsk, ethicsLine, dsCat:DS.cat, dsEmoji:DS.emoji,
+      openHumanism:openInfo('data-humanism'), openRecord:openInfo('data-record'), openLayout:openInfo('data-layout'), openMotion:openInfo('data-motion'), openSize:openInfo('map-size'), openColor:openInfo('map-color'),
+      rowCount:rows.length, colCount:cols.length, dsName:DS.name, layoutTabs, stage, gridOverlay, axisLabels, statusLine,
+      table, dsBtns: React.createElement(React.Fragment,{}, [['climate','🌡 기후'],['finedust','😷 미세먼지'],['inequality','⚖ 불평등'],['extinction','🏚 지역소멸'],['animal','🐾 동물권'],['emotion','🙂 우리 반']].map(d=>
+        React.createElement('div',{key:d[0],onClick:()=>this.setState({ds:d[0],mapX:0,mapY:1,mapSize:2,mapColor:3}),style:{fontSize:'12px',fontWeight:600,cursor:'pointer',padding:'8px 12px',borderRadius:'999px',border:'1px solid '+(S.ds===d[0]?'#2F6BE0':'rgba(255,255,255,0.14)'),background:S.ds===d[0]?'rgba(47,107,224,0.18)':'transparent',color:S.ds===d[0]?'#fff':'#9fb0d0'}},d[1]))),
+      onFile:()=>{}, mapRows, shapeSeg, layoutSliders, motionSeg, motionSliders, scaleSeg, scalePreview, exportBtns, saveBtns, coachLine,
+      abLabel:S.ab, toggleAB:()=>{ if(S.ab==='A'){ this._A={mapX:S.mapX,mapY:S.mapY,mapSize:S.mapSize,mapColor:S.mapColor,scale:S.scale,layout:S.layout}; this.setState({ab:'B',mapColor:S.mapX,mapX:S.mapColor,scale:'spectral',layout:'circle'}); } else { this.setState(Object.assign({ab:'A'},this._A||{})); } },
+      reseed:()=>this.setState(s=>({seed:s.seed+1})) };
+  }
+  fieldVal(id){ try{ const el=document.getElementById(id); return el? el.value.trim():''; }catch(e){ return ''; } }
+  recDoc(){ return {
+    sense:this.fieldVal('rec-sense'), count:this.fieldVal('rec-count'), omit:this.fieldVal('rec-omit'),
+    scale:this.fieldVal('rec-scale'), miss:this.fieldVal('rec-miss'),
+    dataname:this.fieldVal('in-dataname'), intent:this.fieldVal('in-intent'), evidence:this.fieldVal('in-evidence') };
+  }
+  doExport(kind,DS){ try{
+    const r=this.recDoc(), c=DS.cols, s=this.state;
+    if(kind==='JSON'){ const blob=new Blob([JSON.stringify({dataset:DS.name,columns:c,mapping:{x:c[s.mapX],y:c[s.mapY],size:c[s.mapSize],color:c[s.mapColor]},settings:s,productionDoc:r},null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='data-art.json'; a.click(); }
+    else if(kind==='매핑 MD'){
+      const md='# 데이터 점 — 작가 설계서\n\n## 작품\n- 데이터셋: '+DS.name+'\n- 데이터 주제: '+(r.dataname||'—')+'\n- 의도(한 문장): '+(r.intent||'—')+'\n- 조형/데이터 근거: '+(r.evidence||'—')+'\n\n## 매핑\n- X 위치 ← '+c[s.mapX]+'\n- Y 위치 ← '+c[s.mapY]+'\n- 크기 ← '+c[s.mapSize]+'\n- 색 ← '+c[s.mapColor]+'\n- 레이아웃: '+s.layout+' · 모양: '+s.shape+' · 움직임: '+s.motion+' · 색 스케일: '+s.scale+
+        '\n\n## 데이터 선택 기록 (메타비평)\n1. 감각 먼저: '+(r.sense||'—')+'\n2. 무엇을 셌나: '+(r.count||'—')+'\n3. 무엇을 뺐/숨겼나: '+(r.omit||'—')+'\n4. 왜 이 척도·매핑인가: '+(r.scale||'—')+'\n5. 데이터가 놓친 내 삶의 진실: '+(r.miss||'—')+'\n';
+      const blob=new Blob([md],{type:'text/markdown'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='작가설계서.md'; a.click(); }
+  }catch(e){} }
+}
+</script>
+</body>
+</html>

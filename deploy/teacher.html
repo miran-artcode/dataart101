@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="교사대시보드" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="hub.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#2C3A52; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #EEF7FF; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#EEF7FF; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <span style="color:#0E1523;">대시보드</span>
+          <a href="gallery.html" style="color:#667080;" style-hover="color:#0E1523;">전시</a>
+        </div>
+        <div style="display:flex; align-items:center; gap:9px;">
+          <span style="font-size:13px; font-weight:600; color:#4C6CA6;">교사</span>
+          <div style="width:34px; height:34px; border-radius:50%; background:#4C6CA6; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">T</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header style="padding:40px 6px 24px;">
+      <div style="font-size:14px; font-weight:600; color:#4C6CA6;">황미란 선생님 · 2학년 3반</div>
+      <h1 style="font-size:42px; font-weight:800; letter-spacing:-0.03em; margin:10px 0 0;">교사 대시보드</h1>
+    </header>
+
+    <!-- stats -->
+    <section style="display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:14px;">
+      {{ stats }}
+    </section>
+
+    <!-- main: roster + distribution -->
+    <section style="display:grid; grid-template-columns:1fr 320px; gap:14px; margin-top:14px; padding-bottom:60px; align-items:start;">
+
+      <!-- roster -->
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:8px 24px 16px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:18px 0 8px;">
+          <div style="font-size:17px; font-weight:700;">학생 진행 현황</div>
+          <div style="font-size:13px; color:#4C6CA6; font-weight:600; cursor:pointer;">전체 보기 →</div>
+        </div>
+        <div style="display:grid; grid-template-columns:1.4fr 1.6fr 1fr 80px; gap:14px; padding:10px 0; border-bottom:1px solid #EEF2F7; font-size:12px; font-weight:700; color:#9AA6B6; letter-spacing:0.04em;">
+          <div>학생</div><div>진행 단계</div><div>최근 작품</div><div style="text-align:right;">피드백</div>
+        </div>
+        {{ roster }}
+      </div>
+
+      <!-- side: class distribution -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="font-size:15px; font-weight:700;">학급 색 경향</div>
+          <div style="font-size:13px; color:#667080; margin-top:3px;">제출 작품의 평균 색 군집</div>
+          <div style="display:flex; height:16px; border-radius:8px; overflow:hidden; margin-top:16px;">{{ classBar }}</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:8px;">{{ classList }}</div>
+        </div>
+        <div style="background:#dfeafe; border-radius:22px; padding:22px;">
+          <div style="font-size:15px; font-weight:700; color:#2C3A52;">검토 대기</div>
+          <div style="font-size:40px; font-weight:800; letter-spacing:-0.03em; margin-top:6px; font-variant-numeric:tabular-nums;">7</div>
+          <div style="font-size:13px; color:#51607A;">새 제출물이 피드백을 기다립니다.</div>
+          <button style="margin-top:16px; width:100%; background:#2C3A52; color:#fff; border:none; border-radius:12px; padding:13px; font-size:14.5px; font-weight:700; font-family:inherit; cursor:pointer;" style-hover="background:#38496A;">검토 시작 →</button>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    const statData = [['28','참여 학생'],['64','제출 작품'],['52','분석 완료'],['7','피드백 대기']];
+    const stats = React.createElement(React.Fragment,{}, statData.map((d,i)=>
+      React.createElement('div',{key:i,style:{background:'#fff',border:'1px solid #E4EAF2',borderRadius:'20px',padding:'24px',boxShadow:'0 22px 46px -38px rgba(14,21,35,0.3)'}},[
+        React.createElement('div',{key:'n',style:{fontSize:'40px',fontWeight:800,letterSpacing:'-0.03em',fontVariantNumeric:'tabular-nums'}},d[0]),
+        React.createElement('div',{key:'l',style:{fontSize:'13.5px',color:'#667080',marginTop:'4px'}},d[1]),
+      ])));
+
+    const stage = (label,pct,color)=>React.createElement('div',{style:{display:'flex',alignItems:'center',gap:'10px'}},[
+      React.createElement('div',{key:'b',style:{flex:1,height:'7px',borderRadius:'4px',background:'#EAF0F7',overflow:'hidden'}},
+        React.createElement('div',{style:{width:pct+'%',height:'100%',borderRadius:'4px',background:color}})),
+      React.createElement('div',{key:'l',style:{fontSize:'12.5px',color:'#51607A',width:'52px'}},label),
+    ]);
+    const students = [
+      ['김민서','출품','#2C3A52',100,['#2E3A4A','#4C6CA6','#8C93A2']],
+      ['이준','재창조','#4C6CA6',66,['#9C6E5B','#C9A24C','#E4DED0']],
+      ['박서연','분석','#7C8B7A',40,['#C9A24C','#7C8B7A','#2E3A4A']],
+      ['정하늘','출품','#2C3A52',100,['#2E3A4A','#33384a','#4C6CA6']],
+      ['최유진','재창조','#4C6CA6',70,['#9C6E5B','#E4DED0','#C9A24C']],
+      ['한도윤','분석','#7C8B7A',35,['#7C8B7A','#C9A24C','#E4DED0']],
+    ];
+    const roster = React.createElement(React.Fragment,{}, students.map((s,i)=>
+      React.createElement('div',{key:i,style:{display:'grid',gridTemplateColumns:'1.4fr 1.6fr 1fr 80px',gap:'14px',alignItems:'center',padding:'14px 0',borderBottom: i<students.length-1?'1px solid #F1F4F9':'none'}},[
+        React.createElement('div',{key:'s',style:{display:'flex',alignItems:'center',gap:'10px'}},[
+          React.createElement('div',{key:'av',style:{width:'30px',height:'30px',borderRadius:'50%',background:s[4][0],color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'12px',fontWeight:700}},s[0][0]),
+          React.createElement('div',{key:'nm',style:{fontSize:'14.5px',fontWeight:600}},s[0]),
+        ]),
+        React.createElement('div',{key:'st'}, stage(s[1],s[3],s[2])),
+        React.createElement('div',{key:'w',style:{display:'flex',height:'30px',width:'72px',borderRadius:'7px',overflow:'hidden'}}, s[4].map((c,j)=>
+          React.createElement('div',{key:j,style:{flex:1,background:c}}))),
+        React.createElement('div',{key:'f',style:{justifySelf:'end'}},
+          React.createElement('button',{style:{background:'#EAF1FB',color:'#2C3A52',border:'none',borderRadius:'999px',padding:'7px 13px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},'쓰기')),
+      ])));
+
+    const pal=['#2E3A4A','#7C8B7A','#C9A24C','#9C6E5B','#8C93A2'];
+    const pcts=[34,24,18,14,10];
+    const nm=['청회색','세이지','오커','테라코타','연보라'];
+    const classBar = React.createElement(React.Fragment,{}, pal.map((c,i)=>
+      React.createElement('div',{key:i,style:{width:pcts[i]+'%',background:c}})));
+    const classList = React.createElement(React.Fragment,{}, pal.map((c,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'9px'}},[
+        React.createElement('div',{key:'s',style:{width:'14px',height:'14px',borderRadius:'4px',background:c}}),
+        React.createElement('div',{key:'n',style:{fontSize:'13px',flex:1}},nm[i]),
+        React.createElement('div',{key:'p',style:{fontSize:'13px',fontWeight:700,fontVariantNumeric:'tabular-nums'}},pcts[i]+'%'),
+      ])));
+
+    return { stats, roster, classBar, classList };
+  }
+}
+</script>
+</body>
+</html>

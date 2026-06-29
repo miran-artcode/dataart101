@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  :root{ --muted:#8794b0; --line:#2a3142; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; }
+  .si{ background:rgba(255,255,255,0.05); border:1px solid #232734; border-radius:8px; padding:9px 11px; color:#fff; font-family:inherit; font-size:13px; outline:none; width:100%; }
+  textarea{ font-family:inherit; }
+</style>
+<script src="./engine/kmeans.js"></script>
+<script src="./engine/analysis.js"></script>
+<script src="./engine/algorithms.js"></script>
+<script src="./engine/charts.js"></script>
+<script src="./engine/harmony.js"></script>
+<script src="./engine/explain-data.js"></script>
+</helmet>
+
+<div data-screen-label="알고리즘분석실" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  {{ zoomModal }}
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(0,0,0,0.5);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">허브</a>
+        <a href="색군집스튜디오.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">색 군집</a>
+        <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">전시</a>
+      </div>
+    </nav>
+
+    <header style="padding:34px 6px 20px;">
+      <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 허브</a>
+      <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8; margin-top:12px;">ALGORITHM LAB · 7 EYES</div>
+      <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">알고리즘 분석실</h1>
+      <div style="font-size:14px; color:#8794b0; margin-top:8px; max-width:760px; line-height:1.6;">한 그림을 일곱 개의 알고리즘으로 읽습니다. 각 카드의 <b style="color:#93A4E8;">ⓘ</b>로 쉬운→깊은 설명을, 결과 아래 <b style="color:#7FE0C8;">해석 메모</b>에 근거를 적으면 리포트로 모입니다. 분석은 모두 브라우저 안에서 처리돼요(이미지는 서버로 전송되지 않음).</div>
+    </header>
+
+    <!-- algorithm selector -->
+    <div style="display:flex; gap:8px; padding:0 6px 16px; flex-wrap:wrap;">{{ algoTabs }}</div>
+
+    <section style="display:grid; grid-template-columns:1fr 332px; gap:14px; padding-bottom:24px; align-items:start;">
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <!-- lens before / after -->
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; gap:10px; flex-wrap:wrap;">
+            <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:13px; font-weight:700; color:#fff;">{{ algoName }}</span>{{ algoInfo }}</div>
+            <div style="display:flex; gap:6px; background:rgba(255,255,255,0.05); padding:4px; border-radius:999px;">{{ viewTabs }}</div>
+          </div>
+          <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:400px; display:flex; align-items:center; justify-content:center;">
+            <canvas id="labCanvas" width="520" height="400" style="max-width:100%; max-height:100%; display:block;"></canvas>
+            <sc-if value="{{ busy }}" hint-placeholder-val="{{ false }}"><div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(7,11,18,0.6); font-size:13px; color:#93A4E8; font-weight:600;">분석 중…</div></sc-if>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 6px 4px; gap:8px; flex-wrap:wrap;">
+            <div style="font-size:12px; color:#8794b0;">{{ algoMiss }}</div>
+            <button onClick="{{ reseed }}" style="background:#1E2A42; color:#cfe0f7; border:none; border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; font-family:inherit; cursor:pointer;">↻ 다시</button>
+          </div>
+        </div>
+
+        <!-- recreation note -->
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px;">
+          <div style="display:flex; align-items:center; gap:8px;"><span style="font-size:15px; font-weight:700;">재창조 제안</span><span style="font-size:12px; color:#2FB6A8; font-weight:600;">이 알고리즘으로 무엇을 만들까</span></div>
+          <p style="font-size:14px; line-height:1.7; color:#A9B8DC; margin:12px 0 0;">{{ recreation }}</p>
+          <div style="margin-top:16px; display:flex; gap:8px; flex-wrap:wrap;">
+            <a href="작업실.dc.html"><button style="background:#2F6BE0; color:#fff; border:none; border-radius:10px; padding:11px 18px; font-size:13.5px; font-weight:700; font-family:inherit; cursor:pointer;">작업실에서 만들기 →</button></a>
+            <a href="색군집스튜디오.dc.html"><button style="background:rgba(255,255,255,0.06); color:#E7ECF7; border:1px solid rgba(255,255,255,0.16); border-radius:10px; padding:11px 18px; font-size:13.5px; font-weight:600; font-family:inherit; cursor:pointer;">색 스튜디오</button></a>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+            <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">입력 작품</div>
+            <canvas id="thumb" width="120" height="90" style="width:74px; height:auto; border:1px solid #232734; border-radius:7px; background:#000;"></canvas>
+          </div>
+          <div style="font-size:11.5px; color:#7E89A8; margin-top:8px; line-height:1.5;">{{ paintTitle }}</div>
+          <div style="display:flex; gap:6px; margin-top:10px; flex-wrap:wrap;">{{ artBtns }}</div>
+          <input type="file" accept="image/*" onChange="{{ onFile }}" class="si" style="padding:8px; margin-top:10px;">
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">조작 설정</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:14px;">{{ controls }}</div>
+          <button onClick="{{ rerun }}" style="margin-top:14px; width:100%; background:#1E2A42; color:#cfe0f7; border:none; border-radius:9px; padding:11px; font-size:12.5px; font-weight:700; font-family:inherit; cursor:pointer;">🔬 다시 분석</button>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">추출 데이터 · {{ algoName }}</div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:9px;">{{ metrics }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; justify-content:space-between;">
+            <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">해석 메모 · {{ algoName }}</div>
+            <span style="font-size:11px; color:#7E89A8;">리포트에 취합됨</span>
+          </div>
+          {{ lensMemo }}
+        </div>
+
+      </div>
+    </section>
+
+    <!-- color analysis charts -->
+    <section style="padding:8px 6px 10px;">
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;"><h2 style="font-size:21px; font-weight:800; letter-spacing:-0.02em; margin:0;">색 분석 차트</h2><span style="font-size:13px; color:#8794b0;">차트를 클릭하면 크게 + 수치로 · ⓘ로 읽는 법을, 메모에 해석을</span></div>
+      <div style="margin-top:14px; display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px;">{{ chartGrid }}</div>
+    </section>
+
+    <!-- color harmony -->
+    <section style="padding:18px 6px 10px;">
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;"><h2 style="font-size:21px; font-weight:800; letter-spacing:-0.02em; margin:0;">색채 조화 분석 · 추천</h2><span style="font-size:13px; color:#8794b0;">미술 색채 이론과 데이터 분석을 잇는 다리</span></div>
+      <div style="margin-top:14px;">{{ harmonyPanel }}</div>
+    </section>
+
+    <!-- color vision deficiency -->
+    <section style="padding:18px 6px 10px;">
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;"><h2 style="font-size:21px; font-weight:800; letter-spacing:-0.02em; margin:0;">색각 다양성 시뮬레이션</h2><span style="font-size:13px; color:#8794b0;">접근성 · 색만으로 정보를 나누지 않기</span></div>
+      <div style="margin-top:14px;">{{ cvdPanel }}</div>
+    </section>
+
+    <!-- 7 algorithms recreation grid -->
+    <section style="padding:18px 6px 10px;">
+      <div style="display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;"><h2 style="font-size:21px; font-weight:800; letter-spacing:-0.02em; margin:0;">7가지 알고리즘 — 분석과 재창조</h2><span style="font-size:13px; color:#8794b0;">하나의 그림, 일곱 개의 눈을 한자리에서</span></div>
+      <div style="margin-top:14px; display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px;">{{ algoGrid }}</div>
+    </section>
+
+    <!-- report aggregation -->
+    <section style="padding:18px 6px 40px;">
+      <div style="background:#13151d; border:1px solid #232734; border-radius:24px; padding:28px; box-shadow:0 40px 80px -50px rgba(0,0,0,0.7);">
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap;">
+          <div>
+            <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8;">REPORT · 부록 A</div>
+            <div style="font-size:20px; font-weight:800; letter-spacing:-0.02em; margin-top:6px;">일곱 개의 눈으로 읽은 〈{{ artLabel }}〉</div>
+            <div style="font-size:13px; color:#8794b0; margin-top:4px;">해석 메모 {{ noteCount }}개 작성 · 7 알고리즘 중 {{ doneCount }}개에 메모</div>
+          </div>
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <button onClick="{{ exportMd }}" style="background:#2F6BE0; color:#fff; border:none; border-radius:10px; padding:12px 20px; font-size:13.5px; font-weight:700; font-family:inherit; cursor:pointer;">분석 리포트(.md)</button>
+            <button onClick="{{ exportJson }}" style="background:rgba(255,255,255,0.06); color:#E7ECF7; border:1px solid rgba(255,255,255,0.16); border-radius:10px; padding:12px 18px; font-size:13.5px; font-weight:600; font-family:inherit; cursor:pointer;">JSON</button>
+          </div>
+        </div>
+        <div style="margin-top:20px; height:8px; border-radius:4px; background:rgba(255,255,255,0.08); overflow:hidden;"><div style="width:{{ donePct }}%; height:100%; background:linear-gradient(90deg,#2F6BE0,#2FB6A8); border-radius:4px; transition:width .4s ease;"></div></div>
+        <div style="margin-top:20px; display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px;">{{ reportGrid }}</div>
+      </div>
+    </section>
+
+    <footer style="margin:4px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+          <a href="색군집스튜디오.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">색 군집</a>
+          <a href="작업실.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">작업실</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { art:'starrynight', algo:0, view:'after', K:8, space:'rgb', maxDim:240, levels:4, th:128, notan:2, contrast:0, edgeTh:0, edgeStr:100, edgeInvert:true, Kmed:8, cell:16, mosShape:'square', mosGap:0, seed:12345, notes:{}, cvd:'normal', harm:'triadic', loaded:false, paintTitle:'불러오는 중…', busy:true, zoom:null };
+
+  componentDidMount(){ this.waitEngine(()=>this.loadDemo(this.state.art)); }
+  waitEngine(cb,n){ n=n||0; if(window.Algos&&window.Charts&&window.Harmony&&window.ImageAnalysis){ return cb(); } if(n>160) return; setTimeout(()=>this.waitEngine(cb,n+1),25); }
+
+  PAINTS(){ return [['starrynight','별이 빛나는 밤'],['seurat','쇠라·점묘'],['monet','모네·인상'],['hokusai','호쿠사이·파도'],['mondrian','몬드리안'],['kandinsky','칸딘스키'],['klimt','클림트·키스'],['scream','뭉크·절규']]; }
+  algos(){ return [
+    {key:'kmeans',name:'K-means 색 군집화',short:'K-means',badge:'핵심',rec:'뽑아낸 대표색을 점으로 흩뿌려 점묘화·제너러티브 작품으로. 색 군집 스튜디오와 직접 연결됩니다.',miss:'놓친 것: 색이 어디에 있는지(위치)를 모릅니다.'},
+    {key:'histogram',name:'색 히스토그램 · 포스터화',short:'히스토그램',badge:'핵심',rec:'단계를 거칠게 줄여 실크스크린·팝아트 포스터로. 워홀의 색면 분할을 떠올려 보세요.',miss:'놓친 것: 색을 다 섞어 센 것이라 공간·형태가 사라집니다.'},
+    {key:'notan',name:'명도 · 노탄(Notan)',short:'노탄',badge:'핵심',rec:'흑백 명암만 남긴 노탄으로 목판화·먹그림처럼. 빛과 그림자의 구조가 드러납니다.',miss:'놓친 것: 색의 의미·온도가 사라집니다(임계값도 주관적).'},
+    {key:'edge',name:'에지 검출 · Sobel',short:'에지',badge:'핵심',rec:'추출한 선만으로 드로잉·라인아트를. 형태의 뼈대가 무엇인지 보입니다.',miss:'놓친 것: 그림자 경계와 진짜 윤곽을 구분 못 합니다.'},
+    {key:'mediancut',name:'중앙값 분할 · Median Cut',short:'중앙값',badge:'심화',rec:'GIF 팔레트 방식으로 색을 요약. K-means와 결과를 비교해 보세요.',miss:'K-means와 비교 — 색을 요약하는 두 가지 길.'},
+    {key:'mosaic',name:'격자 평균 · 모자이크',short:'모자이크',badge:'심화',rec:'타일 모자이크·픽셀아트로. 멀리서 보면 형태, 가까이서 보면 색의 블록.',miss:'놓친 것: 형태와 무관하게 기계적으로 자릅니다.'},
+    {key:'composition',name:'구도 분석 · 삼분할',short:'구도',badge:'심화',rec:'시선이 모이는 지점을 강조한 재구성으로. 황금분할·삼분할의 균형을 실험하세요.',miss:'밝기 무게중심과 삼분할선 — 안정인가 긴장인가?'},
+  ]; }
+  HARM = { complementary:'보색', analogous:'유사', triadic:'삼각', split:'분할보색' };
+  CVD = { normal:'정상', deutan:'녹색맹(가장 흔함)', protan:'적색맹', tritan:'청색맹' };
+
+  loadDemo(name){ const IA=window.ImageAnalysis; if(!IA)return; this.setState({busy:true});
+    IA.loadPainting(name,(cv,title,fb)=>{ this.src=cv; this.setState({art:name,paintTitle:(fb?'※ 절차적 데모 · ':'')+(title||name)}); this.afterLoad(); }); }
+  loadFile(file){ if(!file||!file.type||!file.type.startsWith('image/'))return; const img=new Image(),url=URL.createObjectURL(file);
+    img.onload=()=>{ const c=document.createElement('canvas'); c.width=img.naturalWidth; c.height=img.naturalHeight; c.getContext('2d').drawImage(img,0,0); this.src=c; URL.revokeObjectURL(url); this.setState({paintTitle:'업로드 · '+file.name}); this.afterLoad(); };
+    img.src=url; }
+  afterLoad(){ const t=document.getElementById('thumb'); if(t&&this.src){ const ar=this.src.width/this.src.height; t.width=120; t.height=Math.round(120/ar); t.getContext('2d').drawImage(this.src,0,0,t.width,t.height); } this.runAll(); }
+
+  runAll(){ if(!this.src||!window.Algos)return; const S=this.state, A=window.Algos;
+    try{
+      const km=A.kmeansArt(this.src,{K:S.K,space:S.space,seed:S.seed,maxDim:S.maxDim}); this.km=km; this.palette=km.palette;
+      this.stats=window.Charts.computeStats(this.src);
+      this.comp=A.composition(this.src);
+      this.median=A.medianCut(this.src,{K:S.Kmed});
+      this.edgeRes=A.edges(this.src,{threshold:S.edgeTh,strength:S.edgeStr/100,invert:S.edgeInvert});
+      this.mosRes=A.mosaic(this.src,{cell:S.cell,shape:S.mosShape,gap:S.mosGap});
+      this.harmony=window.Harmony.analyze(this.palette);
+      this.blit('rc-kmeans',km.recreate);
+      this.blit('rc-poster',A.posterize(this.src,{levels:S.levels}).recreate);
+      this.blit('rc-notan',A.notan(this.src,{threshold:S.th,levels:S.notan,contrast:S.contrast/100}).recreate);
+      this.blit('rc-edge',this.edgeRes.recreate);
+      this.blit('rc-median',this.median.recreate);
+      this.blit('rc-mosaic',this.mosRes.recreate);
+      this.blit('rc-comp',this.comp.recreate);
+      this.drawCharts();
+      this.applyHarmony(S.harm,true);
+      this.applyCVD(S.cvd,true);
+      this.drawLens();
+      this.setState({loaded:true,busy:false});
+    }catch(e){ console.error('runAll',e); this.setState({busy:false}); } }
+
+  blit(id,c){ const cv=document.getElementById(id); if(!cv||!c)return; cv.width=c.width; cv.height=c.height; const x=cv.getContext('2d'); x.clearRect(0,0,cv.width,cv.height); x.drawImage(c,0,0); }
+  drawCharts(){ const C=window.Charts, el=id=>document.getElementById(id); if(!this.stats||!this.palette)return;
+    try{ if(el('cv-donut'))C.donut(el('cv-donut'),this.palette); if(el('cv-rose'))C.rose(el('cv-rose'),this.palette); if(el('cv-bars'))C.bars(el('cv-bars'),this.palette);
+    if(el('cv-scatter'))C.scatter(el('cv-scatter'),this.stats.samples,this.palette); if(el('cv-rgbhist'))C.rgbHist(el('cv-rgbhist'),this.stats.rgbHist);
+    if(el('cv-wheel'))C.wheel(el('cv-wheel'),this.stats.hueBins); if(el('cv-value'))C.valueHist(el('cv-value'),this.stats.valueHist,this.state.contrast/100);
+    if(el('cv-heatmap'))C.heatmap(el('cv-heatmap'),this.stats.samples); this.swatches('pal-kmeans',this.palette); this.swatches('pal-kmeans2',this.palette); this.swatches('pal-median',this.median&&this.median.palette); }catch(e){ console.error('charts',e); } }
+  swatches(id,pal){ const el=document.getElementById(id); if(!el||!pal)return; el.innerHTML=pal.map(p=>'<span style="flex:1;min-width:14px;height:14px;border-radius:3px;background:rgb('+p.r+','+p.g+','+p.b+')"></span>').join(''); }
+
+  recreateFor(key){ const S=this.state,A=window.Algos; if(!A)return null; switch(key){
+    case 'kmeans': return this.km&&this.km.recreate;
+    case 'histogram': return A.posterize(this.src,{levels:S.levels}).recreate;
+    case 'notan': return A.notan(this.src,{threshold:S.th,levels:S.notan,contrast:S.contrast/100}).recreate;
+    case 'edge': return A.edges(this.src,{threshold:S.edgeTh,strength:S.edgeStr/100,invert:S.edgeInvert}).recreate;
+    case 'mediancut': return this.median&&this.median.recreate;
+    case 'mosaic': return A.mosaic(this.src,{cell:S.cell,shape:S.mosShape,gap:S.mosGap}).recreate;
+    case 'composition': return this.comp&&this.comp.recreate; } }
+  drawLens(){ const cv=document.getElementById('labCanvas'); if(!cv||!this.src)return; const ctx=cv.getContext('2d'),W=520,H=400; ctx.clearRect(0,0,W,H); ctx.fillStyle='#070B12'; ctx.fillRect(0,0,W,H);
+    const fit=img=>{ const s=Math.min(W/img.width,H/img.height),w=img.width*s,h=img.height*s; ctx.drawImage(img,(W-w)/2,(H-h)/2,w,h); };
+    if(this.state.view==='before'){ fit(this.src); return; }
+    const rc=this.recreateFor(this.algos()[this.state.algo].key); if(rc)fit(rc); else fit(this.src); }
+
+  applyHarmony(type,silent){ if(!this.src||!this.harmony||!window.Algos)return; const pal=this.harmony.suggestions[type]; if(!pal)return; this.blit('rc-harmony',window.Algos.recolor(this.src,pal)); this.swatches('harm-pal',pal); if(silent){ this.state.harm=type; } else { this.setState({harm:type}); } }
+  applyCVD(type,silent){ if(!this.src||!window.Algos)return; this.blit('rc-cvd',window.Algos.cvd(this.src,type).recreate); if(silent){ this.state.cvd=type; } else { this.setState({cvd:type}); } }
+  sendStudio(){ const cv=document.getElementById('rc-harmony'); if(!cv||!cv.width)return; try{ localStorage.setItem('dn_studio_image',cv.toDataURL('image/png')); localStorage.setItem('dn_studio_image_title',(this.HARM[this.state.harm]||'조화')+' 재창조'); }catch(e){} location.href='색군집스튜디오.dc.html'; }
+
+  setNote(key,v){ this.setState(s=>({notes:Object.assign({},s.notes,{[key]:v})})); }
+  cum(p,n){ let s=0; for(let i=0;i<Math.min(n,p.length);i++)s+=p[i].ratio; return Math.round(s*100); }
+  metricsData(){ const S=this.state,k=this.algos()[S.algo].key,p=this.palette||[],c=this.comp;
+    if(k==='kmeans'){ const top=p[0]?Math.round(p[0].ratio*100):0; const meta=this.km&&this.km.meta||{}; return {'대표색 수(K)':S.K,'실제 추출 색':p.length+'개','색공간':S.space.toUpperCase(),'분석 해상도':S.maxDim+'px','최다 색 비중':top+'%','상위 3색 누적':this.cum(p,3)+'%','군집 오차(RMSE)':meta.rmse!=null?meta.rmse:'—','초기화 시드':S.seed}; }
+    if(k==='mediancut'){ const m=(this.median&&this.median.palette)||[]; const top=m[0]?Math.round(m[0].ratio*100):0; return {'분할 색 수':S.Kmed,'실제 색':m.length+'개','방식':'중앙값 분할','최다 색 비중':top+'%','상위 3색 누적':this.cum(m,3)+'%','K-means와':'결과 비교'}; }
+    if(k==='histogram') return {'채널당 단계':S.levels+'단','전체 색 조합':Math.pow(S.levels,3).toLocaleString()+'가지','단계 간격':Math.round(255/(S.levels-1))+'/255','효과':'포스터화'};
+    if(k==='notan') return {'명암 임계값':S.th+' / 255','톤 단계':S.notan+'단','대비(톤커브)':(S.contrast>0?'+':'')+S.contrast,'어둠:빛 경계':Math.round(S.th/255*100)+'% 지점'};
+    if(k==='edge'){ const m=this.edgeRes&&this.edgeRes.meta||{}; return {'필터':'Sobel 3×3','민감도(threshold)':S.edgeTh,'대비 증폭':(S.edgeStr/100).toFixed(2)+'×','윤곽 밀도':(m.density!=null?m.density:'—')+'%','평균 윤곽 세기':m.avg!=null?m.avg:'—','선 방향':S.edgeInvert?'흰 바탕·검은 선':'검은 바탕·흰 선'}; }
+    if(k==='mosaic'){ const m=this.mosRes&&this.mosRes.meta||{}; const shp={square:'정사각',circle:'원',diamond:'마름모'}[S.mosShape]; return {'격자 크기':S.cell+'px','타일 모양':shp,'타일 간격':S.mosGap+'px','타일 수':m.tiles!=null?m.tiles.toLocaleString()+'개':'—','효과':'픽셀아트'}; }
+    if(k==='composition'&&c) return {'무게중심 X':Math.round(c.centroid.x*100)+'%','무게중심 Y':Math.round(c.centroid.y*100)+'%','좌우 균형':Math.round(c.balanceLR*100)+':'+(100-Math.round(c.balanceLR*100)),'상하 균형':Math.round(c.balanceTB*100)+':'+(100-Math.round(c.balanceTB*100)),'안정/긴장':(Math.abs(c.centroid.x-0.5)<0.12&&Math.abs(c.centroid.y-0.5)<0.12)?'중앙 집중·안정':'비대칭·긴장'};
+    return {'준비':'분석 대기 중'}; }
+
+  mkInfo(k){ const E=window.LAB_EXPLAIN&&window.LAB_EXPLAIN[k]; if(!E)return null; return React.createElement('dc-import',{name:'설명아이콘',term:E.term,easy:E.easy,deep:E.deep,missed:E.missed,idea:E.idea,tone:'dark','hint-size':'18px,18px'}); }
+  mkMemo(key,ph){ return React.createElement('textarea',{value:this.state.notes[key]||'',placeholder:ph,onChange:e=>this.setNote(key,e.target.value),style:{width:'100%',marginTop:'10px',minHeight:'46px',resize:'vertical',background:'rgba(255,255,255,0.05)',border:'1px solid #232734',borderRadius:'8px',padding:'8px 10px',color:'#fff',fontSize:'12px',lineHeight:1.5,outline:'none',fontFamily:'inherit'}}); }
+  mkSlider(label,key,min,max,opts){ opts=opts||{}; const v=this.state[key],fmt=opts.fmt,step=opts.step||1; return React.createElement('div',{key:key},[
+    React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'12px',marginBottom:'6px'}},[React.createElement('span',{key:'a',style:{color:'#cdd9ef',fontWeight:600}},label),React.createElement('span',{key:'b',style:{color:'#fff',fontWeight:700}},fmt?fmt(v):v)]),
+    React.createElement('input',{key:'i',type:'range',min:min,max:max,step:step,value:v,onChange:e=>this.setState({[key]:+e.target.value}),onMouseUp:()=>this.runAll(),onTouchEnd:()=>this.runAll(),style:{width:'100%'}}),
+    opts.cap?React.createElement('div',{key:'c',style:{fontSize:'10.5px',color:'#7E89A8',marginTop:'5px',lineHeight:1.45}},opts.cap):null
+  ]); }
+  hex(p){ return '#'+[p.r,p.g,p.b].map(v=>v.toString(16).padStart(2,'0')).join(''); }
+  drawZoom(){ const S=this.state,key=S.zoom; if(!key||!window.Charts||!this.stats)return; const C=window.Charts,cv=document.getElementById('zoom-cv'); if(!cv)return;
+    try{ if(key==='donut')C.donut(cv,this.palette); else if(key==='rose')C.rose(cv,this.palette); else if(key==='bars')C.bars(cv,this.palette);
+    else if(key==='scatter')C.scatter(cv,this.stats.samples,this.palette); else if(key==='rgbhist')C.rgbHist(cv,this.stats.rgbHist);
+    else if(key==='wheel')C.wheel(cv,this.stats.hueBins); else if(key==='value')C.valueHist(cv,this.stats.valueHist,S.contrast/100);
+    else if(key==='heatmap')C.heatmap(cv,this.stats.samples); }catch(e){ console.error('zoom',e); } }
+  openZoom(key){ this.setState({zoom:key},()=>{ requestAnimationFrame(()=>this.drawZoom()); setTimeout(()=>this.drawZoom(),60); }); }
+  zoomRows(key){ const st=this.stats||{}; const rows=[];
+    if(key==='donut'||key==='bars'||key==='rose'){ (this.palette||[]).forEach((p,i)=>rows.push({sw:this.hex(p),label:(i+1)+'. '+this.hex(p).toUpperCase(),val:'rgb('+p.r+','+p.g+','+p.b+') · '+Math.round(p.ratio*100)+'%'})); }
+    else if(key==='scatter'){ rows.push({label:'표본 점',val:(st.samples?st.samples.length:0)+'개'}); rows.push({label:'대표색(군집 중심)',val:(this.palette||[]).length+'개'}); (this.palette||[]).slice(0,6).forEach((p,i)=>rows.push({sw:this.hex(p),label:'중심 '+(i+1),val:this.hex(p).toUpperCase()+' · 밝기 '+Math.round((0.299*p.r+0.587*p.g+0.114*p.b))})); }
+    else if(key==='rgbhist'){ const ch=['빨강 R','초록 G','파랑 B']; (st.rgbHist||[]).forEach((arr,c)=>{ let sum=0,wsum=0,peak=0,pi=0; for(let i=0;i<256;i++){ sum+=arr[i]; wsum+=arr[i]*i; if(arr[i]>peak){peak=arr[i];pi=i;} } rows.push({sw:['#ff5a6a','#51d88a','#4ec3ff'][c],label:ch[c],val:'평균 '+Math.round(wsum/Math.max(1,sum))+' · 최빈 '+pi}); }); }
+    else if(key==='wheel'){ const hb=st.hueBins||[]; const idx=hb.map((v,i)=>[v,i]).sort((a,b)=>b[0]-a[0]).slice(0,5); idx.forEach(([v,i])=>{ if(v<=0)return; rows.push({sw:'hsl('+(i*10)+',80%,55%)',label:(i*10)+'°–'+(i*10+10)+'° 색상대',val:'강도 '+v.toFixed(1)}); }); }
+    else if(key==='value'){ const vh=st.valueHist||[]; let sum=0,wsum=0,dark=0,mid=0,light=0; for(let i=0;i<256;i++){ sum+=vh[i]; wsum+=vh[i]*i; if(i<85)dark+=vh[i]; else if(i<170)mid+=vh[i]; else light+=vh[i]; } const t=Math.max(1,sum); rows.push({label:'평균 밝기',val:Math.round(wsum/t)+' / 255'}); rows.push({sw:'#222',label:'어두움(0–84)',val:Math.round(dark/t*100)+'%'}); rows.push({sw:'#888',label:'중간(85–169)',val:Math.round(mid/t*100)+'%'}); rows.push({sw:'#eee',label:'밝음(170–255)',val:Math.round(light/t*100)+'%'}); rows.push({label:'톤 키',val:wsum/t<100?'로우키(어두움)':wsum/t>160?'하이키(밝음)':'미들키'}); }
+    else if(key==='heatmap'){ rows.push({label:'가로축',val:'색상(빨강→보라)'}); rows.push({label:'세로축',val:'밝기(아래 어두움→위 밝음)'}); rows.push({label:'칸 진하기',val:'그 색·밝기의 픽셀 밀도'}); }
+    return rows; }
+
+  renderVals(){
+    const S=this.state, A=this.algos(), cur=A[S.algo];
+    const seg=(val,opts,on)=>React.createElement('div',{style:{display:'flex',gap:'5px'}},opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>on(o[0]),style:{textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 12px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},o[1])));
+
+    const algoTabs=React.createElement(React.Fragment,{}, A.map((a,i)=>React.createElement('div',{key:i,onClick:()=>this.setState({algo:i},()=>this.drawLens()),style:{fontSize:'12.5px',fontWeight:700,cursor:'pointer',padding:'9px 14px',borderRadius:'999px',background:S.algo===i?'#2F6BE0':'#13151d',border:'1px solid '+(S.algo===i?'#2F6BE0':'#232734'),color:S.algo===i?'#fff':(S.notes[a.key]?'#7FE0C8':'#9fb0d0')}},(i+1)+' · '+a.short+(S.notes[a.key]?' ✓':''))));
+
+    const viewTabs=seg(S.view,[['before','원본'],['after','분석']],v=>this.setState({view:v},()=>this.drawLens()));
+
+    const artBtns=React.createElement(React.Fragment,{}, this.PAINTS().map(a=>
+      React.createElement('div',{key:a[0],onClick:()=>this.loadDemo(a[0]),style:{fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 11px',borderRadius:'999px',border:'1px solid '+(S.art===a[0]?'#2F6BE0':'rgba(255,255,255,0.14)'),background:S.art===a[0]?'rgba(47,107,224,0.18)':'transparent',color:S.art===a[0]?'#fff':'#9fb0d0'}},a[1])));
+
+    const grpTitle=(t)=>React.createElement('div',{style:{fontSize:'11px',fontWeight:800,color:'#7FB6E8',letterSpacing:'0.05em',margin:'4px 0 2px'}},t);
+    const spaceSel=React.createElement('div',{key:'space'},[
+      React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#cdd9ef',fontWeight:600,marginBottom:'6px'}},'색공간 (군집 거리)'),
+      seg(S.space,[['rgb','RGB'],['lab','LAB']],v=>this.setState({space:v},()=>this.runAll())),
+      React.createElement('div',{key:'c',style:{fontSize:'10.5px',color:'#7E89A8',marginTop:'5px',lineHeight:1.45}},S.space==='lab'?'LAB: 사람 눈이 느끼는 색차에 가깝게 군집 → 더 자연스러운 분리':'RGB: 화면 신호 그대로 거리 계산 → 빠르지만 눈과 다를 수 있음')
+    ]);
+    const common=React.createElement('div',{key:'common',style:{display:'flex',flexDirection:'column',gap:'14px',paddingBottom:'16px',borderBottom:'1px solid #232734'}},[
+      grpTitle('공통 · 색 군집(K-means)'),
+      this.mkSlider('K · 대표색 수','K',2,32,{cap:'색을 몇 개의 무리로 요약할지. 작으면 추상적, 크면 세밀. 차트·조화도 이 K를 따릅니다.'}),
+      spaceSel,
+      this.mkSlider('분석 해상도','maxDim',120,480,{step:20,fmt:v=>v+'px',cap:'분석에 쓰는 이미지 크기. 클수록 미세한 색까지 잡지만 느려집니다.'}),
+      this.mkSlider('초기화 시드','seed',1,9999,{cap:'같은 K라도 시작점(시드)에 따라 군집이 달라져요. 바꿔가며 안정성을 확인해 보세요.'}),
+    ]);
+    const ck=cur.key, specifics=[];
+    if(ck==='histogram') specifics.push(this.mkSlider('채널당 색 단계','levels',2,16,{cap:'각 RGB 채널을 몇 단으로 줄일지. 총 색 = 단계³. 적을수록 포스터(팝아트)처럼.'}));
+    else if(ck==='notan'){ specifics.push(this.mkSlider('명암 임계값','th',0,255,{cap:'이 밝기보다 밝으면 빛, 어두우면 그림자. 128 부근이 기본.'})); specifics.push(this.mkSlider('톤 단계','notan',2,8,{fmt:v=>v+'단',cap:'2단=순수 흑백 노탄. 늘리면 회색 톤이 끼어 명암 구조가 부드러워집니다.'})); specifics.push(this.mkSlider('대비(톤커브)','contrast',-100,100,{cap:'+면 명암 대비를 키워 극적으로, −면 평평하게.'})); }
+    else if(ck==='edge'){ specifics.push(this.mkSlider('민감도 (약한 선 제거)','edgeTh',0,160,{cap:'이 값보다 약한 윤곽은 지웁니다. 올리면 굵은 주요 윤곽만 남아요.'})); specifics.push(this.mkSlider('대비 증폭','edgeStr',30,300,{fmt:v=>(v/100).toFixed(2)+'×',cap:'윤곽 세기를 곱해 진하게/연하게. 흐린 그림은 올려서 선을 살립니다.'})); specifics.push(React.createElement('div',{key:'inv'},[React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#cdd9ef',fontWeight:600,marginBottom:'6px'}},'선 방향'),seg(S.edgeInvert?'y':'n',[['y','흰 바탕·검은 선'],['n','검은 바탕·흰 선']],v=>this.setState({edgeInvert:v==='y'},()=>this.runAll()))])); }
+    else if(ck==='mediancut') specifics.push(this.mkSlider('분할 색 수 (Kmed)','Kmed',2,32,{cap:'중앙값 분할로 만들 팔레트 크기. 같은 수의 K-means와 결과를 비교해 보세요.'}));
+    else if(ck==='mosaic'){ specifics.push(this.mkSlider('격자 크기','cell',2,64,{fmt:v=>v+'px',cap:'한 타일이 평균낼 영역. 클수록 거칠고 추상적인 픽셀아트.'})); specifics.push(React.createElement('div',{key:'shp'},[React.createElement('div',{key:'l',style:{fontSize:'12px',color:'#cdd9ef',fontWeight:600,marginBottom:'6px'}},'타일 모양'),seg(S.mosShape,[['square','정사각'],['circle','원'],['diamond','마름모']],v=>this.setState({mosShape:v},()=>this.runAll()))])); specifics.push(this.mkSlider('타일 간격','mosGap',0,12,{fmt:v=>v+'px',cap:'타일 사이 틈. 모자이크·타일 공예 느낌을 줍니다.'})); }
+    else specifics.push(React.createElement('div',{key:'note',style:{fontSize:'11.5px',color:'#7E89A8',lineHeight:1.5}},ck==='composition'?'구도는 밝기 무게중심·삼분할을 자동 계산합니다(설정 없음). 위 공통 설정은 색 분석에 적용돼요.':'K-means의 핵심 설정은 위 공통 그룹에 있어요. K·색공간·해상도·시드를 바꿔보세요.'));
+    const specBlock=React.createElement('div',{key:'spec',style:{display:'flex',flexDirection:'column',gap:'14px'}},[grpTitle((S.algo+1)+' · '+cur.short+' 설정')].concat(specifics));
+    const controls=React.createElement(React.Fragment,{},[common,specBlock]);
+
+    const m=this.metricsData(); const metrics=React.createElement(React.Fragment,{}, Object.keys(m).map((k,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'9px 12px',background:'rgba(255,255,255,0.05)',borderRadius:'9px'}},[
+        React.createElement('span',{key:'a',style:{color:'#9fb0d0'}},k),React.createElement('span',{key:'b',style:{fontWeight:700,color:'#fff'}},m[k])])));
+
+    const lensMemo=this.mkMemo(cur.key,'이 눈으로 본 발견을 적어보세요');
+
+    // charts grid
+    const charts=[['cv-donut','donut','비율 도넛'],['cv-rose','rose','방사형 막대'],['cv-bars','bars','정렬 막대'],['cv-scatter','scatter','색공간 산점도'],['cv-rgbhist','rgbhist','RGB 히스토그램'],['cv-wheel','wheel','색상환 분포'],['cv-value','value','명도 · 톤커브'],['cv-heatmap','heatmap','색 분포 히트맵']];
+    const cardSt={background:'#13151d',border:'1px solid #232734',borderRadius:'16px',padding:'15px'};
+    const chartGrid=React.createElement(React.Fragment,{}, charts.map(c=>React.createElement('div',{key:c[1],style:cardSt},[
+      React.createElement('div',{key:'h',style:{display:'flex',alignItems:'center',gap:'7px'}},[React.createElement('span',{key:'t',style:{fontSize:'12.5px',fontWeight:700,color:'#E7ECF7'}},c[2]),this.mkInfo(c[1]),
+        React.createElement('span',{key:'z',onClick:()=>this.openZoom(c[1]),title:'크게 보기',style:{marginLeft:'auto',cursor:'pointer',fontSize:'13px',color:'#9DB3D6',border:'1px solid #2a3142',borderRadius:'6px',padding:'0 7px',lineHeight:'18px'}},'⤢')]),
+      React.createElement('div',{key:'cvw',onClick:()=>this.openZoom(c[1]),style:{cursor:'zoom-in',marginTop:'10px'}},[
+        React.createElement('canvas',{key:'cv',id:c[0],style:{width:'100%',display:'block'}}),
+        (c[1]==='donut'?React.createElement('div',{key:'sw',id:'pal-kmeans',style:{display:'flex',gap:'3px',marginTop:'8px'}}):null)
+      ]),
+      this.mkMemo(c[1],'해석 메모')
+    ])));
+    const chartTitles={donut:'비율 도넛',rose:'방사형 막대',bars:'정렬 막대',scatter:'색공간 산점도',rgbhist:'RGB 히스토그램',wheel:'색상환 분포',value:'명도 · 톤커브',heatmap:'색 분포 히트맵'};
+    const zoomModal = S.zoom ? React.createElement('div',{onClick:()=>this.setState({zoom:null}),style:{position:'fixed',inset:0,zIndex:300,background:'rgba(4,6,14,0.74)',backdropFilter:'blur(3px)',display:'flex',alignItems:'center',justifyContent:'center',padding:'24px'}},
+      React.createElement('div',{onClick:e=>e.stopPropagation(),style:{width:'min(880px,94vw)',maxHeight:'92vh',overflowY:'auto',background:'#11131c',border:'1px solid #2a3142',borderRadius:'20px',padding:'24px',boxShadow:'0 40px 100px -40px rgba(0,0,0,0.9)'}},[
+        React.createElement('div',{key:'h',style:{display:'flex',alignItems:'center',gap:'10px'}},[
+          React.createElement('span',{key:'t',style:{fontSize:'17px',fontWeight:800,color:'#fff'}},chartTitles[S.zoom]||'차트'),
+          this.mkInfo(S.zoom),
+          React.createElement('span',{key:'x',onClick:()=>this.setState({zoom:null}),style:{marginLeft:'auto',cursor:'pointer',color:'#7E89A8',fontSize:'24px',lineHeight:1}},'×')
+        ]),
+        React.createElement('div',{key:'cvw',style:{marginTop:'16px',background:'#070B12',borderRadius:'14px',padding:'14px'}},React.createElement('canvas',{id:'zoom-cv',style:{width:'100%',display:'block'}})),
+        React.createElement('div',{key:'rd',style:{marginTop:'16px'}},[
+          React.createElement('div',{key:'rh',style:{fontSize:'11px',fontWeight:800,color:'#7FB6E8',letterSpacing:'0.05em',marginBottom:'10px'}},'이 차트가 말하는 데이터'),
+          React.createElement('div',{key:'rl',style:{display:'flex',flexDirection:'column',gap:'6px'}}, this.zoomRows(S.zoom).map((r,i)=>
+            React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'10px',fontSize:'13px',padding:'8px 12px',background:'rgba(255,255,255,0.04)',borderRadius:'9px'}},[
+              r.sw?React.createElement('span',{key:'s',style:{width:'16px',height:'16px',borderRadius:'4px',background:r.sw,flex:'0 0 auto',border:'1px solid rgba(255,255,255,0.15)'}}):null,
+              React.createElement('span',{key:'l',style:{color:'#cdd9ef',fontWeight:600}},r.label),
+              React.createElement('span',{key:'v',style:{marginLeft:'auto',color:'#fff',fontWeight:700,fontFamily:'monospace',fontSize:'12px'}},r.val)
+            ])))
+        ])
+      ])) : null;
+
+    // harmony panel
+    const hh=this.harmony||{dominantName:'—',dominantHue:0,relations:{},suggestions:{}};
+    const relList=[]; if(hh.relations.complementary)relList.push('보색 대비'); if(hh.relations.triadic)relList.push('삼각 조화'); if(hh.relations.analogous)relList.push('유사색 조화');
+    const harmBtn=(t)=>React.createElement('div',{key:t,onClick:()=>this.applyHarmony(t),style:{fontSize:'12px',fontWeight:600,cursor:'pointer',padding:'8px 14px',borderRadius:'999px',border:'1px solid '+(S.harm===t?'#2FB6A8':'rgba(255,255,255,0.16)'),background:S.harm===t?'rgba(47,182,168,0.16)':'transparent',color:S.harm===t?'#7FE0C8':'#9fb0d0'}},this.HARM[t]);
+    const suggRow=(name,arr)=>React.createElement('div',{key:name,style:{margin:'8px 0'}},[React.createElement('div',{key:'n',style:{fontSize:'11px',color:'#8794b0',marginBottom:'4px'}},name),React.createElement('div',{key:'s',style:{display:'flex',gap:'4px'}},(arr||[]).map((c,i)=>React.createElement('div',{key:i,style:{width:'30px',height:'24px',borderRadius:'5px',background:'rgb('+c.r+','+c.g+','+c.b+')'}})))]);
+    const harmonyPanel=React.createElement('div',{style:{background:'#13151d',border:'1px solid #232734',borderRadius:'18px',padding:'22px'}},[
+      React.createElement('div',{key:'top',style:{display:'flex',alignItems:'center',gap:'8px',flexWrap:'wrap'}},[React.createElement('span',{key:'t',style:{fontSize:'14px',fontWeight:700,color:'#fff'}},'색상환에서 읽은 조화 관계'),this.mkInfo('harmony')]),
+      React.createElement('div',{key:'rel',style:{fontSize:'13px',color:'#A9B8DC',marginTop:'8px',lineHeight:1.6}},['지배색 ',React.createElement('b',{key:'b',style:{color:'#fff'}},hh.dominantName+' ('+hh.dominantHue+'°)'),' · ',relList.length?React.createElement('b',{key:'r',style:{color:'#2FB6A8'}},'발견된 관계: '+relList.join(', ')):'뚜렷한 조화 관계는 약해요(중성·복합 팔레트).']),
+      React.createElement('div',{key:'grid',style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:'18px',marginTop:'14px',alignItems:'start'}},[
+        React.createElement('div',{key:'sug'},[suggRow('보색 Complementary',hh.suggestions.complementary),suggRow('유사 Analogous',hh.suggestions.analogous),suggRow('삼각 Triadic',hh.suggestions.triadic),suggRow('분할보색 Split',hh.suggestions.split)]),
+        React.createElement('div',{key:'rc'},[
+          React.createElement('div',{key:'p',style:{fontSize:'12px',color:'#8794b0',lineHeight:1.5,marginBottom:'8px'}},'지배색 기준으로 색상환에서 조화 팔레트를 제안해요. 아래에서 골라 이 조화로 재채색해 보세요.'),
+          React.createElement('div',{key:'btns',style:{display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'10px'}},['complementary','analogous','triadic','split'].map(harmBtn)),
+          React.createElement('div',{key:'cvw',style:{position:'relative',borderRadius:'10px',overflow:'hidden',background:'#070B12'}},[React.createElement('canvas',{key:'c',id:'rc-harmony',style:{width:'100%',display:'block'}}),React.createElement('div',{key:'tag',style:{position:'absolute',top:'8px',left:'8px',fontSize:'11px',fontWeight:700,color:'#fff',background:'rgba(0,0,0,0.5)',padding:'3px 9px',borderRadius:'999px',whiteSpace:'nowrap'}},(this.HARM[S.harm]||'')+' 조화')]),
+          React.createElement('div',{key:'sw',id:'harm-pal',style:{display:'flex',gap:'4px',marginTop:'8px'}}),
+          React.createElement('button',{key:'send',onClick:()=>this.sendStudio(),style:{marginTop:'10px',background:'rgba(47,182,168,0.14)',color:'#7FE0C8',border:'1px solid rgba(47,182,168,0.3)',borderRadius:'9px',padding:'10px 15px',fontSize:'12.5px',fontWeight:700,cursor:'pointer',fontFamily:'inherit'}},'🎨 이 조화로 색 군집 스튜디오 열기'),
+          this.mkMemo('harmony','해석 메모: 어떤 조화가 의도에 맞나? 원작은 어떤 조화를 쓰나?')
+        ])
+      ])
+    ]);
+
+    // cvd panel
+    const cvdBtn=t=>React.createElement('div',{key:t,onClick:()=>this.applyCVD(t),style:{fontSize:'12px',fontWeight:600,cursor:'pointer',padding:'8px 14px',borderRadius:'999px',border:'1px solid '+(S.cvd===t?'#2F6BE0':'rgba(255,255,255,0.16)'),background:S.cvd===t?'rgba(47,107,224,0.18)':'transparent',color:S.cvd===t?'#fff':'#9fb0d0'}},this.CVD[t]);
+    const cvdPanel=React.createElement('div',{style:{background:'#13151d',border:'1px solid #232734',borderRadius:'18px',padding:'22px'}},[
+      React.createElement('div',{key:'top',style:{display:'flex',alignItems:'center',gap:'8px'}},[React.createElement('span',{key:'t',style:{fontSize:'14px',fontWeight:700,color:'#fff'}},'내 색이 색각이 다른 사람에게는?'),this.mkInfo('cvd')]),
+      React.createElement('div',{key:'p',style:{fontSize:'12.5px',color:'#8794b0',margin:'8px 0 12px',lineHeight:1.55}},'구분이 사라지면 명도·형태·패턴으로도 정보를 주세요.'),
+      React.createElement('div',{key:'btns',style:{display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'12px'}},['normal','deutan','protan','tritan'].map(cvdBtn)),
+      React.createElement('div',{key:'cvw',style:{position:'relative',borderRadius:'10px',overflow:'hidden',background:'#070B12',maxWidth:'440px'}},[React.createElement('canvas',{key:'c',id:'rc-cvd',style:{width:'100%',display:'block'}}),React.createElement('div',{key:'tag',style:{position:'absolute',top:'8px',left:'8px',fontSize:'11px',fontWeight:700,color:'#fff',background:'rgba(0,0,0,0.5)',padding:'3px 9px',borderRadius:'999px',whiteSpace:'nowrap'}},this.CVD[S.cvd]||'정상')])
+    ]);
+
+    // 7-algo grid
+    const algoCardSt={background:'#13151d',border:'1px solid #232734',borderRadius:'16px',padding:'15px'};
+    const rcIds={kmeans:'rc-kmeans',histogram:'rc-poster',notan:'rc-notan',edge:'rc-edge',mediancut:'rc-median',mosaic:'rc-mosaic',composition:'rc-comp'};
+    const algoGrid=React.createElement(React.Fragment,{}, A.map((a,i)=>React.createElement('div',{key:a.key,style:algoCardSt},[
+      React.createElement('div',{key:'h',style:{display:'flex',alignItems:'center',gap:'7px',flexWrap:'wrap'}},[
+        React.createElement('span',{key:'n',style:{fontSize:'8px',fontWeight:800,color:'#fff',background:a.badge==='핵심'?'#2F6BE0':'#5b46d6',padding:'3px 7px',borderRadius:'999px',letterSpacing:'0.04em'}},a.badge),
+        React.createElement('span',{key:'t',style:{fontSize:'12.5px',fontWeight:700,color:'#E7ECF7'}},(i+1)+'. '+a.short),this.mkInfo(a.key)]),
+      React.createElement('div',{key:'cvw',style:{position:'relative',borderRadius:'10px',overflow:'hidden',background:'#070B12',marginTop:'10px'}},[
+        React.createElement('canvas',{key:'c',id:rcIds[a.key],style:{width:'100%',display:'block'}}),
+        (a.key==='kmeans'||a.key==='mediancut'?React.createElement('div',{key:'sw',id:a.key==='kmeans'?'pal-kmeans2':'pal-median',style:{display:'flex',gap:'2px',padding:'5px',background:'rgba(0,0,0,0.35)'}}):null)
+      ]),
+      React.createElement('div',{key:'m',style:{fontSize:'11.5px',color:'#8794b0',marginTop:'8px',lineHeight:1.5}},a.miss),
+      this.mkMemo(a.key,'해석 메모')
+    ])));
+
+    const reportGrid=React.createElement(React.Fragment,{}, A.map((a,i)=>{ const has=S.notes[a.key]&&S.notes[a.key].trim(); return React.createElement('div',{key:i,onClick:()=>this.setState({algo:i},()=>this.drawLens()),style:{cursor:'pointer',background:has?'rgba(47,182,168,0.1)':'rgba(255,255,255,0.04)',border:'1px solid '+(has?'rgba(47,182,168,0.35)':'rgba(255,255,255,0.08)'),borderRadius:'12px',padding:'14px'}},[
+      React.createElement('div',{key:'h',style:{display:'flex',alignItems:'center',justifyContent:'space-between'}},[React.createElement('span',{key:'n',style:{fontSize:'11px',fontWeight:700,color:'#7E89A8'}},'0'+(i+1)),React.createElement('span',{key:'c',style:{fontSize:'12px',color:has?'#7FE0C8':'#3a4658'}},has?'✓':'○')]),
+      React.createElement('div',{key:'t',style:{fontSize:'13px',fontWeight:700,color:'#E7ECF7',marginTop:'8px',lineHeight:1.3}},a.short),
+      React.createElement('div',{key:'d',style:{fontSize:'11.5px',color:'#8794b0',marginTop:'5px',lineHeight:1.45,overflow:'hidden',display:'-webkit-box',WebkitLineClamp:2,WebkitBoxOrient:'vertical'}},has||a.miss),
+    ]); }));
+
+    const noteCount=Object.keys(S.notes).filter(k=>S.notes[k]&&S.notes[k].trim()).length;
+    const doneCount=A.filter(a=>S.notes[a.key]&&S.notes[a.key].trim()).length;
+    return { algoTabs, algoName:cur.name, algoInfo:this.mkInfo(cur.key), algoMiss:cur.miss, viewTabs, busy:S.busy, recreation:cur.rec, paintTitle:S.paintTitle,
+      artBtns, onFile:e=>this.loadFile(e.target.files&&e.target.files[0]), controls, metrics, lensMemo,
+      chartGrid, harmonyPanel, cvdPanel, algoGrid, reportGrid, zoomModal,
+      reseed:()=>this.setState(s=>({seed:s.seed+1}),()=>this.runAll()), rerun:()=>this.runAll(),
+      artLabel:(S.paintTitle||'').replace(/^.*· /,'')||'작품', doneCount, noteCount, donePct:Math.round(doneCount/7*100),
+      exportMd:()=>this.exportReport('md'), exportJson:()=>this.exportReport('json') };
+  }
+
+  exportReport(fmt){ try{ const A=this.algos(),S=this.state,N=S.notes; const title=(S.paintTitle||'작품').replace(/^※.*?· /,'').replace(/^업로드 · /,'');
+    const labels={donut:'비율 도넛',rose:'방사형 막대',bars:'정렬 막대',scatter:'색공간 산점도',rgbhist:'RGB 히스토그램',wheel:'색상환',value:'명도·톤',heatmap:'색 분포 히트맵',kmeans:'K-means',histogram:'색 히스토그램(포스터화)',notan:'명도·노탄',edge:'에지(Sobel)',mediancut:'중앙값 분할',mosaic:'모자이크',composition:'구도',harmony:'색채 조화'};
+    const hex=p=>'#'+[p.r,p.g,p.b].map(v=>v.toString(16).padStart(2,'0')).join('');
+    if(fmt==='md'){ let md='# 알고리즘 분석 리포트 (부록 A) — 〈'+title+'〉\\n\\n## 전처리\\n- 색공간 '+S.space.toUpperCase()+' · K='+S.K+' · 포스터 '+S.levels+'단 · 노탄 임계값 '+S.th+'('+S.notan+'단) · 대비 '+S.contrast+' · 모자이크 '+S.cell+'px\\n\\n';
+      if(this.palette){ md+='## 팔레트 (K-means, 비율 내림차순)\\n| # | HEX | RGB | 비율 |\\n|---|---|---|---|\\n'+this.palette.map((p,i)=>'| '+(i+1)+' | '+hex(p)+' | '+p.r+','+p.g+','+p.b+' | '+Math.round(p.ratio*100)+'% |').join('\\n')+'\\n\\n'; }
+      if(this.comp){ md+='## 구도\\n- 밝기 무게중심 ('+this.comp.centroid.x+', '+this.comp.centroid.y+') · 좌우균형 '+Math.round(this.comp.balanceLR*100)+'% · 상하균형 '+Math.round(this.comp.balanceTB*100)+'%\\n\\n'; }
+      if(this.harmony){ const rel=[this.harmony.relations.complementary&&'보색',this.harmony.relations.triadic&&'삼각',this.harmony.relations.analogous&&'유사'].filter(Boolean).join(', '); md+='## 색채 조화\\n- 지배색 '+this.harmony.dominantName+'('+this.harmony.dominantHue+'°) · 관계: '+(rel||'약함')+'\\n\\n'; }
+      md+='## 해석 메모\\n'; const keys=Object.keys(labels).filter(k=>N[k]&&N[k].trim()); md+=keys.length?keys.map(k=>'### '+labels[k]+'\\n'+N[k]).join('\\n\\n'):'_(메모가 비어 있습니다. 각 카드 아래에 근거를 적어 보세요.)_';
+      md+='\\n\\n## 한계(공통)\\nK-means·히스토그램은 위치를, 에지는 색의 의미를 모릅니다. 모든 결과는 손실 있는 근사이며 정답이 아닙니다.\\n\\n_생성: '+new Date().toLocaleString('ko-KR')+'_\\n';
+      this.download(md,'text/markdown','lab_report.md'); }
+    else { const data={artwork:title,params:{space:S.space,K:S.K,levels:S.levels,th:S.th,notan:S.notan,contrast:S.contrast,cell:S.cell},palette:this.palette?this.palette.map(hex):[],composition:this.comp?this.comp.centroid:null,harmony:this.harmony?{dominant:this.harmony.dominantName,hue:this.harmony.dominantHue,relations:this.harmony.relations}:null,notes:N}; this.download(JSON.stringify(data,null,2),'application/json','lab_report.json'); }
+  }catch(e){ console.error('report',e); } }
+  download(s,type,name){ const b=new Blob([s],{type:type}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download=name; a.click(); }
+}
+</script>
+</body>
+</html>

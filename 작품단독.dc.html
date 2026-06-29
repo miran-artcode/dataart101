@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+</style>
+</helmet>
+
+<div data-screen-label="작품단독" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  <div style="max-width:1040px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(0,0,0,0.5);">
+      <a href="전시.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:14px;">
+        <a href="전시.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;" style-hover="color:#E7ECF7;">← 전시실</a>
+        <button onClick="{{ share }}" style="background:#2F6BE0; color:#fff; border:none; border-radius:999px; padding:9px 18px; font-size:13px; font-weight:700; font-family:inherit; cursor:pointer;">공유</button>
+      </div>
+    </nav>
+
+    <!-- artwork hero -->
+    <section style="padding:34px 6px 0;">
+      <div style="position:relative; border-radius:24px; overflow:hidden; box-shadow:0 50px 100px -44px rgba(0,0,0,0.8);">
+        <div style="display:flex; height:460px;">{{ art }}</div>
+      </div>
+      <div style="display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap; margin-top:24px;">
+        <div>
+          <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8;">{{ tool }}</div>
+          <h1 style="font-size:38px; font-weight:800; letter-spacing:-0.03em; margin:10px 0 0;">{{ title }}</h1>
+          <div style="font-size:16px; color:#A9B8DC; margin-top:6px;">{{ author }} · 2학년 3반</div>
+        </div>
+        <div style="display:flex; gap:10px;">{{ reactions }}</div>
+      </div>
+    </section>
+
+    <!-- statement + qr -->
+    <section style="padding:30px 6px 0; display:grid; grid-template-columns:1fr 280px; gap:14px; align-items:start;">
+      <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:26px;">
+        <div style="font-size:14px; font-weight:700; color:#fff;">작가 노트</div>
+        <p style="font-size:15px; line-height:1.8; color:#cdd9ef; margin:14px 0 0;">{{ statement }}</p>
+        <div style="margin-top:20px; display:flex; gap:6px;">{{ palette }}</div>
+      </div>
+      <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px; text-align:center;">
+        <div style="width:140px; height:140px; border-radius:14px; background:#fff; padding:11px; margin:0 auto;">{{ qr }}</div>
+        <div style="font-size:12.5px; color:#9fb0d0; margin-top:14px; line-height:1.6;">스캔하면 이 작품의<br>데이터 분석을 봅니다</div>
+      </div>
+    </section>
+
+    <!-- data readout -->
+    <section style="padding:14px 6px 0;">
+      <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:26px;">
+        <div style="font-size:15px; font-weight:700;">데이터로 읽기 <span style="font-size:13px; color:#7E89A8; font-weight:500;">이 작품의 근거</span></div>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-top:18px;">{{ dataCards }}</div>
+      </div>
+    </section>
+
+    <!-- critique teaser -->
+    <section style="padding:14px 6px 0;">
+      <div style="background:#16224a; border:1px solid #2a3a66; border-radius:22px; padding:26px; display:flex; justify-content:space-between; align-items:center; gap:20px; flex-wrap:wrap;">
+        <div>
+          <div style="font-size:15px; font-weight:700; color:#fff;">이 작품에 데이터로 비평하기</div>
+          <div style="font-size:13.5px; color:#A9B8DC; margin-top:6px;">느낌이 아니라 숫자를 근거로, 좋은 질문을 남겨보세요.</div>
+        </div>
+        <a href="데이터비평.dc.html"><button style="background:#fff; color:#0E1523; border:none; border-radius:999px; padding:13px 24px; font-size:14.5px; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap;" style-hover="transform:translateY(-1px);">비평 남기기 →</button></a>
+      </div>
+    </section>
+
+    <!-- more works -->
+    <section style="padding:24px 6px 0;">
+      <div style="font-size:15px; font-weight:700; margin-bottom:14px;">같은 전시의 다른 작품</div>
+      <div style="display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px;">{{ moreWorks }}</div>
+    </section>
+
+    <footer style="margin:34px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시실</a>
+          <a href="키오스크전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">키오스크</a>
+          <a href="데이터비평.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">데이터 비평</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { liked:false, likes:23 };
+  renderVals(){
+    const S=this.state;
+    const pal=[['#182F49',42],['#3A4F7A',16],['#6E84B8',24],['#8FC0B5',18]];
+    const seg=(arr)=>arr.map((p,i)=>React.createElement('div',{key:i,style:{flex:p[1],background:p[0]}}));
+    const art=React.createElement(React.Fragment,{}, seg(pal));
+    const palette=React.createElement(React.Fragment,{}, pal.map((p,i)=>React.createElement('div',{key:i,style:{flex:p[1],height:'30px',borderRadius:'6px',background:p[0]}})));
+
+    const cells=[]; for(let i=0;i<121;i++){ const x=i%11,y=Math.floor(i/11); const corner=(x<3&&y<3)||(x>7&&y<3)||(x<3&&y>7); const on=corner?((x>=(x<3?0:8)&&x<=(x<3?2:10))&&(y>=(y<3?0:8)&&y<=(y<3?2:10))) : Math.sin(x*7+y*13)>0.05; cells.push(React.createElement('div',{key:i,style:{background:on?'#0E1523':'transparent'}})); }
+    const qr=React.createElement('div',{style:{width:'100%',height:'100%',display:'grid',gridTemplateColumns:'repeat(11,1fr)',gridTemplateRows:'repeat(11,1fr)'}}, cells);
+
+    const reactions=React.createElement(React.Fragment,{},[
+      React.createElement('button',{key:'l',onClick:()=>this.setState(s=>({liked:!s.liked,likes:s.likes+(s.liked?-1:1)})),style:{display:'flex',alignItems:'center',gap:'7px',background:S.liked?'rgba(247,127,106,0.16)':'rgba(255,255,255,0.06)',border:'1px solid '+(S.liked?'rgba(247,127,106,0.4)':'rgba(255,255,255,0.16)'),color:S.liked?'#F79B86':'#E7ECF7',borderRadius:'999px',padding:'11px 18px',fontSize:'14px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}}, (S.liked?'♥':'♡')+' '+S.likes),
+      React.createElement('div',{key:'s',style:{display:'flex',alignItems:'center',gap:'7px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.16)',color:'#E7ECF7',borderRadius:'999px',padding:'11px 18px',fontSize:'14px',fontWeight:700}}, '👁 142'),
+    ]);
+
+    const data=[['주요 색','감청 58%','#3A4F7A'],['채도','0.41 · 낮음','#6E84B8'],['감정 강도','0.88 · 높음','#2FB6A8'],['시선 집중','0.57 · 좌하단','#8FC0B5'],['감지 객체','우산·사람·창','#93A4E8'],['분석 렌즈','7종 적용','#E6A85A']];
+    const dataCards=React.createElement(React.Fragment,{}, data.map((d,i)=>React.createElement('div',{key:i,style:{background:'rgba(255,255,255,0.04)',border:'1px solid rgba(255,255,255,0.08)',borderRadius:'14px',padding:'16px'}},[
+      React.createElement('div',{key:'l',style:{display:'flex',alignItems:'center',gap:'7px',fontSize:'12px',color:'#9fb0d0'}},[React.createElement('span',{key:'d',style:{width:'8px',height:'8px',borderRadius:'50%',background:d[2]}}),d[0]]),
+      React.createElement('div',{key:'v',style:{fontSize:'17px',fontWeight:700,color:'#fff',marginTop:'8px'}},d[1]),
+    ])));
+
+    const more=[['〈엄마의 손〉','최유진',[['#8FC0B5',24],['#E6F5A6',40],['#CFE0D6',22],['#3A4F7A',14]]],['〈도시의 밤〉','정하늘',[['#0A0820',40],['#182F49',24],['#3A4F7A',22],['#6E84B8',14]]],['〈빗소리의 색〉','박서연',[['#3A4F7A',30],['#6E84B8',24],['#8FC0B5',26],['#CFE0D6',20]]],['〈교실의 오후〉','이준',[['#E6F5A6',34],['#8FC0B5',22],['#182F49',28],['#6E84B8',16]]]];
+    const moreWorks=React.createElement(React.Fragment,{}, more.map((w,i)=>React.createElement('a',{key:i,href:'작품단독.dc.html',style:{borderRadius:'14px',overflow:'hidden',cursor:'pointer',display:'block',border:'1px solid #232734'}},[
+      React.createElement('div',{key:'a',style:{display:'flex',height:'104px'}}, seg(w[2])),
+      React.createElement('div',{key:'m',style:{background:'#13151d',padding:'11px 13px'}},[React.createElement('div',{key:'t',style:{fontSize:'13px',fontWeight:700,color:'#fff'}},w[0]),React.createElement('div',{key:'au',style:{fontSize:'11.5px',color:'#8794b0',marginTop:'2px'}},w[1])]),
+    ])));
+
+    return { art, palette, qr, reactions, tool:'그림 분석 · 색 군집', title:'〈비 오는 거리〉', author:'김민서',
+      statement:'비 오는 날 버스를 기다리며 느낀 거리감을 담고 싶었습니다. 색 군집 스튜디오로 분석해보니 감청 계열이 58%였고, 저는 채도를 일부러 낮춰 그 쓸쓸함을 더 키웠어요. 사람들이 이 그림 앞에서 잠시 멈춰, 자신의 비 오는 날을 떠올렸으면 합니다.',
+      dataCards, moreWorks, share:()=>{ if(navigator.clipboard) navigator.clipboard.writeText('작품 링크가 복사되었습니다'); } };
+  }
+}
+</script>
+</body>
+</html>

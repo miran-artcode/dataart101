@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #131316; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  @keyframes scanMove { from { transform: translateY(-120%); } to { transform: translateY(120%); } }
+  ::placeholder { color: rgba(0,0,0,0.34); }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; background: radial-gradient(120% 80% at 50% 0%, #1a1a1f 0%, #101012 60%, #0c0c0e 100%); padding: 56px 40px 90px; color: #f2efe6;">
+
+  <!-- HEADER -->
+  <div style="max-width: 1180px; margin: 0 auto 60px;">
+    <div style="font-family: 'Space Mono', monospace; font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase; color: #6f6f78;">C · 해체 — 색상 재설계 v2</div>
+    <h1 style="font-size: 42px; line-height: 1.1; font-weight: 800; letter-spacing: -0.02em; margin: 14px 0 0; max-width: 860px;">RGB 원색환을 버리고,<br><span style="color:#8c8c96; font-weight:600;">한 폭의 유화처럼 색을 다시 짰습니다</span></h1>
+    <p style="font-size: 16px; line-height: 1.7; color: #b7b7bf; max-width: 720px; margin: 20px 0 0; text-wrap: pretty;">지적해주신 대로, 기존 색은 누구나 뽑는 빨강·노랑·파랑 원색이라 손맛이 없었습니다. 진짜 그림의 색은 <b style="color:#f2efe6;">탁하고 층진 안료색</b>이죠. 같은 해체 레이아웃에 성격이 전혀 다른 <b style="color:#f2efe6;">디자이너 팔레트 3가지</b>를 입혔습니다. 하나를 고르시면 전체 사이트로 확장합니다.</p>
+  </div>
+
+  <!-- ============ P1 · FRESCO EARTH ============ -->
+  <div style="max-width: 1240px; margin: 0 auto 76px;">
+    <div style="display:flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; gap: 16px;">
+      <div style="display:flex; align-items: baseline; gap: 16px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size: 30px; font-weight: 700; color:#CF5A2E; line-height:1;">01</div>
+        <div>
+          <div style="font-size: 19px; font-weight: 700;">고서·프레스코 <span style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; color:#6f6f78; margin-left:6px;">FRESCO EARTH</span></div>
+          <div style="font-size: 14px; color:#9a9aa2; margin-top: 3px;">바랜 프레스코·유화 안료. 엄버·시에나·오커·테르베르트에 단 하나의 ember 포인트. 따뜻하고 미술관답게.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap: 8px;">{{ swP1 }}</div>
+    </div>
+
+    <div style="position: relative; width: 100%; height: 700px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8); background: #16110C;">
+      <div style="position:absolute; top:0; bottom:0; left:0; width: 54%; display:grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(8, 1fr);">{{ mosaicP1 }}</div>
+      <div style="position:absolute; top:0; bottom:0; left:0; width: 54%; background: linear-gradient(90deg, transparent 28%, rgba(22,17,12,0.6) 76%, #16110C 100%);"></div>
+      <div style="position:absolute; top:0; bottom:0; left:0; width:54%; overflow:hidden;"><div style="position:absolute; left:0; right:0; height: 130px; background: linear-gradient(180deg, transparent, rgba(207,90,46,0.14), transparent); animation: scanMove 7s linear infinite;"></div></div>
+
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 38px 48px;">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color:#b9ad96;">서울미술고 · AI 융합 미술수업</div>
+          <div style="font-size: 13px; color:#b9ad96;">로그인</div>
+        </div>
+        <div style="max-width: 560px; margin-left: auto; text-align: right;">
+          <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; color:#CF5A2E; text-transform: uppercase; margin-bottom: 16px;">숫자가 끝나는 곳에서, 예술이 시작된다</div>
+          <h2 style="font-size: 70px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em; margin: 0; color:#E9E1CF;">데이터로<br><span style="color:#CF5A2E;">읽고,</span><br>다시 그리다</h2>
+          <p style="font-size: 15px; line-height: 1.7; color:#b9ad96; max-width: 400px; margin: 20px 0 0 auto;">그림이 안료 데이터로 부서지고, 나의 의도로 다시 모입니다.</p>
+        </div>
+        <div style="display:flex; justify-content: space-between; align-items: flex-end; gap: 24px;">
+          <div style="display:flex; gap: 20px; align-items:center; font-family:'Space Grotesk',sans-serif;">
+            <span style="font-size:13px; color:#E9E1CF;"><span style="color:#CF5A2E;">01</span> 그림</span>
+            <span style="font-size:13px; color:#E9E1CF;"><span style="color:#C9974A;">02</span> 소리</span>
+            <span style="font-size:13px; color:#E9E1CF;"><span style="color:#6B8A6A;">03</span> 내 삶</span>
+            <span style="font-size:13px; color:#E9E1CF;"><span style="color:#A9756B;">04</span> 사회</span>
+          </div>
+          <div style="width: 340px; background:#E9E1CF; color:#1c1812; border-radius: 12px; padding: 20px;">
+            <div style="font-size: 15px; font-weight: 800;">시작하기</div>
+            <div style="display:flex; flex-direction:column; gap: 9px; margin-top: 12px;">
+              <input placeholder="이름" style="background:#fff; border: 1.5px solid #1c1812; border-radius: 8px; padding: 10px 12px; color:#1c1812; font-size: 14px; font-family: inherit; outline: none;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+                <input placeholder="PIN 4자리" inputmode="numeric" style="background:#fff; border: 1.5px solid #1c1812; border-radius: 8px; padding: 10px 12px; color:#1c1812; font-size: 14px; font-family: inherit; outline: none; min-width:0;">
+                <div style="display:flex; gap:6px;">
+                  <button onClick="{{ p1Stu }}" style="{{ p1StuS }}">학생</button>
+                  <button onClick="{{ p1Tea }}" style="{{ p1TeaS }}">교사</button>
+                </div>
+              </div>
+              <button style="margin-top: 4px; background:#CF5A2E; color:#fff; border:none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 800; font-family: inherit; cursor:pointer;" style-hover="background:#e06b3c;">시작하기 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ P2 · INK DUOTONE ============ -->
+  <div style="max-width: 1240px; margin: 0 auto 76px;">
+    <div style="display:flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; gap: 16px;">
+      <div style="display:flex; align-items: baseline; gap: 16px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size: 30px; font-weight: 700; color:#E8503A; line-height:1;">02</div>
+        <div>
+          <div style="font-size: 19px; font-weight: 700;">잉크 듀오톤 <span style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; color:#6f6f78; margin-left:6px;">INK DUOTONE</span></div>
+          <div style="font-size: 14px; color:#9a9aa2; margin-top: 3px;">흑연 단색조 + 종이 + 단 하나의 스폿 컬러. 리소그래프 같은 절제. 가장 에디토리얼·designerly.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap: 8px;">{{ swP2 }}</div>
+    </div>
+
+    <div style="position: relative; width: 100%; height: 700px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8); background: #0E0E0F;">
+      <div style="position:absolute; top:0; bottom:0; left:0; width: 54%; display:grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(8, 1fr);">{{ mosaicP2 }}</div>
+      <div style="position:absolute; top:0; bottom:0; left:0; width: 54%; background: linear-gradient(90deg, transparent 28%, rgba(14,14,15,0.6) 76%, #0E0E0F 100%);"></div>
+      <div style="position:absolute; top:0; bottom:0; left:0; width:54%; overflow:hidden;"><div style="position:absolute; left:0; right:0; height: 130px; background: linear-gradient(180deg, transparent, rgba(232,80,58,0.13), transparent); animation: scanMove 7s linear infinite;"></div></div>
+
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 38px 48px;">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color:#a3a3a9;">서울미술고 · AI 융합 미술수업</div>
+          <div style="font-size: 13px; color:#a3a3a9;">로그인</div>
+        </div>
+        <div style="max-width: 560px; margin-left: auto; text-align: right;">
+          <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; color:#E8503A; text-transform: uppercase; margin-bottom: 16px;">숫자가 끝나는 곳에서, 예술이 시작된다</div>
+          <h2 style="font-size: 70px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em; margin: 0; color:#EDEAE3;">데이터로<br><span style="color:#E8503A;">읽고,</span><br>다시 그리다</h2>
+          <p style="font-size: 15px; line-height: 1.7; color:#9a9aa2; max-width: 400px; margin: 20px 0 0 auto;">한 가지 잉크와 종이, 그리고 단 하나의 신호색으로 말합니다.</p>
+        </div>
+        <div style="display:flex; justify-content: space-between; align-items: flex-end; gap: 24px;">
+          <div style="display:flex; gap: 20px; align-items:center; font-family:'Space Grotesk',sans-serif;">
+            <span style="font-size:13px; color:#EDEAE3;"><span style="color:#E8503A;">01</span> 그림</span>
+            <span style="font-size:13px; color:#EDEAE3;"><span style="color:#85858c;">02</span> 소리</span>
+            <span style="font-size:13px; color:#EDEAE3;"><span style="color:#85858c;">03</span> 내 삶</span>
+            <span style="font-size:13px; color:#EDEAE3;"><span style="color:#85858c;">04</span> 사회</span>
+          </div>
+          <div style="width: 340px; background:#EDEAE3; color:#131314; border-radius: 12px; padding: 20px;">
+            <div style="font-size: 15px; font-weight: 800;">시작하기</div>
+            <div style="display:flex; flex-direction:column; gap: 9px; margin-top: 12px;">
+              <input placeholder="이름" style="background:#fff; border: 1.5px solid #131314; border-radius: 8px; padding: 10px 12px; color:#131314; font-size: 14px; font-family: inherit; outline: none;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+                <input placeholder="PIN 4자리" inputmode="numeric" style="background:#fff; border: 1.5px solid #131314; border-radius: 8px; padding: 10px 12px; color:#131314; font-size: 14px; font-family: inherit; outline: none; min-width:0;">
+                <div style="display:flex; gap:6px;">
+                  <button onClick="{{ p2Stu }}" style="{{ p2StuS }}">학생</button>
+                  <button onClick="{{ p2Tea }}" style="{{ p2TeaS }}">교사</button>
+                </div>
+              </div>
+              <button style="margin-top: 4px; background:#E8503A; color:#fff; border:none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 800; font-family: inherit; cursor:pointer;" style-hover="background:#f2604a;">시작하기 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ P3 · NOCTURNE PIGMENT ============ -->
+  <div style="max-width: 1240px; margin: 0 auto 30px;">
+    <div style="display:flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; flex-wrap: wrap; gap: 16px;">
+      <div style="display:flex; align-items: baseline; gap: 16px;">
+        <div style="font-family:'Space Grotesk',sans-serif; font-size: 30px; font-weight: 700; color:#C9A24C; line-height:1;">03</div>
+        <div>
+          <div style="font-size: 19px; font-weight: 700;">야간 안료 <span style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; color:#6f6f78; margin-left:6px;">NOCTURNE PIGMENT</span></div>
+          <div style="font-size: 14px; color:#9a9aa2; margin-top: 3px;">탁한 보석빛 — 가지·오크블러드·딥틸·황동. 무드 깊고 야간 갤러리. 원색은 한 점도 없음.</div>
+        </div>
+      </div>
+      <div style="display:flex; gap: 8px;">{{ swP3 }}</div>
+    </div>
+
+    <div style="position: relative; width: 100%; height: 700px; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 40px 90px -30px rgba(0,0,0,0.8); background: #0D0F12;">
+      <div style="position:absolute; top:0; bottom:0; left:0; width: 54%; display:grid; grid-template-columns: repeat(12, 1fr); grid-template-rows: repeat(8, 1fr);">{{ mosaicP3 }}</div>
+      <div style="position:absolute; top:0; bottom:0; left:0; width: 54%; background: linear-gradient(90deg, transparent 28%, rgba(13,15,18,0.6) 76%, #0D0F12 100%);"></div>
+      <div style="position:absolute; top:0; bottom:0; left:0; width:54%; overflow:hidden;"><div style="position:absolute; left:0; right:0; height: 130px; background: linear-gradient(180deg, transparent, rgba(201,162,76,0.13), transparent); animation: scanMove 7s linear infinite;"></div></div>
+
+      <div style="position: relative; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 38px 48px;">
+        <div style="display:flex; justify-content: space-between; align-items: center;">
+          <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color:#9a8f80;">서울미술고 · AI 융합 미술수업</div>
+          <div style="font-size: 13px; color:#9a8f80;">로그인</div>
+        </div>
+        <div style="max-width: 560px; margin-left: auto; text-align: right;">
+          <div style="font-family:'Space Mono',monospace; font-size: 12px; letter-spacing: 0.16em; color:#C9A24C; text-transform: uppercase; margin-bottom: 16px;">숫자가 끝나는 곳에서, 예술이 시작된다</div>
+          <h2 style="font-size: 70px; line-height: 0.98; font-weight: 800; letter-spacing: -0.04em; margin: 0; color:#E4E2DA;">데이터로<br><span style="color:#C9A24C;">읽고,</span><br>다시 그리다</h2>
+          <p style="font-size: 15px; line-height: 1.7; color:#9a8f80; max-width: 400px; margin: 20px 0 0 auto;">밤의 미술관처럼, 탁한 보석빛 안료가 어둠 속에서 깊게 빛납니다.</p>
+        </div>
+        <div style="display:flex; justify-content: space-between; align-items: flex-end; gap: 24px;">
+          <div style="display:flex; gap: 20px; align-items:center; font-family:'Space Grotesk',sans-serif;">
+            <span style="font-size:13px; color:#E4E2DA;"><span style="color:#C9A24C;">01</span> 그림</span>
+            <span style="font-size:13px; color:#E4E2DA;"><span style="color:#9A6B3A;">02</span> 소리</span>
+            <span style="font-size:13px; color:#E4E2DA;"><span style="color:#2A6F6A;">03</span> 내 삶</span>
+            <span style="font-size:13px; color:#E4E2DA;"><span style="color:#8A4A52;">04</span> 사회</span>
+          </div>
+          <div style="width: 340px; background:#15181C; border: 1.5px solid #C9A24C; color:#E4E2DA; border-radius: 12px; padding: 20px;">
+            <div style="font-size: 15px; font-weight: 800;">시작하기</div>
+            <div style="display:flex; flex-direction:column; gap: 9px; margin-top: 12px;">
+              <input placeholder="이름" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(201,162,76,0.4); border-radius: 8px; padding: 10px 12px; color:#E4E2DA; font-size: 14px; font-family: inherit; outline: none;" style-focus="border-color:#C9A24C;">
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:9px;">
+                <input placeholder="PIN 4자리" inputmode="numeric" style="background:rgba(255,255,255,0.04); border: 1px solid rgba(201,162,76,0.4); border-radius: 8px; padding: 10px 12px; color:#E4E2DA; font-size: 14px; font-family: inherit; outline: none; min-width:0;" style-focus="border-color:#C9A24C;">
+                <div style="display:flex; gap:6px;">
+                  <button onClick="{{ p3Stu }}" style="{{ p3StuS }}">학생</button>
+                  <button onClick="{{ p3Tea }}" style="{{ p3TeaS }}">교사</button>
+                </div>
+              </div>
+              <button style="margin-top: 4px; background:#C9A24C; color:#15181C; border:none; border-radius: 8px; padding: 12px; font-size: 15px; font-weight: 800; font-family: inherit; cursor:pointer;" style-hover="background:#dab35d;">시작하기 →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="max-width: 1180px; margin: 60px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); font-size: 14px; color:#9a9aa2;">고르신 팔레트로 <b style="color:#f2efe6;">모바일까지 마무리</b>하고 허브·분석 도구·전시·AI 코치로 확장합니다. "01의 따뜻함 + 02의 절제" 같은 조합도 가능해요.</div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { role: { P1: 'student', P2: 'student', P3: 'student' } };
+
+  rand(seed) {
+    const x = Math.sin(seed * 99.137) * 43758.5453;
+    return x - Math.floor(x);
+  }
+
+  makeMosaic(coherent, swatch, canvas) {
+    const cols = 12, rows = 8;
+    const cells = [];
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const i = y * cols + x;
+        const f = x / (cols - 1);
+        const r = this.rand(i * 1.7 + 3);
+        let color, gap;
+        if (r > f) { color = coherent[Math.floor(this.rand(i + 5) * coherent.length)]; gap = '0px'; }
+        else { color = swatch[Math.floor(this.rand(i + 9) * swatch.length)]; gap = '2px'; }
+        cells.push(React.createElement('div', { key: i, style: { background: color, margin: gap } }));
+      }
+    }
+    return React.createElement(React.Fragment, {}, cells);
+  }
+
+  makeSwatches(list) {
+    return React.createElement(React.Fragment, {}, list.map((it, i) =>
+      React.createElement('div', { key: i, style: { display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' } }, [
+        React.createElement('div', { key: 'c', style: { width: '26px', height: '26px', borderRadius: '5px', background: it.c, border: '1px solid rgba(255,255,255,0.12)' } }),
+        React.createElement('div', { key: 'n', style: { fontFamily: "'Space Mono', monospace", fontSize: '9px', letterSpacing: '0.04em', color: '#7a7a82', textTransform: 'uppercase' } }, it.n)
+      ])
+    ));
+  }
+
+  roleStyle(active, accent) {
+    const base = { padding: '7px 11px', borderRadius: '999px', fontSize: '13px', cursor: 'pointer',
+      fontFamily: 'inherit', transition: 'all .18s', whiteSpace: 'nowrap', flex: 1, textAlign: 'center' };
+    if (active) return { ...base, background: accent, color: '#fff', border: '1px solid ' + accent, fontWeight: 700 };
+    return { ...base, background: 'transparent', color: 'rgba(0,0,0,0.5)', border: '1px solid rgba(0,0,0,0.22)', fontWeight: 500 };
+  }
+  roleStyleDark(active, accent) {
+    const base = { padding: '7px 11px', borderRadius: '999px', fontSize: '13px', cursor: 'pointer',
+      fontFamily: 'inherit', transition: 'all .18s', whiteSpace: 'nowrap', flex: 1, textAlign: 'center' };
+    if (active) return { ...base, background: accent, color: '#15181C', border: '1px solid ' + accent, fontWeight: 700 };
+    return { ...base, background: 'transparent', color: '#9a8f80', border: '1px solid rgba(201,162,76,0.4)', fontWeight: 500 };
+  }
+
+  setRole(opt, v) { this.setState(s => ({ role: { ...s.role, [opt]: v } })); }
+
+  renderVals() {
+    const r = this.state.role;
+
+    const p1Coherent = ['#2E2014', '#3E2A18', '#5E3A24', '#6B4A2A', '#7A5A2E', '#4E5E4C', '#3A4A3A', '#243447', '#5A4632'];
+    const p1Swatch = ['#8A4B2F', '#B0682F', '#C9974A', '#DEBE79', '#6B8A6A', '#A9756B', '#7B3A33', '#CF5A2E', '#E9E1CF'];
+
+    const p2Coherent = ['#161617', '#1c1c1e', '#242427', '#2e2e31', '#39393d', '#454549', '#525258', '#161617', '#202023'];
+    const p2Swatch = ['#56565b', '#6b6b71', '#85858c', '#a3a3a9', '#c2c2c6', '#E0DED8', '#EDEAE3', '#E8503A', '#85858c'];
+
+    const p3Coherent = ['#1A1320', '#241726', '#2a1d2e', '#33232f', '#1f2e30', '#1a2a30', '#262032', '#2e2620', '#22202a'];
+    const p3Swatch = ['#3a2236', '#6B2F3A', '#8A4A52', '#9A6B3A', '#B08A4A', '#C9A24C', '#2A6F6A', '#55564E', '#C9BFA8'];
+
+    return {
+      mosaicP1: this.makeMosaic(p1Coherent, p1Swatch, '#16110C'),
+      mosaicP2: this.makeMosaic(p2Coherent, p2Swatch, '#0E0E0F'),
+      mosaicP3: this.makeMosaic(p3Coherent, p3Swatch, '#0D0F12'),
+      swP1: this.makeSwatches([{c:'#E9E1CF',n:'Bone'},{c:'#DEBE79',n:'Naples'},{c:'#C9974A',n:'Ochre'},{c:'#8A4B2F',n:'Sienna'},{c:'#5E3A24',n:'Umber'},{c:'#6B8A6A',n:'Terre'},{c:'#A9756B',n:'Mummy'},{c:'#CF5A2E',n:'Ember'}]),
+      swP2: this.makeSwatches([{c:'#EDEAE3',n:'Paper'},{c:'#c2c2c6',n:'Ash'},{c:'#85858c',n:'Steel'},{c:'#525258',n:'Slate'},{c:'#2e2e31',n:'Iron'},{c:'#161617',n:'Ink'},{c:'#E8503A',n:'Spot'}]),
+      swP3: this.makeSwatches([{c:'#C9A24C',n:'Brass'},{c:'#9A6B3A',n:'Bronze'},{c:'#6B2F3A',n:'Oxblood'},{c:'#3a2236',n:'Plum'},{c:'#2A6F6A',n:'Teal'},{c:'#55564E',n:'Moss'},{c:'#C9BFA8',n:'Bone'}]),
+      p1StuS: this.roleStyle(r.P1 === 'student', '#CF5A2E'),
+      p1TeaS: this.roleStyle(r.P1 === 'teacher', '#CF5A2E'),
+      p1Stu: () => this.setRole('P1', 'student'),
+      p1Tea: () => this.setRole('P1', 'teacher'),
+      p2StuS: this.roleStyle(r.P2 === 'student', '#E8503A'),
+      p2TeaS: this.roleStyle(r.P2 === 'teacher', '#E8503A'),
+      p2Stu: () => this.setRole('P2', 'student'),
+      p2Tea: () => this.setRole('P2', 'teacher'),
+      p3StuS: this.roleStyleDark(r.P3 === 'student', '#C9A24C'),
+      p3TeaS: this.roleStyleDark(r.P3 === 'teacher', '#C9A24C'),
+      p3Stu: () => this.setRole('P3', 'student'),
+      p3Tea: () => this.setRole('P3', 'teacher'),
+    };
+  }
+}
+</script>
+</body>
+</html>

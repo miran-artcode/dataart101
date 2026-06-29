@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:4px; border-radius:2px; background:#D6DEEA; outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:18px; height:18px; border-radius:50%; background:#2C3A52; cursor:pointer; border:3px solid #fff; box-shadow:0 2px 6px rgba(14,21,35,0.3); }
+</style>
+</helmet>
+
+<div data-screen-label="작업실" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="hub.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#2C3A52; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #EEF7FF; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#EEF7FF; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <a href="hub.html" style="color:#667080;" style-hover="color:#0E1523;">둘러보기</a>
+          <a href="analyze.html" style="color:#667080;" style-hover="color:#0E1523;">분석 도구</a>
+          <a href="gallery.html" style="color:#667080;" style-hover="color:#0E1523;">전시</a>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2C3A52; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+      </div>
+    </nav>
+
+    <!-- header -->
+    <header style="padding:40px 6px 24px; display:flex; justify-content:space-between; align-items:flex-end; gap:20px; flex-wrap:wrap;">
+      <div>
+        <a href="analyze.html" style="font-size:14px; font-weight:600; color:#667080;">← 그림 분석</a>
+        <h1 style="font-size:40px; font-weight:800; letter-spacing:-0.03em; margin:10px 0 0;">작업실 · <span style="color:#4C6CA6;">재창조</span></h1>
+        <div style="font-size:14px; color:#667080; margin-top:8px;">읽어낸 데이터를 재료로, 나만의 미디어아트로 다시 그립니다.</div>
+      </div>
+      <div style="display:flex; gap:10px;">
+        <button style="background:#fff; border:1px solid #cdd8e6; color:#2C3A52; border-radius:999px; padding:13px 22px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#f0f5fc;">임시저장</button>
+        <a href="gallery.html"><button style="background:#2C3A52; color:#fff; border:none; border-radius:999px; padding:13px 24px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#38496A;">전시에 출품 →</button></a>
+      </div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:280px 1fr 250px; gap:14px; padding-bottom:60px; align-items:start;">
+
+      <!-- left: data materials -->
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:20px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+          <div style="font-size:14px; font-weight:700;">재료 · 분석 데이터</div>
+          <div style="font-size:12.5px; color:#667080; margin-top:3px;">〈무제〉에서 가져옴</div>
+          <div style="margin-top:16px; font-size:12px; font-weight:600; color:#4C6CA6;">색 군집</div>
+          <div style="display:flex; gap:6px; margin-top:8px;">{{ palette }}</div>
+          <div style="margin-top:16px; display:flex; flex-direction:column; gap:8px;">{{ dataItems }}</div>
+        </div>
+        <div style="background:#dfeafe; border-radius:20px; padding:20px;">
+          <div style="font-size:13px; font-weight:700; color:#2C3A52;">생성 규칙</div>
+          <p style="font-size:12.5px; line-height:1.6; color:#51607A; margin:8px 0 0;">데이터가 형태를 만듭니다. 무엇을 입력에 연결할지가 곧 당신의 선택이에요.</p>
+        </div>
+      </div>
+
+      <!-- center: canvas -->
+      <div style="background:#0E1523; border-radius:24px; padding:16px; box-shadow:0 40px 80px -44px rgba(14,21,35,0.6);">
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:6px 8px 14px;">
+          <div style="font-size:13px; font-weight:600; color:#9DB3D6;">미리보기 · 제너러티브 캔버스</div>
+          <div style="display:flex; gap:7px;">{{ modeTabs }}</div>
+        </div>
+        <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:440px;">{{ canvas }}</div>
+        <div style="display:flex; justify-content:space-between; align-items:center; padding:14px 8px 6px;">
+          <div style="font-size:12.5px; color:#7C89A0;">실시간 — 슬라이더를 움직이면 즉시 반영</div>
+          <button onClick="{{ shuffle }}" style="background:#1E2A42; color:#cfe0f7; border:none; border-radius:999px; padding:9px 16px; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#27344f;">↻ 다시 생성</button>
+        </div>
+      </div>
+
+      <!-- right: controls -->
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:22px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+        <div style="font-size:14px; font-weight:700;">조절</div>
+        <div style="margin-top:18px; display:flex; flex-direction:column; gap:20px;">{{ sliders }}</div>
+        <div style="margin-top:24px; padding-top:18px; border-top:1px solid #EEF2F7;">
+          <div style="font-size:12px; font-weight:600; color:#4C6CA6;">입력 연결</div>
+          <div style="margin-top:10px; display:flex; flex-direction:column; gap:8px;">{{ mappings }}</div>
+        </div>
+      </div>
+
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { density: 60, flow: 45, scale: 55, mode: 0, seed: 1 };
+  rand(s){ const x=Math.sin(s*99.13)*43758.5453; return x-Math.floor(x); }
+
+  renderVals(){
+    const museum = ['#2E3A4A','#7C8B7A','#C9A24C','#9C6E5B','#8C93A2','#E4DED0'];
+    const { density, flow, scale, mode, seed } = this.state;
+
+    const palette = React.createElement(React.Fragment,{}, museum.map((c,i)=>
+      React.createElement('div',{key:i,style:{flex:1,height:'30px',borderRadius:'6px',background:c}})));
+
+    const items = [['평균 명도','0.71'],['채도','0.43'],['감지 객체','12'],['감정 강도','0.90']];
+    const dataItems = React.createElement(React.Fragment,{}, items.map((it,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',justifyContent:'space-between',fontSize:'13px',padding:'7px 10px',background:'#F4F8FD',borderRadius:'9px'}},[
+        React.createElement('span',{key:'a',style:{color:'#51607A'}},it[0]),
+        React.createElement('span',{key:'b',style:{fontWeight:700,fontVariantNumeric:'tabular-nums'}},it[1]),
+      ])));
+
+    const modes = ['입자','선','격자'];
+    const modeTabs = React.createElement(React.Fragment,{}, modes.map((m,i)=>
+      React.createElement('div',{key:i,onClick:()=>this.setState({mode:i}),style:{
+        fontSize:'12px', fontWeight:600, cursor:'pointer', padding:'5px 12px', borderRadius:'999px',
+        background: mode===i?'#2C3A52':'transparent', color: mode===i?'#fff':'#7C89A0'}}, m)));
+
+    // generative canvas
+    const W=560,H=440;
+    const n = Math.round(40 + density*1.6);
+    const els = [];
+    for(let i=0;i<n;i++){
+      const r1=this.rand(i+seed*13.1), r2=this.rand(i+seed*7.3+50), r3=this.rand(i+seed*3.7+99);
+      const c = museum[Math.floor(this.rand(i+seed+200)*museum.length)];
+      const x=(r1*100).toFixed(2), y=(r2*100).toFixed(2);
+      const sz = (4 + r3*scale*0.5);
+      if(mode===0){
+        els.push(React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:sz+'px',height:sz+'px',borderRadius:'50%',background:c,opacity:0.4+r3*0.5,transform:'translate(-50%,-50%)'}}));
+      } else if(mode===1){
+        const ang=(r2*360+flow*2);
+        els.push(React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:(sz*2.4)+'px',height:'2px',background:c,opacity:0.4+r3*0.5,transform:'translate(-50%,-50%) rotate('+ang+'deg)'}}));
+      } else {
+        const gx=(i%10), gy=Math.floor(i/10);
+        els.push(React.createElement('div',{key:i,style:{position:'absolute',left:(gx*10+3)+'%',top:(gy*10+3)+'%',width:sz+'px',height:sz+'px',borderRadius:'3px',background:c,opacity:0.35+r3*0.5}}));
+      }
+    }
+    const canvas = React.createElement(React.Fragment,{}, els);
+
+    const mk = (label, key, val) => React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'13px',marginBottom:'8px'}},[
+        React.createElement('span',{key:'a',style:{fontWeight:600,color:'#51607A'}},label),
+        React.createElement('span',{key:'b',style:{fontWeight:700,fontVariantNumeric:'tabular-nums'}},val),
+      ]),
+      React.createElement('input',{key:'i',type:'range',min:0,max:100,value:val,
+        onChange:(e)=>this.setState({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+    const sliders = React.createElement(React.Fragment,{}, [
+      mk('밀도 · 객체 수','density',density),
+      mk('흐름 · 감정 강도','flow',flow),
+      mk('크기 · 명도','scale',scale),
+    ]);
+
+    const maps = [['밀도','감지 객체 12'],['색','색 군집 6'],['흐름','감정 0.90']];
+    const mappings = React.createElement(React.Fragment,{}, maps.map((m,i)=>
+      React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'8px',fontSize:'12px'}},[
+        React.createElement('span',{key:'a',style:{fontWeight:700,color:'#2C3A52'}},m[0]),
+        React.createElement('span',{key:'b',style:{color:'#9AA6B6'}},'←'),
+        React.createElement('span',{key:'c',style:{color:'#51607A'}},m[1]),
+      ])));
+
+    return { palette, dataItems, modeTabs, canvas, sliders, mappings,
+      shuffle: ()=>this.setState(s=>({seed:s.seed+1})) };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+# OS / 편집기 임시 파일
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+*~
+*.swp
+*.tmp
+
+# 로그
+*.log
+npm-debug.log*
+
+# 의존성 / 빌드 산출물
+node_modules/
+dist/

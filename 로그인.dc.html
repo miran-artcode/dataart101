@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+  input:focus { border-color:#0E1523 !important; }
+  ::placeholder { color:#9AA6B6; }
+</style>
+</helmet>
+
+<div style="min-width:100%; width:max-content; min-height:100vh; box-sizing:border-box; padding:48px; background:#e7e5df;">
+  <div style="display:flex; gap:48px; align-items:flex-start;">
+
+    <!-- ===== 변형 A · 스플릿 ===== -->
+    <div style="flex:none; width:880px;">
+      <div style="font-size:13px; font-weight:700; color:#6b6b66; letter-spacing:0.04em; margin-bottom:12px;">A · 스플릿 (브랜드 + 폼)</div>
+      <div data-screen-label="로그인 A" style="background:#fff; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); overflow:hidden; display:grid; grid-template-columns:1fr 1fr; min-height:560px;">
+
+        <!-- left brand -->
+        <div style="position:relative; overflow:hidden; background:#f6fbff; border-right:1px solid #E4EAF2; padding:48px 44px; display:flex; flex-direction:column; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:11px;">
+            <div style="width:30px; height:30px; border-radius:9px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+              <div style="width:13px; height:13px; border:2px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#f6fbff; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+            </div>
+            <span style="font-size:15px; font-weight:700;">데이터의 눈으로 그림 읽기</span>
+          </div>
+          <div>
+            <div style="font-family:'Orbitron',sans-serif; font-weight:900; font-size:46px; line-height:0.98; letter-spacing:-0.01em;">
+              <div style="color:#0E1523;">READ ART</div>
+              <div style="color:transparent; -webkit-text-stroke:1.8px #0E1523;">WITH DATA</div>
+            </div>
+            <p style="font-size:14.5px; line-height:1.6; color:#51607A; margin:18px 0 0; max-width:300px;">그림을 ‘느낌’이 아니라 데이터로 읽는 미술 감상 수업에 오신 걸 환영합니다.</p>
+          </div>
+          <div style="font-size:12px; color:#9AA6B6;">서울미술고등학교 · 미술과</div>
+        </div>
+
+        <!-- right form -->
+        <div style="padding:48px 44px; display:flex; flex-direction:column; justify-content:center;">
+          <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A;">START</div>
+          <h2 style="font-size:26px; font-weight:800; letter-spacing:-0.02em; margin:10px 0 0;">수업 시작하기</h2>
+          <div style="font-size:13.5px; color:#667080; margin-top:6px;">역할을 고르고 이름·PIN으로 입장하세요.</div>
+
+          <div style="display:flex; gap:8px; margin-top:24px; background:#F2F6FC; padding:5px; border-radius:12px;">
+            <button onClick="{{ setStudentA }}" style="flex:1; border:none; border-radius:9px; padding:11px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; background:{{ aStuBg }}; color:{{ aStuFg }};">학생</button>
+            <button onClick="{{ setTeacherA }}" style="flex:1; border:none; border-radius:9px; padding:11px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; background:{{ aTeaBg }}; color:{{ aTeaFg }};">교사</button>
+          </div>
+
+          <div style="margin-top:18px; display:flex; flex-direction:column; gap:10px;">
+            <input placeholder="이름" style="background:#F4F8FD; border:1px solid #E4EAF2; border-radius:12px; padding:14px 16px; font-size:14.5px; font-family:inherit; outline:none;">
+            <input placeholder="PIN 4자리" inputmode="numeric" style="background:#F4F8FD; border:1px solid #E4EAF2; border-radius:12px; padding:14px 16px; font-size:14.5px; font-family:inherit; outline:none; letter-spacing:0.3em;">
+          </div>
+
+          <a href="{{ destA }}" style="display:block; margin-top:18px;"><button style="width:100%; background:#0E1523; color:#fff; border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer;" style-hover="transform:translateY(-1px);">{{ aCta }} →</button></a>
+          <div style="font-size:12.5px; color:#9AA6B6; margin-top:14px; text-align:center;">PIN을 잊었나요? 담임 선생님께 문의하세요.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== 변형 B · 센터 카드 ===== -->
+    <div style="flex:none; width:480px;">
+      <div style="font-size:13px; font-weight:700; color:#6b6b66; letter-spacing:0.04em; margin-bottom:12px;">B · 센터 카드</div>
+      <div data-screen-label="로그인 B" style="background:#f6fbff; border-radius:2px; box-shadow:0 1px 3px rgba(0,0,0,.08); padding:54px 40px; min-height:560px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+        <div style="width:54px; height:54px; border-radius:16px; background:#0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width:22px; height:22px; border:2.5px solid #f6fbff; border-radius:50%; position:relative;"><div style="position:absolute; width:3px; height:8px; background:#f6fbff; left:50%; top:2px; transform:translateX(-50%);"></div></div>
+        </div>
+        <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#3A4F7A; margin-top:22px;">DATA × ART</div>
+        <h2 style="font-size:24px; font-weight:800; letter-spacing:-0.02em; margin:8px 0 0; text-align:center;">데이터의 눈으로<br>그림 읽기</h2>
+        <div style="font-size:13.5px; color:#667080; margin-top:8px;">수업에 입장하기</div>
+
+        <div style="width:100%; display:flex; gap:8px; margin-top:26px; background:#fff; border:1px solid #E4EAF2; padding:5px; border-radius:12px;">
+          <button onClick="{{ setStudentB }}" style="flex:1; border:none; border-radius:9px; padding:11px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; background:{{ bStuBg }}; color:{{ bStuFg }};">학생</button>
+          <button onClick="{{ setTeacherB }}" style="flex:1; border:none; border-radius:9px; padding:11px; font-size:14px; font-weight:700; font-family:inherit; cursor:pointer; background:{{ bTeaBg }}; color:{{ bTeaFg }};">교사</button>
+        </div>
+
+        <div style="width:100%; margin-top:14px; display:flex; flex-direction:column; gap:10px;">
+          <input placeholder="이름" style="background:#fff; border:1px solid #E4EAF2; border-radius:12px; padding:14px 16px; font-size:14.5px; font-family:inherit; outline:none;">
+          <input placeholder="PIN 4자리" inputmode="numeric" style="background:#fff; border:1px solid #E4EAF2; border-radius:12px; padding:14px 16px; font-size:14.5px; font-family:inherit; outline:none; letter-spacing:0.3em;">
+        </div>
+
+        <a href="{{ destB }}" style="display:block; width:100%; margin-top:16px;"><button style="width:100%; background:#0E1523; color:#fff; border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:700; font-family:inherit; cursor:pointer;" style-hover="transform:translateY(-1px);">{{ bCta }} →</button></a>
+        <div style="font-size:12px; color:#9AA6B6; margin-top:18px;">서울미술고등학교 · 미술과</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { a:'student', b:'student' };
+  renderVals(){
+    const on = (v)=> v ? '#0E1523' : 'transparent';
+    const fg = (v)=> v ? '#fff' : '#51607A';
+    const aStu = this.state.a==='student', bStu = this.state.b==='student';
+    return {
+      setStudentA:()=>this.setState({a:'student'}), setTeacherA:()=>this.setState({a:'teacher'}),
+      setStudentB:()=>this.setState({b:'student'}), setTeacherB:()=>this.setState({b:'teacher'}),
+      aStuBg:on(aStu), aStuFg:fg(aStu), aTeaBg:on(!aStu), aTeaFg:fg(!aStu),
+      bStuBg:on(bStu), bStuFg:fg(bStu), bTeaBg:on(!bStu), bTeaFg:fg(!bStu),
+      aCta: aStu ? '작품 읽으러 가기' : '대시보드로',
+      bCta: bStu ? '작품 읽으러 가기' : '대시보드로',
+      destA: aStu ? '허브.dc.html' : '교사대시보드.dc.html',
+      destB: bStu ? '허브.dc.html' : '교사대시보드.dc.html',
+    };
+  }
+}
+</script>
+</body>
+</html>

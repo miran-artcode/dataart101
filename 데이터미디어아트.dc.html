@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #EEF7FF; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color: #0E1523; }
+  ::placeholder { color: #99A0A8; }
+  input:focus { border-color: #0E1523 !important; }
+</style>
+</helmet>
+
+<div style="min-height: 100vh; background: #EEF7FF; padding: 18px 18px 0;">
+  <div style="max-width: 1180px; margin: 0 auto;">
+
+    <!-- ===== floating nav ===== -->
+    <nav style="position: sticky; top: 18px; z-index: 50; display: flex; align-items: center; justify-content: space-between; background: #FFFFFF; border: 1px solid rgba(18,22,28,0.06); border-radius: 20px; padding: 14px 16px 14px 22px; box-shadow: 0 18px 40px -24px rgba(28,25,20,0.28), 0 2px 6px -2px rgba(0,0,0,0.05);">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="width: 30px; height: 30px; border-radius: 9px; background: #0E1523; display:flex; align-items:center; justify-content:center;">
+          <div style="width: 13px; height: 13px; border: 2px solid #EEF7FF; border-radius: 50%; position: relative;"><div style="position:absolute; width:2px; height:5px; background:#EEF7FF; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size: 16px; font-weight: 700; letter-spacing: -0.01em;">데이터의 눈으로 그림 읽기</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 28px;">
+        <div style="display: flex; gap: 24px; font-size: 14px; font-weight: 500; color: #666B74;">
+          <span style="cursor:pointer;" style-hover="color:#0E1523;">둘러보기</span>
+          <span style="cursor:pointer;" style-hover="color:#0E1523;">분석 도구</span>
+          <span style="cursor:pointer;" style-hover="color:#0E1523;">전시</span>
+        </div>
+        <button onClick="{{ goStart }}" style="background: #0E1523; color: #fff; border: none; border-radius: 999px; padding: 11px 20px; font-size: 14px; font-weight: 600; font-family: inherit; cursor: pointer; transition: transform .18s ease, background .18s ease;" style-hover="background:#282C33; transform: translateY(-1px);">시작하기</button>
+      </div>
+    </nav>
+
+    <!-- ===== hero ===== -->
+    <header style="text-align: center; padding: 92px 20px 70px;">
+      <div style="display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; background: #fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 999px; padding: 7px 16px; font-size: 13px; font-weight: 600; color: #666B74; box-shadow: 0 8px 20px -14px rgba(28,25,20,0.3);">
+        <span style="width: 6px; height: 6px; border-radius: 50%; background: #0E1523;"></span>
+        서울미술고등학교 · AI 융합 미술수업
+      </div>
+      <h1 style="font-size: clamp(38px, 6.4vw, 78px); line-height: 1.04; font-weight: 800; letter-spacing: -0.04em; margin: 30px auto 0; max-width: 920px;">데이터의 눈으로 그림을 읽고,<br><span style="color: #99A0A8;">의미를 담아 다시 그리다.</span></h1>
+      <p style="font-size: 19px; line-height: 1.6; color: #535860; max-width: 600px; margin: 28px auto 0; text-wrap: pretty;">그림·소리·내 삶·사회를 데이터로 분석하고, 나의 의도로 인터랙티브 미디어아트로 재창조해요. 알고리즘은 도구일 뿐, <b style="color:#0E1523; font-weight:600;">무엇을 셀지·강조할지</b>가 곧 작가의 선택입니다.</p>
+      <div style="display: flex; gap: 12px; justify-content: center; margin-top: 40px;">
+        <button onClick="{{ goStart }}" style="background: #0E1523; color: #fff; border: none; border-radius: 999px; padding: 16px 30px; font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap; transition: transform .18s ease, background .18s ease;" style-hover="background:#282C33; transform: translateY(-1px);">시작하기 →</button>
+        <button style="background: #fff; color: #0E1523; border: 1px solid rgba(18,22,28,0.12); border-radius: 999px; padding: 16px 26px; font-size: 16px; font-weight: 600; font-family: inherit; cursor: pointer; white-space: nowrap; transition: background .18s ease;" style-hover="background:#F1F3F6;">로그인 없이 둘러보기</button>
+      </div>
+    </header>
+
+    <!-- ===== showcase card ===== -->
+    <section style="background: #fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 28px; padding: 18px; box-shadow: 0 40px 80px -40px rgba(28,25,20,0.3), 0 2px 8px -3px rgba(0,0,0,0.05); display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 18px;">
+      <div style="position: relative; height: 460px; border-radius: 16px; overflow: hidden; background: #E5EEF6;">
+        <x-import component-from-global-scope="image-slot" from="./image-slot.js" id="artwork" shape="rect" placeholder="분석할 작품을 여기에 드래그" hint-size="100%,100%" style="display:block; width:100%; height:100%;"></x-import>
+      </div>
+      <div style="padding: 26px 26px 22px; display: flex; flex-direction: column;">
+        <div style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #99A0A8; text-transform: uppercase;">Reading · 데이터로 읽기</div>
+        <div style="font-size: 28px; font-weight: 700; letter-spacing: -0.02em; margin-top: 10px;">한 점의 그림을<br>숫자로 펼치다</div>
+        <p style="font-size: 15px; line-height: 1.6; color: #666B74; margin: 14px 0 0;">작품을 올리면 색·구도·객체·질감을 추출해요. 추출된 데이터는 다음 단계 — 나만의 미디어아트 — 의 재료가 됩니다.</p>
+
+        <div style="margin-top: 24px;">
+          <div style="font-size: 13px; font-weight: 600; color: #535860;">주요 색 군집</div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">{{ swatches }}</div>
+        </div>
+
+        <div style="margin-top: auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding-top: 26px;">
+          <div style="border-top: 1px solid rgba(18,22,28,0.1); padding-top: 12px;"><div style="font-size: 30px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;">06</div><div style="font-size: 12px; color: #99A0A8; margin-top: 2px;">색 군집</div></div>
+          <div style="border-top: 1px solid rgba(18,22,28,0.1); padding-top: 12px;"><div style="font-size: 30px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;">12</div><div style="font-size: 12px; color: #99A0A8; margin-top: 2px;">감지 객체</div></div>
+          <div style="border-top: 1px solid rgba(18,22,28,0.1); padding-top: 12px;"><div style="font-size: 30px; font-weight: 700; letter-spacing: -0.03em; font-variant-numeric: tabular-nums;">07</div><div style="font-size: 12px; color: #99A0A8; margin-top: 2px;">분석 렌즈</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== process ===== -->
+    <section style="padding: 80px 6px 20px;">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+        <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin: 0;">분석에서 창작까지, 네 걸음</h2>
+        <span style="font-size: 15px; color: #666B74;">숫자가 끝나는 곳에서, 예술이 시작된다.</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-top: 30px;">
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 20px; padding: 24px; box-shadow: 0 20px 44px -30px rgba(28,25,20,0.28);">
+          <div style="font-size: 13px; font-weight: 700; color: #0E1523; font-variant-numeric: tabular-nums;">01</div>
+          <div style="font-size: 22px; font-weight: 700; margin-top: 14px;">그림</div>
+          <p style="font-size: 14px; line-height: 1.55; color: #666B74; margin: 8px 0 0;">색·구도·객체로 작품을 읽기</p>
+        </div>
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 20px; padding: 24px; box-shadow: 0 20px 44px -30px rgba(28,25,20,0.28);">
+          <div style="font-size: 13px; font-weight: 700; color: #99A0A8; font-variant-numeric: tabular-nums;">02</div>
+          <div style="font-size: 22px; font-weight: 700; margin-top: 14px;">소리</div>
+          <p style="font-size: 14px; line-height: 1.55; color: #666B74; margin: 8px 0 0;">파형·리듬을 데이터로 듣기</p>
+        </div>
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 20px; padding: 24px; box-shadow: 0 20px 44px -30px rgba(28,25,20,0.28);">
+          <div style="font-size: 13px; font-weight: 700; color: #99A0A8; font-variant-numeric: tabular-nums;">03</div>
+          <div style="font-size: 22px; font-weight: 700; margin-top: 14px;">내 삶</div>
+          <p style="font-size: 14px; line-height: 1.55; color: #666B74; margin: 8px 0 0;">나의 기록을 시각으로 옮기기</p>
+        </div>
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 20px; padding: 24px; box-shadow: 0 20px 44px -30px rgba(28,25,20,0.28);">
+          <div style="font-size: 13px; font-weight: 700; color: #99A0A8; font-variant-numeric: tabular-nums;">04</div>
+          <div style="font-size: 22px; font-weight: 700; margin-top: 14px;">사회</div>
+          <p style="font-size: 14px; line-height: 1.55; color: #666B74; margin: 8px 0 0;">함께 사는 세계를 비평으로</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== tools grid ===== -->
+    <section style="padding: 60px 6px 20px;">
+      <h2 style="font-size: 40px; font-weight: 800; letter-spacing: -0.03em; margin: 0 0 30px;">일곱 개의 분석 렌즈 · 그리고 도구들</h2>
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(258px, 1fr)); gap: 14px;">
+
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 22px; padding: 28px; box-shadow: 0 24px 50px -34px rgba(28,25,20,0.28); transition: transform .2s ease;" style-hover="transform: translateY(-3px);">
+          <div style="display: flex; gap: 6px; height: 40px; align-items: flex-end;">{{ motifSwatch }}</div>
+          <div style="font-size: 20px; font-weight: 700; margin-top: 22px;">색 군집</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #666B74; margin: 8px 0 0;">K-평균으로 그림의 색을 묶어 팔레트로 추출. 무엇을 '주연 색'으로 셀지 정한다.</p>
+        </div>
+
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 22px; padding: 28px; box-shadow: 0 24px 50px -34px rgba(28,25,20,0.28); transition: transform .2s ease;" style-hover="transform: translateY(-3px);">
+          <div style="display: flex; gap: 5px; height: 40px; align-items: flex-end;">{{ motifBars }}</div>
+          <div style="font-size: 20px; font-weight: 700; margin-top: 22px;">7가지 분석 렌즈</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #666B74; margin: 8px 0 0;">색·구도·명도·질감·감정·시선·균형. 같은 그림도 렌즈마다 다른 숫자를 말한다.</p>
+        </div>
+
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 22px; padding: 28px; box-shadow: 0 24px 50px -34px rgba(28,25,20,0.28); transition: transform .2s ease;" style-hover="transform: translateY(-3px);">
+          <div style="position: relative; height: 40px;">
+            <div style="position:absolute; left:6px; top:4px; width:38px; height:26px; border:1.5px solid #0E1523; border-radius:3px;"></div>
+            <div style="position:absolute; left:30px; top:14px; width:30px; height:22px; border:1.5px solid #0E1523; border-radius:3px;"></div>
+          </div>
+          <div style="font-size: 20px; font-weight: 700; margin-top: 22px;">객체 감지</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #666B74; margin: 8px 0 0;">화면 속 사람·사물·구조를 박스로 잡아 '무엇이 거기 있는가'를 센다.</p>
+        </div>
+
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 22px; padding: 28px; box-shadow: 0 24px 50px -34px rgba(28,25,20,0.28); transition: transform .2s ease;" style-hover="transform: translateY(-3px);">
+          <div style="display: flex; gap: 3px; height: 40px; align-items: center;">{{ motifWave }}</div>
+          <div style="font-size: 20px; font-weight: 700; margin-top: 22px;">소리 · 사진</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #666B74; margin: 8px 0 0;">목소리의 파형, 사진의 빛. 시각 너머의 데이터를 끌어와 작품의 재료로.</p>
+        </div>
+
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 22px; padding: 28px; box-shadow: 0 24px 50px -34px rgba(28,25,20,0.28); transition: transform .2s ease;" style-hover="transform: translateY(-3px);">
+          <div style="display: flex; gap: 6px; height: 40px; align-items: center;">
+            <div style="width: 28px; height: 36px; border: 1.5px solid #0E1523; border-radius: 2px;"></div>
+            <div style="width: 28px; height: 30px; border: 1.5px solid #0E1523; border-radius: 2px;"></div>
+            <div style="width: 28px; height: 24px; border: 1.5px solid #0E1523; border-radius: 2px;"></div>
+          </div>
+          <div style="font-size: 20px; font-weight: 700; margin-top: 22px;">전시 · 비평</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #666B74; margin: 8px 0 0;">완성한 미디어아트를 온라인 전시로. 서로의 의도를 데이터로 읽고 비평한다.</p>
+        </div>
+
+        <div style="background:#fff; border: 1px solid rgba(18,22,28,0.06); border-radius: 22px; padding: 28px; box-shadow: 0 24px 50px -34px rgba(28,25,20,0.28); transition: transform .2s ease;" style-hover="transform: translateY(-3px);">
+          <div style="height: 40px; display:flex; align-items:center;">
+            <div style="background:#E5EEF6; border-radius: 12px 12px 12px 3px; padding: 8px 12px; font-size: 13px; color:#535860;">이 색을 왜 골랐나요?</div>
+          </div>
+          <div style="font-size: 20px; font-weight: 700; margin-top: 22px;">AI 감상 코치</div>
+          <p style="font-size: 14px; line-height: 1.6; color: #666B74; margin: 8px 0 0;">정답을 주지 않고 질문을 건다. 너의 선택에 이유를 붙이도록 돕는 대화 상대.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== start card ===== -->
+    <section ref="{{ startRef }}" style="padding: 70px 6px 30px;">
+      <div style="background:#0E1523; border-radius: 30px; padding: 56px 40px; box-shadow: 0 50px 90px -50px rgba(0,0,0,0.6); display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 48px; align-items: center;">
+        <div>
+          <div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #7B818A; text-transform: uppercase;">Start</div>
+          <h2 style="font-size: 46px; font-weight: 800; letter-spacing: -0.03em; color: #F1F3F6; line-height: 1.05; margin: 14px 0 0;">이름과 PIN이면<br>충분해요.</h2>
+          <p style="font-size: 16px; line-height: 1.6; color: #A5ABB3; margin: 18px 0 0; max-width: 360px;">처음이면 계정이 자동으로 만들어져요. 둘러보기는 로그인 없이도 가능하고, 저장·전시는 로그인이 필요해요.</p>
+        </div>
+        <div style="background:#fff; border-radius: 20px; padding: 26px;">
+          <div style="display: flex; flex-direction: column; gap: 12px;">
+            <input placeholder="이름" style="background:#F1F3F6; border: 1px solid rgba(18,22,28,0.1); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: inherit; color:#0E1523; outline: none; transition: border-color .15s;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+              <input placeholder="반-번호 (선택)" style="background:#F1F3F6; border: 1px solid rgba(18,22,28,0.1); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: inherit; color:#0E1523; outline: none; min-width:0; transition: border-color .15s;">
+              <input placeholder="PIN 4자리" inputmode="numeric" style="background:#F1F3F6; border: 1px solid rgba(18,22,28,0.1); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: inherit; color:#0E1523; outline: none; min-width:0; transition: border-color .15s;">
+            </div>
+            <input placeholder="표시 이름 (선택)" style="background:#F1F3F6; border: 1px solid rgba(18,22,28,0.1); border-radius: 12px; padding: 14px 16px; font-size: 15px; font-family: inherit; color:#0E1523; outline: none; transition: border-color .15s;">
+            <div style="display: flex; gap: 8px; background:#F1F3F6; border-radius: 12px; padding: 5px;">
+              <button onClick="{{ setStu }}" style="{{ stuStyle }}">학생</button>
+              <button onClick="{{ setTea }}" style="{{ teaStyle }}">교사</button>
+            </div>
+            <button onClick="{{ goHub }}" style="margin-top: 4px; background:#0E1523; color:#fff; border: none; border-radius: 12px; padding: 15px; font-size: 16px; font-weight: 700; font-family: inherit; cursor: pointer; transition: background .18s ease;" style-hover="background:#282C33;">시작하기 →</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== footer ===== -->
+    <footer style="padding: 50px 8px 56px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+      <div style="font-size: 14px; color: #666B74;">© 2026 <b style="color:#0E1523; font-weight:600;">MIRAN HWANG</b> · 데이터 미디어아트 스튜디오 · 교육용</div>
+      <div style="font-size: 14px; color: #99A0A8;"><span>miran726</span>&#64;<span>gmail.com</span></div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { role: 'student' };
+
+  componentDidMount() {
+    this._start = null;
+  }
+
+  setRole(v) { this.setState({ role: v }); }
+
+  roleStyle(active) {
+    const base = { flex: 1, padding: '11px', borderRadius: '9px', fontSize: '14px', fontWeight: 600,
+      fontFamily: 'inherit', cursor: 'pointer', border: 'none', transition: 'all .18s ease', whiteSpace: 'nowrap' };
+    return active
+      ? { ...base, background: '#0E1523', color: '#fff' }
+      : { ...base, background: 'transparent', color: '#666B74' };
+  }
+
+  renderVals() {
+    const role = this.state.role;
+    // refined "extracted" palette — museum tones, not RGB primaries
+    const pal = ['#2E3A4A', '#7C8B7A', '#C9A24C', '#B5503A', '#9A8FA6', '#E4DED0'];
+    const swatches = React.createElement(React.Fragment, {}, pal.map((c, i) =>
+      React.createElement('div', { key: i, style: {
+        flex: 1, height: '46px', borderRadius: '8px', background: c,
+        border: '1px solid rgba(0,0,0,0.05)' } })
+    ));
+    const motifSwatch = React.createElement(React.Fragment, {}, pal.slice(0, 5).map((c, i) =>
+      React.createElement('div', { key: i, style: { width: '14px', height: (16 + i * 6) + 'px', borderRadius: '3px', background: c } })
+    ));
+    const barH = [22, 34, 16, 40, 28, 12, 36];
+    const motifBars = React.createElement(React.Fragment, {}, barH.map((h, i) =>
+      React.createElement('div', { key: i, style: { width: '7px', height: h + 'px', borderRadius: '2px', background: i === 3 ? '#0E1523' : '#0E1523' } })
+    ));
+    const waveH = [10, 20, 32, 24, 14, 28, 36, 22, 12, 26, 18, 30, 16, 22];
+    const motifWave = React.createElement(React.Fragment, {}, waveH.map((h, i) =>
+      React.createElement('div', { key: i, style: { width: '4px', height: h + 'px', borderRadius: '2px', background: '#0E1523', opacity: 0.85 } })
+    ));
+
+    const scrollToStart = () => {
+      if (this._start) {
+        const y = this._start.getBoundingClientRect().top + window.scrollY - 80;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    };
+
+    return {
+      swatches, motifSwatch, motifBars, motifWave,
+      stuStyle: this.roleStyle(role === 'student'),
+      teaStyle: this.roleStyle(role === 'teacher'),
+      setStu: () => this.setRole('student'),
+      setTea: () => this.setRole('teacher'),
+      goStart: scrollToStart,
+      goHub: () => { window.location.href = this.state.role === 'teacher' ? '교사대시보드.dc.html' : '허브.dc.html'; },
+      startRef: (el) => { this._start = el; },
+    };
+  }
+}
+</script>
+</body>
+</html>

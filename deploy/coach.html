@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #f6fbff; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#0E1523; }
+  a { text-decoration:none; color:inherit; }
+  input:focus { border-color:#2C3A52 !important; }
+</style>
+</helmet>
+
+<div data-screen-label="AI코치" style="min-height:100vh; background:#f6fbff; padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <!-- nav -->
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#fff; border:1px solid #E4EAF2; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(14,21,35,0.3);">
+      <a href="hub.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:#2C3A52; display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #EEF7FF; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#EEF7FF; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:26px;">
+        <div style="display:flex; gap:22px; font-size:14px; font-weight:600;">
+          <a href="hub.html" style="color:#667080;" style-hover="color:#0E1523;">둘러보기</a>
+          <a href="analyze.html" style="color:#667080;" style-hover="color:#0E1523;">분석 도구</a>
+          <a href="gallery.html" style="color:#667080;" style-hover="color:#0E1523;">전시</a>
+        </div>
+        <div style="width:34px; height:34px; border-radius:50%; background:#2C3A52; color:#fff; display:flex; align-items:center; justify-content:center; font-size:14px; font-weight:700;">A</div>
+      </div>
+    </nav>
+
+    <header style="padding:40px 6px 24px;">
+      <a href="hub.html" style="font-size:14px; font-weight:600; color:#667080;">← 둘러보기</a>
+      <h1 style="font-size:40px; font-weight:800; letter-spacing:-0.03em; margin:10px 0 0;">AI 감상 코치</h1>
+      <div style="font-size:15px; color:#667080; margin-top:8px;">정답을 주지 않습니다. 너의 선택에 이유를 붙이도록 질문을 건넵니다.</div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:300px 1fr; gap:14px; padding-bottom:60px; align-items:start;">
+      <!-- context -->
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; padding:18px; box-shadow:0 24px 50px -40px rgba(14,21,35,0.3);">
+        <div style="display:flex; height:150px; border-radius:14px; overflow:hidden;">{{ thumb }}</div>
+        <div style="font-size:16px; font-weight:700; margin-top:14px;">〈무제〉</div>
+        <div style="font-size:13px; color:#667080; margin-top:2px;">지금 함께 보는 작품</div>
+        <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:14px;">{{ dataChips }}</div>
+      </div>
+
+      <!-- chat -->
+      <div style="background:#fff; border:1px solid #E4EAF2; border-radius:22px; box-shadow:0 30px 60px -42px rgba(14,21,35,0.34); display:flex; flex-direction:column; min-height:520px;">
+        <div style="padding:16px 22px; border-bottom:1px solid #EEF2F7; display:flex; align-items:center; gap:10px;">
+          <div style="width:30px; height:30px; border-radius:9px; background:#4C6CA6; display:flex; align-items:center; justify-content:center; color:#fff; font-size:13px; font-weight:700;">AI</div>
+          <div><div style="font-size:14px; font-weight:700;">감상 코치</div><div style="font-size:12px; color:#9AA6B6;">데이터를 근거로 질문해요</div></div>
+        </div>
+        <div style="flex:1; padding:22px; display:flex; flex-direction:column; gap:14px; overflow-y:auto;">{{ messages }}</div>
+        <div style="padding:14px; border-top:1px solid #EEF2F7;">
+          <div style="display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px;">{{ suggestions }}</div>
+          <div style="display:flex; gap:10px;">
+            <input value="{{ draft }}" onInput="{{ onInput }}" onKeyDown="{{ onKey }}" placeholder="생각을 적어보세요…" style="flex:1; background:#F4F8FD; border:1px solid #E4EAF2; border-radius:999px; padding:13px 18px; font-size:14.5px; font-family:inherit; color:#0E1523; outline:none;">
+            <button onClick="{{ send }}" style="background:#2C3A52; color:#fff; border:none; border-radius:999px; padding:0 22px; font-size:15px; font-weight:600; font-family:inherit; cursor:pointer;" style-hover="background:#38496A;">보내기</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    draft: '',
+    msgs: [
+      { who:'ai', text:'안녕하세요. 〈무제〉에서 가장 먼저 눈에 들어온 건 청회색이 31%로 가장 큰 비중이라는 점이에요. 이 색을 이렇게 크게 쓴 이유가 있나요?' },
+    ],
+  };
+  _qs = [
+    '흥미롭네요. 그 감정을 명도(평균 0.71)는 어떻게 거들고 있다고 생각하세요?',
+    '그렇다면 채도를 0.43으로 낮게 둔 선택은 그 의도와 어떻게 연결되나요?',
+    '감지된 객체 12개 중 무엇을 가장 강조하고 싶었나요?',
+    '만약 이 작품을 다시 그린다면, 어떤 데이터를 일부러 바꿔보고 싶나요?',
+  ];
+  _i = 0;
+
+  send = () => {
+    const t = this.state.draft.trim();
+    if (!t) return;
+    const q = this._qs[this._i % this._qs.length];
+    this._i++;
+    this.setState({ draft:'', msgs: [...this.state.msgs, { who:'me', text:t }, { who:'ai', text:q }] });
+  };
+
+  renderVals(){
+    const museum = ['#2E3A4A','#7C8B7A','#C9A24C','#9C6E5B','#8C93A2'];
+    const thumb = React.createElement(React.Fragment,{}, museum.slice(0,4).map((c,i)=>
+      React.createElement('div',{key:i,style:{flex:1,background:c}})));
+
+    const chips = ['청회색 31%','채도 0.43','명도 0.71','객체 12','감정 0.90'];
+    const dataChips = React.createElement(React.Fragment,{}, chips.map((c,i)=>
+      React.createElement('div',{key:i,style:{fontSize:'12px',fontWeight:600,color:'#4C6CA6',background:'#EAF1FB',borderRadius:'999px',padding:'5px 10px'}},c)));
+
+    const messages = React.createElement(React.Fragment,{}, this.state.msgs.map((m,i)=>{
+      const me = m.who==='me';
+      return React.createElement('div',{key:i,style:{display:'flex',justifyContent:me?'flex-end':'flex-start'}},
+        React.createElement('div',{style:{
+          maxWidth:'80%', fontSize:'14px', lineHeight:1.6, padding:'12px 16px',
+          borderRadius: me?'16px 16px 4px 16px':'16px 16px 16px 4px',
+          background: me?'#2C3A52':'#F2F6FC', color: me?'#fff':'#26303f'}}, m.text));
+    }));
+
+    const sg = ['감정을 강조하려고요','잘 모르겠어요','우연이었어요'];
+    const suggestions = React.createElement(React.Fragment,{}, sg.map((s,i)=>
+      React.createElement('div',{key:i,onClick:()=>this.setState({draft:s}),style:{
+        fontSize:'12.5px', fontWeight:600, color:'#51607A', background:'#fff',
+        border:'1px solid #cdd8e6', borderRadius:'999px', padding:'7px 13px', cursor:'pointer'}}, s)));
+
+    return {
+      thumb, dataChips, messages, suggestions,
+      draft: this.state.draft,
+      onInput: (e)=>this.setState({draft:e.target.value}),
+      onKey: (e)=>{ if(e.key==='Enter') this.send(); },
+      send: this.send,
+    };
+  }
+}
+</script>
+</body>
+</html>

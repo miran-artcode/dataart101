@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<span style="position:relative; display:inline-flex;">
+  <span onClick="{{ toggle }}" title="설명 보기" style="width:18px; height:18px; border-radius:50%; background:{{ iconBg }}; color:{{ iconFg }}; display:inline-flex; align-items:center; justify-content:center; font-size:11px; font-weight:800; cursor:pointer; font-style:italic; user-select:none; flex-shrink:0; line-height:1;" style-hover="filter:brightness(1.12);">i</span>
+
+  <sc-if value="{{ open }}" hint-placeholder-val="{{ false }}">
+  <span style="position:absolute; z-index:80; top:26px; left:50%; transform:translateX(-50%); width:300px; background:#0E1523; border:1px solid #2a3550; border-radius:14px; box-shadow:0 30px 70px -24px rgba(0,0,0,0.7); padding:16px; text-align:left; cursor:default;">
+    <span style="display:flex; align-items:center; justify-content:space-between; gap:8px;">
+      <span style="font-size:13.5px; font-weight:800; color:#fff;">{{ term }}</span>
+      <span onClick="{{ toggle }}" style="color:#7E89A8; cursor:pointer; font-size:15px; line-height:1;">✕</span>
+    </span>
+    <span style="display:flex; gap:5px; margin-top:12px;">{{ tabs }}</span>
+    <span style="display:block; margin-top:11px; font-size:12.5px; line-height:1.65; color:#cdd9ef;">{{ body }}</span>
+  </span>
+  </sc-if>
+</span>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:340,&quot;height&quot;:300},&quot;term&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;K-means 군집화&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;easy&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;비슷한 색끼리 모으는 거예요. 크레파스를 색깔별 상자에 나눠 담듯, 그림의 모든 점을 가까운 색끼리 K개의 무리로 묶어요.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;deep&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;각 점을 가장 가까운 중심에 배정하고, 중심을 무리의 평균으로 옮기는 일을 반복해 색 군집을 찾습니다. RGB·LAB 거리로 '가까움'을 잽니다.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;missed&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;면적이 작아도 의미가 큰 색(작가의 포인트 컬러)은 비중이 낮아 사라질 수 있어요. 숫자가 중요도를 다 말해주진 않습니다.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;idea&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;K를 3과 8로 바꿔 비교해 보세요. 같은 그림이 몇 개의 색으로 보이느냐에 따라 전혀 다른 인상이 됩니다.&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;tone&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;dark&quot;,&quot;light&quot;],&quot;default&quot;:&quot;dark&quot;,&quot;tsType&quot;:&quot;'dark'|'light'&quot;}}">
+class Component extends DCLogic {
+  state = { open:false, layer:0 };
+  renderVals(){
+    const S=this.state;
+    const term = this.props.term ?? '설명';
+    const easy = this.props.easy ?? '';
+    const deep = this.props.deep ?? '';
+    const missed = this.props.missed ?? '';
+    const idea = this.props.idea ?? '';
+    const dark = (this.props.tone ?? 'dark') === 'dark';
+
+    const layers=[['쉬운 예시',easy,'#2F6BE0'],['깊은 원리',deep,'#5B7BD6'],['놓친 것',missed,'#E6A85A'],['아이디어',idea,'#2FB6A8']];
+    const tabs=React.createElement(React.Fragment,{}, layers.map((l,i)=>
+      React.createElement('span',{key:i,onClick:()=>this.setState({layer:i}),style:{flex:1,textAlign:'center',fontSize:'10.5px',fontWeight:700,cursor:'pointer',padding:'6px 3px',borderRadius:'7px',background:S.layer===i?l[2]:'rgba(255,255,255,0.06)',color:S.layer===i?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},l[0])));
+
+    return {
+      open:S.open, toggle:()=>this.setState(s=>({open:!s.open})),
+      term, tabs, body:layers[S.layer][1],
+      iconBg: dark ? 'rgba(147,164,232,0.22)' : '#EAF1FB',
+      iconFg: dark ? '#93A4E8' : '#3A4F7A',
+    };
+  }
+}
+</script>
+</body>
+</html>

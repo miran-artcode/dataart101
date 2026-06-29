@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;800;900&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body { background: #070810; font-family: 'Pretendard', system-ui, sans-serif; -webkit-font-smoothing: antialiased; color:#E7ECF7; }
+  a { text-decoration:none; color:inherit; }
+  input[type=range]{ -webkit-appearance:none; appearance:none; height:5px; border-radius:3px; background:rgba(255,255,255,0.14); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; appearance:none; width:16px; height:16px; border-radius:50%; background:#2F6BE0; cursor:pointer; border:3px solid #0c0f18; }
+  .si{ background:rgba(255,255,255,0.05); border:1px solid #232734; border-radius:8px; padding:9px 11px; color:#fff; font-family:inherit; font-size:13px; outline:none; width:100%; }
+</style>
+</helmet>
+
+<div data-screen-label="색군집스튜디오" style="min-height:100vh; background:radial-gradient(120% 80% at 80% -10%, #141a36 0%, #070810 55%); padding:18px 18px 0;">
+  <div style="max-width:1180px; margin:0 auto;">
+
+    <nav style="position:sticky; top:18px; z-index:50; display:flex; align-items:center; justify-content:space-between; background:#13151d; border:1px solid #232734; border-radius:20px; padding:13px 16px 13px 22px; box-shadow:0 18px 40px -26px rgba(0,0,0,0.5);">
+      <a href="허브.dc.html" style="display:flex; align-items:center; gap:12px;">
+        <div style="width:30px; height:30px; border-radius:9px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+          <div style="width:13px; height:13px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+        </div>
+        <span style="font-size:16px; font-weight:700; letter-spacing:-0.01em;">데이터의 눈으로 그림 읽기</span>
+      </a>
+      <div style="display:flex; align-items:center; gap:22px; font-size:14px; font-weight:600;">
+        <a href="허브.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">허브</a>
+        <a href="데이터점스튜디오.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">데이터 점</a>
+        <a href="전시.dc.html" style="color:#8794b0;" style-hover="color:#E7ECF7;">전시</a>
+      </div>
+    </nav>
+
+    <header style="padding:34px 6px 20px;">
+      <a href="허브.dc.html" style="font-size:14px; font-weight:600; color:#8794b0;">← 허브</a>
+      <div style="font-family:'Orbitron',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.2em; color:#93A4E8; margin-top:12px;">STUDIO · COLOR</div>
+      <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.03em; margin:6px 0 0;">색 군집 스튜디오</h1>
+      <div style="font-size:14px; color:#8794b0; margin-top:8px;">작품을 K-means로 색 군집화해 팔레트로 읽고, 살아있는 입자 캔버스로 다시 그립니다.</div>
+    </header>
+
+    <section style="display:grid; grid-template-columns:1fr 348px; gap:14px; padding-bottom:30px; align-items:start;">
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+        <div style="background:#0E1523; border:1px solid #232734; border-radius:22px; padding:16px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:4px 6px 12px; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:13px; font-weight:600; color:#9DB3D6;">캔버스</div>
+            <div style="display:flex; gap:6px; background:rgba(255,255,255,0.05); padding:4px; border-radius:999px;">{{ viewTabs }}</div>
+          </div>
+          <div style="position:relative; border-radius:14px; overflow:hidden; background:#070B12; height:420px;">{{ stage }}{{ lensOverlay }}</div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 6px 4px; gap:8px; flex-wrap:wrap;">
+            <div style="font-size:12px; color:#8794b0;">{{ statusLine }}</div>
+            <button onClick="{{ reseed }}" style="background:#1E2A42; color:#cfe0f7; border:none; border-radius:999px; padding:8px 15px; font-size:12.5px; font-weight:600; font-family:inherit; cursor:pointer;">↻ 다시 생성</button>
+          </div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:22px; padding:22px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
+            <div style="font-size:15px; font-weight:700;">색 군집 팔레트 <span style="font-size:13px; color:#7E89A8; font-weight:500;">K={{ K }}</span></div>
+            <div style="display:flex; gap:5px; flex-wrap:wrap;">{{ chartTabs }}</div>
+          </div>
+          <div style="display:flex; gap:6px; margin-top:14px;">{{ paletteRow }}</div>
+          <div style="margin-top:18px; height:200px;">{{ chartEl }}</div>
+        </div>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:14px;">
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">입력 <span style="color:#7E89A8; font-weight:500;">명화·업로드·드래그</span></div>
+          <div style="display:flex; gap:6px; margin-top:12px; flex-wrap:wrap;">{{ artBtns }}</div>
+          <input type="file" accept="image/*" onChange="{{ onFile }}" class="si" style="padding:8px; margin-top:10px;">
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:7px;"><span style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">K-means 군집화</span><dc-import name="설명아이콘" term="K-means 군집화" easy="비슷한 색끼리 모으는 거예요. 크레파스를 색깔별 상자에 나눠 담듯, 그림의 모든 점을 가까운 색끼리 K개의 무리로 묶어요." deep="각 점을 가장 가까운 중심에 배정하고, 중심을 무리의 평균으로 옮기는 일을 반복해 색 군집을 찾습니다. RGB·LAB 거리로 '가까움'을 잽니다." missed="면적이 작아도 의미가 큰 색(작가의 포인트 컬러)은 비중이 낮아 사라질 수 있어요. 숫자가 중요도를 다 말해주진 않습니다." idea="K를 3과 8로 바꿔 비교해 보세요. 같은 그림이 몇 개의 색으로 보이느냐에 따라 전혀 다른 인상이 됩니다." tone="dark" hint-size="18px,18px"></dc-import></div>
+          <div style="margin-top:14px;">{{ kSlider }}</div>
+          <div style="margin-top:14px; display:flex; align-items:center; gap:6px; margin-bottom:7px;"><span style="font-size:12px; color:#9fb0d0;">색공간</span><dc-import name="설명아이콘" term="색공간 (RGB·LAB)" easy="색을 숫자로 적는 방법이에요. RGB는 빨강·초록·파랑의 양으로, LAB는 사람 눈이 느끼는 밝기와 색감으로 적어요." deep="RGB는 화면이 빛을 내는 방식 그대로라 계산이 쉽고, LAB는 인간의 지각적 색 차이에 가깝게 설계돼 비슷해 보이는 색을 더 잘 구분합니다." missed="RGB로 묶으면 사람 눈엔 전혀 달라 보이는 색이 한 무리가 되기도 해요. 기계의 '가까움'과 내 눈의 '가까움'은 다릅니다." idea="같은 그림을 RGB와 LAB로 각각 군집화해 팔레트를 비교해 보세요. 어느 쪽이 내가 느낀 색에 더 가깝나요?" tone="dark" hint-size="18px,18px"></dc-import></div>{{ spaceSeg }}
+          <div style="margin-top:14px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">샘플링</div>{{ sampleSeg }}
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="display:flex; align-items:center; gap:7px;"><span style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">입자 · 움직임</span><dc-import name="설명아이콘" term="입자 표현 (제너러티브)" easy="대표색 하나하나를 살아 움직이는 작은 점으로 바꿔요. 점들이 모이고 흩어지며 그림이 '연주'됩니다." deep="각 점에 원래 위치·색·크기를 주고, 복귀력·진동·잔상 같은 힘을 매 프레임 적용해 움직임을 만듭니다. 쇠라의 점묘, 제너러티브 아트와 이어집니다." missed="너무 화려한 움직임은 정작 데이터(색의 진실)를 가릴 수 있어요. 효과가 목적이 되지 않게 조심하세요." idea="복귀력을 낮추고 잔상을 올려 '성운'처럼, 혹은 격자로 '픽셀아트'처럼 — 같은 데이터로 전혀 다른 느낌을 만들어 보세요." tone="dark" hint-size="18px,18px"></dc-import></div>
+          <div style="margin-top:14px; display:flex; flex-direction:column; gap:15px;">{{ pSliders }}</div>
+          <div style="margin-top:14px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">표현 모드</div>{{ modeSeg }}
+          {{ threeD }}
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">움직임 기준</div>{{ baseSeg }}
+          {{ freeSeg }}
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">색 모드</div>{{ cmodeSeg }}
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">표현 렌즈</div>{{ lensSeg }}
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">인터랙션</div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:9px;">{{ toggles }}</div>
+          <div style="margin-top:12px; font-size:12px; color:#9fb0d0; margin-bottom:7px;">마우스 모드 <span style="color:#7E89A8;">· 클릭=폭발</span></div>{{ mouseSeg }}
+          {{ micCtrl }}
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">프리셋</div>
+          <div style="margin-top:12px; display:flex; gap:6px; flex-wrap:wrap;">{{ presets }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">내보내기</div>
+          <div style="margin-top:12px; display:flex; gap:6px; flex-wrap:wrap;">{{ exportBtns }}</div>
+          <div style="margin-top:10px; display:flex; gap:6px;">{{ saveBtns }}</div>
+        </div>
+
+        <div style="background:#13151d; border:1px solid #232734; border-radius:20px; padding:20px;">
+          <div style="font-size:12px; font-weight:700; color:#93A4E8; letter-spacing:0.04em;">윤리 · 출처 리포트</div>
+          <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">{{ ethicsForm }}</div>
+        </div>
+
+        <div style="background:#16224a; border:1px solid #2a3a66; border-radius:20px; padding:20px;">
+          <div style="font-size:13px; font-weight:700; color:#fff;">AI 감상 코치</div>
+          <div style="font-size:12.5px; color:#A9B8DC; line-height:1.6; margin-top:8px;">{{ coachLine }}</div>
+        </div>
+
+      </div>
+    </section>
+
+    <footer style="margin:4px 0 56px; position:relative; overflow:hidden; background:#0A0E26; border-radius:24px; padding:30px 34px;">
+      <div style="position:absolute; left:-6%; bottom:-70%; width:440px; height:300px; filter:blur(70px); opacity:0.4; pointer-events:none; background:radial-gradient(50% 60% at 40% 50%, #2F6BE0, transparent 70%), radial-gradient(40% 50% at 72% 50%, #2FB6A8, transparent 72%);"></div>
+      <div style="position:relative; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+        <div style="display:flex; align-items:center; gap:13px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:rgba(255,255,255,0.08); display:flex; align-items:center; justify-content:center;">
+            <div style="width:14px; height:14px; border:2px solid #93A4E8; border-radius:50%; position:relative;"><div style="position:absolute; width:2px; height:5px; background:#93A4E8; left:50%; top:1px; transform:translateX(-50%);"></div></div>
+          </div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:#fff;">데이터의 눈으로 그림 읽기</div>
+            <div style="font-size:11.5px; color:#7E89A8; letter-spacing:0.02em; margin-top:2px;">© 2025 Miran Hwang · Seoul Arts High School · Art Teacher</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:9px; flex-wrap:wrap;">
+          <a href="허브.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">허브</a>
+          <a href="데이터점스튜디오.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">데이터 점</a>
+          <a href="전시.dc.html" style="background:rgba(255,255,255,0.06); color:#C2CBE0; border:1px solid rgba(255,255,255,0.1); border-radius:999px; padding:8px 15px; font-size:13px; font-weight:600;" style-hover="background:rgba(255,255,255,0.12);">전시</a>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { art:'sea', K:6, space:'rgb', sampling:'random', palette:[], artUrl:'', view:'cluster', chart:'donut', N:64, psize:55, glow:30, ret:50, jitter:30, trail:40, mode:0, base:'keep', free:'wander', rot:50, depth:50, cmode:'rep', lens:'none', mouse:true, mouseMode:'push', mic:false, micVol:55, micFreq:50, seed:1, ethics:{title:'',artist:'',source:'',maker:'',intent:''} };
+  componentDidMount(){ this.src=document.createElement('canvas'); this.src.width=300; this.src.height=300; this.drawArt(this.state.art); }
+  drawArt(kind){
+    const c=this.src, x=c.getContext('2d'), W=300,H=300;
+    const sets={ sea:['#0b1a3a','#16407a','#3a78c2','#9fd0e8','#e9f3da'], sunset:['#2a1a3a','#7a3b6a','#d56b5a','#f0a85a','#f5e6a8'], forest:['#10241c','#1f5135','#4e8b54','#9bc46b','#e6e2c0'], rain:['#0d1420','#22324a','#41597a','#7d93b0','#cfd9e6'] };
+    const cols=sets[kind]||sets.sea;
+    const g=x.createLinearGradient(0,0,W,H); cols.forEach((col,i)=>g.addColorStop(i/(cols.length-1),col));
+    x.fillStyle=g; x.fillRect(0,0,W,H);
+    for(let i=0;i<26;i++){ const r=this.rand(i+kind.length*3); x.globalAlpha=0.18+r*0.4; x.fillStyle=cols[Math.floor(this.rand(i+9)*cols.length)]; x.beginPath(); x.arc(this.rand(i+1)*W,this.rand(i+2)*H,12+this.rand(i+3)*70,0,7); x.fill(); }
+    x.globalAlpha=1; this.extract();
+  }
+  loadFile(file){ if(!file)return; const img=new Image(); img.onload=()=>{ const c=this.src,x=c.getContext('2d'); const s=Math.max(300/img.width,300/img.height); const w=img.width*s,h=img.height*s; x.clearRect(0,0,300,300); x.drawImage(img,(300-w)/2,(300-h)/2,w,h); this.extract(); }; img.src=URL.createObjectURL(file); }
+  rand(s){ const x=Math.sin((s+this.state.seed*7.3)*99.13)*43758.5453; return x-Math.floor(x); }
+  lum(r,g,b){ return 0.299*r+0.587*g+0.114*b; }
+  extract(){
+    const x=this.src.getContext('2d'); const d=x.getImageData(0,0,300,300).data; const pts=[]; const sm=this.state.sampling;
+    for(let i=0;i<d.length;i+=4*10){ const r=d[i],g=d[i+1],b=d[i+2]; const L=this.lum(r,g,b)/255; let keep=true;
+      if(sm==='bright') keep=L>0.55; else if(sm==='dark') keep=L<0.42; else if(sm==='edge'){ const j=i+4*10; if(j<d.length){ const dd=Math.abs(r-d[j])+Math.abs(g-d[j+1])+Math.abs(b-d[j+2]); keep=dd>60; } }
+      if(keep||Math.random()<0.05) pts.push([r,g,b]); }
+    if(pts.length<this.state.K){ for(let i=0;i<d.length&&pts.length<60;i+=4*23) pts.push([d[i],d[i+1],d[i+2]]); }
+    const K=this.state.K; let cents=[]; for(let k=0;k<K;k++) cents.push(pts[Math.floor(this.rand(k+100)*pts.length)].slice());
+    const wlab=this.state.space==='lab'?[0.5,1.3,1.0]:[1,1,1];
+    for(let it=0;it<8;it++){ const sum=cents.map(()=>[0,0,0,0]);
+      for(const p of pts){ let bi=0,bd=1e9; for(let k=0;k<K;k++){ const c=cents[k]; const dd=wlab[0]*(p[0]-c[0])**2+wlab[1]*(p[1]-c[1])**2+wlab[2]*(p[2]-c[2])**2; if(dd<bd){bd=dd;bi=k;} } const s=sum[bi]; s[0]+=p[0];s[1]+=p[1];s[2]+=p[2];s[3]++; }
+      cents=sum.map((s,k)=> s[3]? [s[0]/s[3],s[1]/s[3],s[2]/s[3], s[3]] : cents[k].concat([0])); }
+    const tot=cents.reduce((a,c)=>a+(c[3]||0),0)||1;
+    const pal=cents.map(c=>({hex:'#'+[c[0],c[1],c[2]].map(v=>('0'+Math.round(v).toString(16)).slice(-2)).join(''), pct:Math.round((c[3]||0)/tot*100)})).sort((a,b)=>b.pct-a.pct);
+    this.setState({palette:pal, artUrl:this.src.toDataURL()});
+  }
+  setS(o){ this.setState(o, ()=>{ if(o.K!==undefined||o.space!==undefined||o.sampling!==undefined) this.extract(); }); }
+  doExport(kind){ try{
+    if(kind==='PNG'){ const a=document.createElement('a'); a.href=this.src.toDataURL('image/png'); a.download='color-study.png'; a.click(); }
+    else if(kind==='JSON'){ const blob=new Blob([JSON.stringify({palette:this.state.palette,settings:this.state},null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='color-study.json'; a.click(); }
+    else if(kind==='리포트 MD'){ const e=this.state.ethics; const md='# 색 군집 설계서\n\n- 작품명: '+e.title+'\n- 원작가: '+e.artist+'\n- 출처: '+e.source+'\n- 제작자: '+e.maker+'\n- 의도: '+e.intent+'\n\n## 팔레트 (K-means '+this.state.K+')\n'+this.state.palette.map(p=>'- '+p.hex+' · '+p.pct+'%').join('\n'); const blob=new Blob([md],{type:'text/markdown'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='design-report.md'; a.click(); }
+    else if(kind==='팔레트'){ const t=this.state.palette.map(p=>p.hex).join(', '); if(navigator.clipboard) navigator.clipboard.writeText(t); }
+  }catch(e){} }
+
+  renderVals(){
+    const S=this.state, pal=S.palette.length?S.palette:[{hex:'#182F49',pct:30},{hex:'#3A4F7A',pct:24},{hex:'#8FC0B5',pct:20},{hex:'#E6F5A6',pct:14},{hex:'#CFE0D6',pct:12}];
+    const seg=(val,opts,on)=>React.createElement('div',{style:{display:'flex',gap:'5px',background:'rgba(255,255,255,0.05)',padding:'4px',borderRadius:'10px',flexWrap:'wrap'}},opts.map(o=>
+      React.createElement('div',{key:o[0],onClick:()=>on(o[0]),style:{flex:'1 1 auto',textAlign:'center',fontSize:'11.5px',fontWeight:600,cursor:'pointer',padding:'7px 8px',borderRadius:'7px',background:val===o[0]?'#2F6BE0':'transparent',color:val===o[0]?'#fff':'#9fb0d0',whiteSpace:'nowrap'}},o[1])));
+    const sld=(label,key,val,unit,min,max)=>React.createElement('div',{key:key},[
+      React.createElement('div',{key:'l',style:{display:'flex',justifyContent:'space-between',fontSize:'12.5px',marginBottom:'7px'}},[React.createElement('span',{key:'a',style:{color:'#cdd9ef',fontWeight:600}},label),React.createElement('span',{key:'b',style:{color:'#fff',fontWeight:700}},val+(unit||''))]),
+      React.createElement('input',{key:'i',type:'range',min:min||0,max:max||100,value:val,onChange:(e)=>this.setS({[key]:+e.target.value}),style:{width:'100%'}}),
+    ]);
+
+    const viewTabs=seg(S.view,[['art','원본'],['cluster','군집'],['particle','입자']],(v)=>this.setState({view:v}));
+    let stage;
+    if(S.view==='art') stage=React.createElement('img',{src:S.artUrl||'',style:{width:'100%',height:'100%',objectFit:'cover',display:'block'}});
+    else if(S.view==='cluster') stage=React.createElement('div',{style:{position:'absolute',inset:0,display:'flex'}}, pal.map((p,i)=>
+      React.createElement('div',{key:i,style:{flex:p.pct||1,background:p.hex,display:'flex',alignItems:'flex-end',justifyContent:'center',paddingBottom:'12px'}},
+        React.createElement('span',{style:{fontSize:'10.5px',fontWeight:700,color:this.lum(parseInt(p.hex.slice(1,3),16),parseInt(p.hex.slice(3,5),16),parseInt(p.hex.slice(5,7),16))>140?'#0E1523':'#fff'}},p.pct+'%'))));
+    else {
+      const n=Math.round(18+S.N*1.4), els=[]; const sp=0.4+(100-S.ret)/100*0.55;
+      for(let i=0;i<n;i++){ const r1=this.rand(i+1),r2=this.rand(i+50),r3=this.rand(i+99); const c=pal[Math.floor(this.rand(i+200)*pal.length)].hex;
+        let sz=3+r3*S.psize*0.42; const x=50+(r1-0.5)*100*sp, y=50+(r2-0.5)*100*sp; let op=Math.max(0.1,0.35+r3*0.55-(S.trail/300));
+        const glow=S.glow>4?('0 0 '+(S.glow*0.3)+'px '+c):'none';
+        if(S.mode===2){ const dep=0.5+Math.sin((r1*6+S.rot*0.06))*0.5; sz*=(0.5+dep*(0.5+S.depth/100)); op*=(0.4+dep*0.6); }
+        if(S.mode===1) els.push(React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:(sz*2.4)+'px',height:'2px',background:c,opacity:op,boxShadow:glow,transform:'translate(-50%,-50%) rotate('+(r2*360+S.jitter*3)+'deg)'}}));
+        else if(S.mode===3){ const gx=i%9,gy=Math.floor(i/9); els.push(React.createElement('div',{key:i,style:{position:'absolute',left:(gx*11+4)+'%',top:(gy*11+4)+'%',width:sz+'px',height:sz+'px',borderRadius:'3px',background:c,opacity:op,boxShadow:glow}})); }
+        else els.push(React.createElement('div',{key:i,style:{position:'absolute',left:x+'%',top:y+'%',width:sz+'px',height:sz+'px',borderRadius:'50%',background:c,opacity:op,boxShadow:glow,transform:'translate(-50%,-50%)'}}));
+      }
+      stage=React.createElement('div',{style:{position:'absolute',inset:0}},els);
+    }
+    let lensOverlay=null;
+    if(S.view==='particle'&&S.lens==='mosaic') lensOverlay=React.createElement('div',{style:{position:'absolute',inset:0,pointerEvents:'none',backgroundImage:'linear-gradient(rgba(255,255,255,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.06) 1px,transparent 1px)',backgroundSize:'28px 28px'}});
+    else if(S.view==='particle'&&S.lens==='struct') lensOverlay=React.createElement('div',{style:{position:'absolute',inset:'10%',pointerEvents:'none',border:'1px dashed rgba(143,164,232,0.4)'}});
+    else if(S.view==='particle'&&S.lens==='comp') lensOverlay=React.createElement('div',{style:{position:'absolute',inset:0,pointerEvents:'none',backgroundImage:'linear-gradient(90deg,transparent 33.3%,rgba(255,255,255,0.12) 33.3%,rgba(255,255,255,0.12) 33.6%,transparent 33.6%,transparent 66.6%,rgba(255,255,255,0.12) 66.6%,rgba(255,255,255,0.12) 66.9%,transparent 66.9%),linear-gradient(0deg,transparent 33.3%,rgba(255,255,255,0.12) 33.3%,rgba(255,255,255,0.12) 33.6%,transparent 33.6%,transparent 66.6%,rgba(255,255,255,0.12) 66.6%,rgba(255,255,255,0.12) 66.9%,transparent 66.9%)'}});
+
+    const chartTabs=seg(S.chart,[['donut','도넛'],['bar','가로막대'],['vbar','세로막대'],['tree','트리맵'],['wheel','색상환'],['bubble','거품'],['heat','히트맵']],(v)=>this.setState({chart:v}));
+    const stops=(()=>{ let a=0; return pal.map(p=>{const s=a; a+=p.pct; return p.hex+' '+s+'% '+a+'%';}).join(','); })();
+    let chartEl;
+    if(S.chart==='donut') chartEl=React.createElement('div',{style:{width:'200px',height:'200px',borderRadius:'50%',margin:'0 auto',background:'conic-gradient('+stops+')',WebkitMask:'radial-gradient(circle, transparent 52px, #000 53px)',mask:'radial-gradient(circle, transparent 52px, #000 53px)'}});
+    else if(S.chart==='wheel') chartEl=React.createElement('div',{style:{width:'200px',height:'200px',borderRadius:'50%',margin:'0 auto',background:'conic-gradient('+stops+')'}});
+    else if(S.chart==='bar') chartEl=React.createElement('div',{style:{display:'flex',flexDirection:'column',gap:'8px',paddingTop:'8px'}}, pal.map((p,i)=>React.createElement('div',{key:i,style:{display:'flex',alignItems:'center',gap:'10px'}},[React.createElement('div',{key:'b',style:{height:'16px',width:(p.pct*4)+'px',maxWidth:'80%',background:p.hex,borderRadius:'4px'}}),React.createElement('span',{key:'t',style:{fontSize:'12px',color:'#9fb0d0'}},p.hex+' · '+p.pct+'%')])));
+    else if(S.chart==='vbar') chartEl=React.createElement('div',{style:{display:'flex',alignItems:'flex-end',gap:'8px',height:'200px',justifyContent:'center'}}, pal.map((p,i)=>React.createElement('div',{key:i,style:{display:'flex',flexDirection:'column',alignItems:'center',gap:'6px'}},[React.createElement('div',{key:'b',style:{width:'30px',height:(p.pct*5)+'px',maxHeight:'170px',background:p.hex,borderRadius:'5px 5px 0 0'}}),React.createElement('span',{key:'t',style:{fontSize:'11px',color:'#9fb0d0'}},p.pct+'%')])));
+    else if(S.chart==='tree') chartEl=React.createElement('div',{style:{display:'flex',height:'200px',gap:'3px'}}, pal.map((p,i)=>React.createElement('div',{key:i,style:{flex:p.pct||1,background:p.hex,borderRadius:'6px'}})));
+    else if(S.chart==='bubble') chartEl=React.createElement('div',{style:{position:'relative',height:'200px'}}, pal.map((p,i)=>{const d=24+p.pct*3.2; return React.createElement('div',{key:i,style:{position:'absolute',left:(12+i*13)+'%',top:(20+this.rand(i+3)*45)+'%',width:d+'px',height:d+'px',borderRadius:'50%',background:p.hex,transform:'translate(-50%,-50%)'}});}));
+    else chartEl=React.createElement('div',{style:{display:'grid',gridTemplateColumns:'repeat(6,1fr)',gap:'3px'}}, Array.from({length:36}).map((_,i)=>{const p=pal[i%pal.length]; return React.createElement('div',{key:i,style:{paddingBottom:'100%',background:p.hex,opacity:0.4+(p.pct/40),borderRadius:'3px'}});}));
+
+    const paletteRow=React.createElement(React.Fragment,{}, pal.map((p,i)=>React.createElement('div',{key:i,style:{flex:p.pct||1,height:'34px',borderRadius:'6px',background:p.hex}})));
+    const artBtns=React.createElement(React.Fragment,{}, [['sea','바다'],['sunset','노을'],['forest','숲'],['rain','비']].map(a=>
+      React.createElement('div',{key:a[0],onClick:()=>{this.setState({art:a[0]},()=>this.drawArt(a[0]));},style:{fontSize:'12.5px',fontWeight:600,cursor:'pointer',padding:'8px 13px',borderRadius:'999px',border:'1px solid '+(S.art===a[0]?'#2F6BE0':'rgba(255,255,255,0.14)'),background:S.art===a[0]?'rgba(47,107,224,0.18)':'transparent',color:S.art===a[0]?'#fff':'#9fb0d0'}},a[1])));
+
+    const kSlider=sld('K · 군집 수','K',S.K,'',2,12);
+    const spaceSeg=seg(S.space,[['rgb','RGB'],['lab','LAB']],(v)=>this.setS({space:v}));
+    const sampleSeg=seg(S.sampling,[['random','무작위'],['bright','밝은'],['dark','어두운'],['edge','윤곽']],(v)=>this.setS({sampling:v}));
+    const pSliders=React.createElement(React.Fragment,{},[sld('점 개수 · N','N',S.N),sld('점 크기','psize',S.psize),sld('발광','glow',S.glow),sld('복귀력','ret',S.ret),sld('진동','jitter',S.jitter),sld('잔상','trail',S.trail)]);
+    const modeSeg=seg(S.mode,[[0,'점'],[1,'점+선'],[2,'3D 조각'],[3,'격자']],(v)=>this.setState({mode:v}));
+    const threeD = S.mode===2 ? React.createElement('div',{style:{marginTop:'12px',display:'flex',flexDirection:'column',gap:'13px'}},[sld('회전 속도','rot',S.rot),sld('깊이','depth',S.depth)]) : null;
+    const baseSeg=seg(S.base,[['keep','원위치 유지'],['free','자유 이동']],(v)=>this.setState({base:v}));
+    const freeSeg = S.base==='free' ? React.createElement('div',{style:{marginTop:'10px'}}, seg(S.free,[['wander','떠돎'],['swirl','소용돌이'],['attract','중심 인력']],(v)=>this.setState({free:v}))) : null;
+    const cmodeSeg=seg(S.cmode,[['rep','대표색'],['orig','원본색'],['lum','명암']],(v)=>this.setState({cmode:v}));
+    const lensSeg=seg(S.lens,[['none','없음'],['mosaic','모자이크'],['struct','구조'],['comp','구도']],(v)=>this.setState({lens:v}));
+
+    const tog=(label,key)=>React.createElement('div',{key:key,style:{display:'flex',alignItems:'center',justifyContent:'space-between'}},[
+      React.createElement('span',{key:'l',style:{fontSize:'12.5px',color:'#cdd9ef'}},label),
+      React.createElement('div',{key:'t',onClick:()=>this.setState({[key]:!S[key]}),style:{width:'36px',height:'20px',borderRadius:'999px',background:S[key]?'#2F6BE0':'rgba(255,255,255,0.14)',position:'relative',cursor:'pointer'}}, React.createElement('div',{style:{position:'absolute',top:'2px',left:S[key]?'18px':'2px',width:'16px',height:'16px',borderRadius:'50%',background:'#fff'}}))]);
+    const toggles=React.createElement(React.Fragment,{},[tog('마우스 인터랙션','mouse'),tog('마이크 반응','mic')]);
+    const mouseSeg=seg(S.mouseMode,[['push','밀기'],['drag','끌기'],['inflate','부풀리기'],['scatter','흩뿌리기']],(v)=>this.setState({mouseMode:v}));
+    const micCtrl = S.mic ? React.createElement('div',{style:{marginTop:'12px',display:'flex',flexDirection:'column',gap:'13px'}},[sld('마이크 · 볼륨 반응','micVol',S.micVol),sld('마이크 · 주파수 반응','micFreq',S.micFreq)]) : null;
+
+    const presets=React.createElement(React.Fragment,{}, [['점묘화',{mode:0,N:80,psize:30,trail:10,glow:0}],['살아있는 캔버스',{mode:0,N:60,ret:30,jitter:60,trail:50,base:'free'}],['소리로 연주',{mic:true,mode:1,jitter:70}],['성운',{mode:0,N:90,psize:70,trail:70,ret:20,glow:60}],['3D 조각',{mode:2,N:70,psize:55,rot:60,depth:70}]].map((p,i)=>
+      React.createElement('div',{key:i,onClick:()=>this.setState(p[1]),style:{fontSize:'12px',fontWeight:600,cursor:'pointer',padding:'7px 12px',borderRadius:'999px',background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.12)',color:'#cdd9ef'}},p[0])));
+
+    const eb=(label,primary)=>React.createElement('button',{key:label,onClick:()=>this.doExport(label),style:{flex:'1 1 auto',background:primary?'#2F6BE0':'rgba(255,255,255,0.06)',color:primary?'#fff':'#E7ECF7',border:primary?'none':'1px solid rgba(255,255,255,0.16)',borderRadius:'9px',padding:'10px 8px',fontSize:'11.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},label);
+    const exportBtns=React.createElement(React.Fragment,{},[eb('PNG',true),eb('WebM'),eb('JSON'),eb('리포트 MD'),eb('팔레트')]);
+    const sb=(label)=>React.createElement('button',{key:label,style:{flex:1,background:'rgba(47,182,168,0.14)',color:'#7FE0C8',border:'1px solid rgba(47,182,168,0.3)',borderRadius:'9px',padding:'11px',fontSize:'12.5px',fontWeight:700,fontFamily:'inherit',cursor:'pointer'}},label);
+    const saveBtns=React.createElement(React.Fragment,{},[sb('작업노트 저장'),sb('갤러리 전시')]);
+
+    const ef=(key,ph)=>React.createElement('input',{key:key,value:S.ethics[key],placeholder:ph,onChange:(e)=>this.setState({ethics:Object.assign({},S.ethics,{[key]:e.target.value})}),className:'si'});
+    const ethicsForm=React.createElement(React.Fragment,{},[ef('title','작품명'),ef('artist','원작가'),ef('source','출처'),ef('maker','제작자(나)'),ef('intent','나의 의도')]);
+
+    const top=pal[0]; const coachLine='가장 큰 비중은 '+(top?top.hex+' ('+top.pct+'%)':'—')+' 입니다. 이 색을 이렇게 크게 쓴 이유가 있나요? 무엇을 강조하려 했나요?';
+    const statusLine='K-means '+S.K+'군집 · '+S.space.toUpperCase()+' · '+({random:'무작위',bright:'밝은영역',dark:'어두운영역',edge:'윤곽'}[S.sampling])+' 샘플링';
+
+    return { viewTabs, stage, lensOverlay, statusLine, reseed:()=>this.setState(s=>({seed:s.seed+1}),()=>this.drawArt(this.state.art)),
+      K:S.K, chartTabs, chartEl, paletteRow, artBtns, onFile:(e)=>this.loadFile(e.target.files&&e.target.files[0]),
+      kSlider, spaceSeg, sampleSeg, pSliders, modeSeg, threeD, baseSeg, freeSeg, cmodeSeg, lensSeg, toggles, mouseSeg, micCtrl, presets, exportBtns, saveBtns, ethicsForm, coachLine };
+  }
+}
+</script>
+</body>
+</html>

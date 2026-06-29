@@ -1,7 +1,7 @@
 /*
  * cloud-config.js — 실시간 클라우드(Firebase) 연동 [활성]
  * =============================================================================
- * 프로젝트: data-art-2026 (Firestore)
+ * 프로젝트: lab-datacanvas (Firestore) · 앱 닉네임 101design
  * 이 파일이 js/store.js "앞"에서 로드되면 학급 전체가 한 링크에서 실시간 공유됩니다.
  *
  *  • Firebase 웹 apiKey 는 '비밀'이 아니라 공개용 식별자입니다(클라이언트에 그대로 노출됨).
@@ -19,12 +19,12 @@
   }
 
   const firebaseConfig = {
-    apiKey: 'AIzaSyB-xLiRM9HapiDdL5Eo1d6fPoivfXrhL5o',
-    authDomain: 'data-art-2026.firebaseapp.com',
-    projectId: 'data-art-2026',
-    storageBucket: 'data-art-2026.firebasestorage.app',
-    messagingSenderId: '7529480993',
-    appId: '1:7529480993:web:e18576ac928f8217ac7460'
+    apiKey: 'AIzaSyBPEHSEg_7nmnERzcUfep9Llk92niATLnY',
+    authDomain: 'lab-datacanvas.firebaseapp.com',
+    projectId: 'lab-datacanvas',
+    storageBucket: 'lab-datacanvas.firebasestorage.app',
+    messagingSenderId: '180619408470',
+    appId: '1:180619408470:web:09ecf96fadca096a56b7f7'
   };
 
   // Firebase v10 모듈 SDK 동적 import (추가 설치 불필요)

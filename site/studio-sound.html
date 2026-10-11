@@ -34,7 +34,7 @@
   </div>
   <div id="idea"></div>
 
-  <div class="grid c2" style="align-items:start">
+  <!-- 위계: 1 입력 → 2 미리보기 → 3 기록 → 작품 (위에서 아래로 번호 순서대로) -->
     <div class="card">
       <h3>1 · 소리 입력</h3>
       <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center">
@@ -49,15 +49,6 @@
         ⚠ <b>음성 원본은 저장하지 않고</b> 특징값(숫자)만 사용합니다(아빠 잠꼬대·가장 즐거운 순간 소리도 안전하게).</p>
     </div>
 
-    <div class="card">
-      <h3>3 · 데이터 선택 기록 <span class="info-ic" data-info="data-humanism">ⓘ</span></h3>
-      <label class="field">이 소리로 나는 <b>무엇을</b> 보여주고 싶나요?</label>
-      <textarea id="snd-intent" rows="2" placeholder="예: 아빠의 코골이에서 ‘하루의 무게’와 ‘곁에 있다는 감각’을"></textarea>
-      <label class="field">무엇을 ‘셌’고 무엇을 뺐나요? (예: 음량만? 저음 위주?)</label>
-      <input id="snd-omit" type="text" placeholder="예: 음량·저음을 강조, 말소리는 제외">
-    </div>
-  </div>
-
   <div class="card" style="margin-top:16px">
     <h3>2 · 추출 미리보기 (시계열)</h3>
     <canvas id="wave" width="900" height="200"></canvas>
@@ -70,6 +61,20 @@
     <div style="margin-top:12px; display:flex; gap:8px; flex-wrap:wrap">
       <button id="btn-csv" class="btn" disabled>⬇ CSV 내보내기</button>
       <button id="btn-send" class="btn accent2" disabled>→ 데이터 점 스튜디오로 보내기</button>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h3>3 · 데이터 선택 기록 <span class="info-ic" data-info="data-humanism">ⓘ</span></h3>
+    <div class="grid c2">
+      <div>
+        <label class="field" style="margin-top:0">이 소리로 나는 <b>무엇을</b> 보여주고 싶나요?</label>
+        <textarea id="snd-intent" rows="2" placeholder="예: 아빠의 코골이에서 ‘하루의 무게’와 ‘곁에 있다는 감각’을"></textarea>
+      </div>
+      <div>
+        <label class="field" style="margin-top:0">무엇을 ‘셌’고 무엇을 뺐나요? (예: 음량만? 저음 위주?)</label>
+        <input id="snd-omit" type="text" placeholder="예: 음량·저음을 강조, 말소리는 제외">
+      </div>
     </div>
   </div>
   <div class="card" id="art-card" style="margin-top:16px">

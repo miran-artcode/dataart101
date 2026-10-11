@@ -7,14 +7,16 @@
 <link rel="stylesheet" href="css/site.css" />
 <style>
   .dstudio { display: grid; grid-template-columns: 1fr 350px; gap: 16px; align-items: start; }
-  #dstage { position: relative; background: #07080d; border: 1px solid var(--line); border-radius: 14px; height: 70vh; min-height: 460px; overflow: hidden; }
+  /* 작품창과 설정 패널(세로 바)의 높이를 같게 — 아래 선이 맞도록 */
+  .dstudio { --dh: max(460px, calc(100vh - 120px)); }
+  #dstage { position: relative; background: #07080d; border: 1px solid var(--line); border-radius: var(--radius); height: var(--dh); overflow: hidden; box-shadow: var(--shadow); }
   #dstage canvas { display: block; }
-  .dpanel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; max-height: 78vh; overflow-y: auto; }
+  .dpanel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); height: var(--dh); overflow-y: auto; box-shadow: var(--shadow); position: sticky; top: 86px; }
   .dpanel details { border-bottom: 1px solid var(--line); }
   .dpanel summary { cursor: pointer; padding: 12px 15px; font-weight: 700; font-size: 13.5px; list-style: none; }
   .dpanel summary::-webkit-details-marker { display: none; }
   .dpanel .sect { padding: 4px 15px 16px; }
-  @media (max-width: 880px) { .dstudio { grid-template-columns: 1fr; } #dstage { height: 52vh; } }
+  @media (max-width: 880px) { .dstudio { grid-template-columns: 1fr; } #dstage { height: 52vh; } .dpanel { height: auto; position: static; } }
   .map-grid { display: flex; flex-direction: column; gap: 7px; }
   .map-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
   .map-row > span:first-child { flex: 0 0 52px; color: var(--muted); }
@@ -31,7 +33,7 @@
 <body>
 <div id="app-header"></div>
 
-<div class="wrap" style="max-width:1280px">
+<div class="wrap">
   <div class="page-head">
     <span class="eyebrow">데이터 점 스튜디오 · 1단계 기초</span>
     <h1>데이터가 춤추는 점</h1>

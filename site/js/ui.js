@@ -213,8 +213,9 @@
       if (document.getElementById('gloss-style')) return;
       const st = document.createElement('style'); st.id = 'gloss-style';
       st.textContent = '.gloss{border-bottom:1px dotted currentColor;cursor:help;position:relative}' +
-        '.gloss-pop{position:absolute;left:0;bottom:130%;width:max-content;max-width:250px;background:#11131d;color:#e8ecf6;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:7px 10px;font-size:12px;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.4);opacity:0;visibility:hidden;transform:translateY(4px);transition:.15s;z-index:50;pointer-events:none;white-space:normal;font-weight:400}' +
-        '.gloss:hover .gloss-pop,.gloss:focus .gloss-pop{opacity:1;visibility:visible;transform:translateY(0)}';
+        '.gloss-pop{position:absolute;left:0;bottom:130%;width:max-content;max-width:min(250px,calc(100vw - 32px));background:#11131d;color:#e8ecf6;border:1px solid rgba(255,255,255,.18);border-radius:8px;padding:7px 10px;font-size:12px;line-height:1.5;box-shadow:0 8px 24px rgba(0,0,0,.4);display:none;z-index:50;pointer-events:none;white-space:normal;font-weight:400}' +
+        // 숨김 상태는 display:none — 보이지 않는 풍선이 화면 오른쪽 밖으로 나가 가로 스크롤바를 만들지 않게
+        '.gloss:hover .gloss-pop,.gloss:focus .gloss-pop{display:block}';
       document.head.appendChild(st);
       const SKIP = { SCRIPT: 1, STYLE: 1, A: 1, BUTTON: 1, INPUT: 1, TEXTAREA: 1, SELECT: 1, OPTION: 1, CODE: 1, H1: 1 };
       const terms = Object.keys(GLOSS), seen = {};

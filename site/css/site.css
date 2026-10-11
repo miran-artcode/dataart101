@@ -36,6 +36,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; }
+html { overflow-x: clip; }   /* 안전망: 어떤 요소가 삐져나가도 페이지 전체 가로 스크롤바는 생기지 않게 (sticky 헤더는 유지) */
 body {
   font-family: "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif;
   background:
@@ -89,7 +90,14 @@ a:hover { text-decoration: underline; }
 .page-head p { color: var(--muted); margin: 0; font-size: 14.5px; }
 .eyebrow { color: var(--accent2); font-weight: 700; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
 
+/* 섹션 제목 — 위계: 페이지 h1(30) > 섹션 h2(20) > 카드 h3(16) > 본문(13.5) */
+.sec-head { margin: 40px 0 14px; }
+.sec-head h2 { margin: 0 0 4px; font-size: 20px; letter-spacing: -.02em; font-weight: 800; }
+.sec-head p { margin: 0; color: var(--muted); font-size: 13.5px; }
+.sec-head p b { color: var(--text); }
+
 .grid { display: grid; gap: 16px; }
+.grid > * { min-width: 0; }               /* 긴 내용이 그리드 칸을 밀어내 가로 넘침이 생기지 않게 */
 .grid.c2 { grid-template-columns: repeat(2, 1fr); }
 .grid.c3 { grid-template-columns: repeat(3, 1fr); }
 .grid.c4 { grid-template-columns: repeat(4, 1fr); }
@@ -99,6 +107,8 @@ a:hover { text-decoration: underline; }
 .card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
 .card h2, .card h3 { margin: 0 0 10px; letter-spacing: -.02em; }
 .card h3 { font-size: 16px; }
+.card.hover p.muted { font-size: 13.5px; line-height: 1.6; margin: 6px 0 0; }   /* 링크 카드 본문이 제목보다 커 보이지 않게 */
+.card.hover .badge { margin-bottom: 8px; }
 .card.hover { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; cursor: pointer; }
 .card.hover:hover { transform: translateY(-3px); border-color: rgba(var(--accent-rgb),.35); box-shadow: 0 30px 60px -34px rgba(14,21,35,.42), 0 3px 8px -4px rgba(14,21,35,.08); }
 .muted { color: var(--muted); }
@@ -179,7 +189,7 @@ output, .val { color: var(--accent2); font-weight: 800; font-variant-numeric: ta
 .callout.warn { background: rgba(224,150,60,.10); border-color: rgba(224,150,60,.3); }
 .callout.warn b { color: #C2761B; }
 .idea-rotator { cursor: pointer; }
-.idea-rotator .next { margin-left: auto; color: var(--muted); font-size: 11.5px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
+.idea-rotator .next { flex: none; white-space: nowrap; margin-left: auto; color: var(--muted); font-size: 11.5px; border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; }
 
 /* ----------------------------- 토스트 ----------------------------- */
 .toast { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%) translateY(18px);
@@ -198,8 +208,8 @@ output, .val { color: var(--accent2); font-weight: 800; font-variant-numeric: ta
 .recreate .rc-tag { position: absolute; left: 9px; top: 9px; font-size: 10.5px; color: #fff; background: rgba(14,21,35,.6); padding: 3px 9px; border-radius: 999px; }
 
 /* 팔레트 스와치 */
-.swatches { display: flex; flex-wrap: wrap; gap: 6px; }
-.sw { height: 40px; min-width: 34px; flex: 1 1 38px; border-radius: 10px; border: 1px solid rgba(14,21,35,.08);
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(38px, 1fr)); gap: 6px; }   /* 줄바꿈된 마지막 칸이 한 줄 전체로 늘어나지 않게 */
+.sw { height: 40px; min-width: 0; border-radius: 10px; border: 1px solid rgba(14,21,35,.08);
   display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2px; }
 .sw small { font-size: 9.5px; color: #fff; background: rgba(0,0,0,.3); padding: 0 4px; border-radius: 4px; text-shadow: 0 1px 2px #000; }
 
@@ -222,3 +232,29 @@ table.data tr:hover td { background: var(--panel2); }
 .spinner { width: 22px; height: 22px; border-radius: 50%; border: 3px solid rgba(var(--accent-rgb),.2); border-top-color: var(--accent); animation: spin .8s linear infinite; display: inline-block; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
 .footer-note { text-align: center; color: var(--muted2); font-size: 12px; padding: 30px 0 10px; }
+
+/* ----------------------------- 스크롤바(세로·가로) — 얇고 통일된 모양 ----------------------------- */
+* { scrollbar-width: thin; scrollbar-color: var(--line) transparent; }
+::-webkit-scrollbar { width: 9px; height: 9px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--line); border-radius: 9px; border: 2px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--muted2); background-clip: padding-box; }
+
+/* ----------------------------- 좁은 화면 — 가로 넘침 방지 ----------------------------- */
+@media (max-width: 860px) {
+  .site-header { padding: 0 8px 0 14px; gap: 8px; }
+  .site-brand { font-size: 14px; }
+  /* 메뉴는 헤더 안에서만 옆으로 밀어 보기 (페이지 전체가 가로로 밀리지 않게) */
+  .site-nav { min-width: 0; overflow-x: auto; scrollbar-width: none; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav a, .navdrop > button { padding: 8px 9px; }
+  .navdrop { position: static; }
+  .navdrop-menu { left: 8px; right: 8px; top: 64px; margin-top: 0; }
+  .site-user b, .site-user span:not(.dot) { display: none; }
+}
+@media (max-width: 600px) {
+  .wrap { padding: 26px 16px 64px; }
+  .page-head h1 { font-size: 24px; }
+  .sec-head { margin-top: 32px; }
+  .card { padding: 18px; }
+}

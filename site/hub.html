@@ -3,146 +3,86 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>학생 허브 · 데이터의 눈</title>
+<title>허브 · 보는 법</title>
 <link rel="stylesheet" href="css/site.css" />
 <style>
-  /* 히어로 */
-  .hero-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
 
-  /* 만들기 — 4단계 학습 경로(시작 → 순서가 드러나게) */
-  .path { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 16px; }
-  @media (min-width: 940px) { .path { grid-template-columns: repeat(4, 1fr); gap: 14px; } }
-  .pstep { position: relative; min-width: 0; display: flex; flex-direction: column; }
-  .pstep .pcard { flex: 1; }
-  @media (min-width: 940px) { .pstep:not(:last-child)::after { content: "→"; position: absolute; right: -12px; top: 34px; transform: translate(50%,-50%); color: var(--muted2); font-weight: 800; font-size: 15px; } }
-  .pcard { position: relative; display: flex; flex-direction: column; gap: 9px; height: 100%;
-    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px;
-    box-shadow: var(--shadow); text-decoration: none; color: inherit; transition: transform .15s, border-color .15s; }
-  .pcard:hover { transform: translateY(-3px); border-color: var(--accent); }
-  .ptop { display: flex; align-items: center; gap: 11px; }
-  .pnum { flex: none; width: 34px; height: 34px; border-radius: 10px; background: rgba(var(--accent-rgb),.14);
-    color: var(--accent); font-weight: 800; font-size: 16px; display: grid; place-items: center; }
-  .pstage { font-size: 10.5px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; color: var(--muted2); }
-  .pcard h3 { margin: 2px 0 0; font-size: 16px; }
-  .pflow { display: flex; gap: 5px; flex-wrap: wrap; }
-  .pflow span { font-size: 10.5px; background: var(--panel2); border: 1px solid var(--line); border-radius: 999px; padding: 2px 8px; color: var(--muted); }
-  .pdesc { margin: 0; font-size: 12.5px; color: var(--muted); line-height: 1.55; }
-  .pcta { margin-top: auto; font-size: 12px; color: var(--accent); font-weight: 700; }
-  .start-badge { position: absolute; top: -10px; left: 16px; z-index: 2; background: var(--accent); color: #fff;
-    font-size: 10px; font-weight: 800; letter-spacing: .04em; padding: 3px 10px; border-radius: 999px; box-shadow: var(--shadow); }
-  /* 1단계 보조 링크 — 카드 아래가 아닌 카드 안 하단에 붙여 네 카드의 아래 선을 맞춤 */
-  .palt { position: absolute; left: 18px; bottom: -13px; z-index: 2; }
-  .palt a { background: var(--bg); }
-  .palt a { font-size: 11.5px; color: var(--muted); text-decoration: none; border: 1px dashed var(--line); border-radius: 999px; padding: 3px 10px; transition: .15s; }
-  .palt a:hover { color: var(--accent); border-color: var(--accent); }
+  /* 네 단계 카드 */
+  .chips { list-style: none; margin: 0; padding: 0; }   /* 칸 수는 .grid.c4 (site.css) */
+  .chips li { display: flex; }
+  .chip { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 0; color: inherit; background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 20px; }
+  .chip:hover { border-color: var(--text); text-decoration: none; }
+  .chip h3 { margin: 0; font-size: 18px; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .chip p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  /* 도구·배우기 목록 — 카드 대신 위 선으로 묶은 목록 */
+  .rows { --gap: 0 32px; }   /* 칸 수는 .grid.c3 / .grid.c4 (site.css) */
+  .rows a { display: block; color: inherit; padding: 16px 0 18px; border-top: 2px solid var(--text); }
+  .rows a:hover { text-decoration: none; }
+  .rows a:hover h3 { text-decoration: underline; text-underline-offset: 3px; }
+  .rows h3 { margin: 0 0 6px; font-size: 18px; letter-spacing: -0.02em; }
+  .rows p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.6; }
+
+  .questions { margin: 0; padding-left: 20px; font-size: 16px; line-height: 1.9; }
+
 </style>
 </head>
 <body>
 <div id="app-header"></div>
 
-<div class="wrap">
+<main class="wrap">
   <div class="page-head">
-    <span class="eyebrow">데이터의 눈 · 학생 허브</span>
-    <h1>그림·소리·삶·사회를 데이터로,<br>그리고 ‘움직이는 점 작품’으로</h1>
-    <p>같은 흐름 — <b>대상을 데이터로 분석 → 내가 매핑을 설계 → 인터랙티브 미디어아트</b> — 을 4단계로 점점 깊이 익혀요. 처음이라면 1단계부터 순서대로.</p>
-    <div class="hero-cta">
-      <a class="btn primary" href="studio-color.html">여기서 시작 — 1단계 색 군집 →</a>
-      <a class="btn" href="start.html">🧭 처음이세요? 5분 안내</a>
-    </div>
+    <h1>데이터로 읽고, 점으로 다시 그립니다</h1>
   </div>
-  <div id="idea"></div>
 
-  <div class="sec-head">
-    <h2>만들기 — 4단계 학습 경로</h2>
-    <p>왼쪽에서 오른쪽으로 <b>데이터 출처가 넓어지고</b>(그림→소리→삶→사회), <b>나의 주체성이 깊어져요</b>(교사 데이터→내 삶→내가 정한 사회문제).</p>
-  </div>
-  <ol class="path">
-    <li class="pstep">
-      <span class="start-badge">여기서 시작</span>
-      <a class="pcard" href="studio-color.html">
-        <div class="ptop"><span class="pnum">1</span><span class="pstage">1단계 · 출발점</span></div>
-        <h3>🖼 그림을 데이터로</h3>
-        <div class="pflow"><span>명화·그림</span><span>색 군집 분석</span><span>점·인터랙션</span></div>
-        <p class="pdesc">K-means로 그림을 대표색 점으로 치환하고 마우스·소리로 ‘연주’. <b>그림→분석→창작</b>의 흐름을 처음 익혀요.</p>
-        <span class="pcta">색 군집 스튜디오 시작 →</span>
-      </a>
-      <div class="palt"><a href="studio-data.html">＋ 데이터 점 스튜디오</a></div>
-    </li>
-    <li class="pstep">
-      <a class="pcard" href="studio-sound.html">
-        <div class="ptop"><span class="pnum">2</span><span class="pstage">2단계 · 정서</span></div>
-        <h3>🎤 소리를 데이터로</h3>
-        <div class="pflow"><span>소리·녹음</span><span>음량·리듬·음색</span><span>춤추는 점</span></div>
-        <p class="pdesc">‘아빠의 한 달 코골이’를 상황별 이야기로 — 숫자 뒤의 <b>피로·곁에 있다는 감각</b>을 점의 움직임으로.</p>
-        <span class="pcta">소리 스튜디오 →</span>
-      </a>
-    </li>
-    <li class="pstep">
-      <a class="pcard" href="studio-life.html">
-        <div class="ptop"><span class="pnum">3</span><span class="pstage">3단계 · 의미</span></div>
-        <h3>🧑 내 삶을 데이터로</h3>
-        <div class="pflow"><span>내 삶의 순간</span><span>사진·대화 분석</span><span>나의 미디어아트</span></div>
-        <p class="pdesc">‘무엇을 셀지’를 내가 정하는 단계. 사진의 밝기·생생함·북적임을 측정해 <b>‘나’의 예술</b>로.</p>
-        <span class="pcta">내 삶 스튜디오 →</span>
-      </a>
-    </li>
-    <li class="pstep">
-      <a class="pcard" href="project.html">
-        <div class="ptop"><span class="pnum">4</span><span class="pstage">4단계 · 발언</span></div>
-        <h3>📣 사회문제 프로젝트</h3>
-        <div class="pflow"><span>공공데이터</span><span>정제·CSV</span><span>사회적 미디어아트</span></div>
-        <p class="pdesc">기후·불평등·동물권… 데이터를 찾아 정제해 <b>CSV</b>로 만들고 작품으로. <b>미술이 사회적 발언</b>이 됩니다.</p>
-        <span class="pcta">사회문제 프로젝트 →</span>
-      </a>
-    </li>
+  <div class="sec-head"><h2>만들기</h2></div>
+  <ol class="chips grid c4">
+    <li><a class="chip" href="studio-color.html"><h3>그림 <span class="badge">여기서 시작</span></h3><p>명화를 대표색 점으로 나눕니다.</p></a></li>
+    <li><a class="chip" href="studio-sound.html"><h3>소리</h3><p>크기와 음높이로 점을 움직입니다. 예시: 아빠의 한 달 코골이</p></a></li>
+    <li><a class="chip" href="studio-life.html"><h3>내 삶</h3><p>사진 밝기, 대화 길이처럼 셀 것을 직접 정합니다.</p></a></li>
+    <li><a class="chip" href="project.html"><h3>사회문제</h3><p>기후, 불평등, 동물권 공공데이터로 하고 싶은 말을 전합니다.</p></a></li>
   </ol>
-
-  <div class="sec-head">
-    <h2>분석 · 렌즈 · 비평 — 도구</h2>
-    <p>만든 작품을 깊이 들여다보고, 다른 ‘분석의 눈’으로 다시 보고, 비판적으로 읽는 도구들이에요.</p>
-  </div>
-  <div class="grid c3">
-    <a class="card hover" href="lab.html">
-      <span class="badge">분석 도구</span>
-      <h3>알고리즘 분석실 🔬</h3>
-      <p class="muted">한 그림을 7가지 알고리즘으로 분석 — 차트 + 재창조 + 한계 + 해석 메모.</p>
-    </a>
-    <a class="card hover" href="studio-object.html">
-      <span class="badge">AI 렌즈</span>
-      <h3>객체 감지 · AI의 눈 🤖</h3>
-      <p class="muted">브라우저 AI(COCO-SSD)가 사진 속 사물을 찾아 점·데이터로. AI가 ‘무엇을 못 보는지’도 함께 봐요.</p>
-    </a>
-    <a class="card hover" href="critique.html">
-      <span class="badge">비평</span>
-      <h3>데이터 비평 읽기 🔍</h3>
-      <p class="muted">차트의 ‘수사’를 폭로하고 질문 3층위(사실→해석→가치)로 비평해요.</p>
-    </a>
+  <div class="rows grid c3" style="margin-top:20px">
+    <a href="studio-data.html"><h3>데이터 점 스튜디오</h3><p>숫자 표의 열을 크기·속도·색에 연결합니다.</p></a>
+    <a href="studio-object.html"><h3>객체 감지</h3><p>AI가 사진 속 사물을 찾습니다.</p></a>
+    <a href="lab.html"><h3>알고리즘 분석실</h3><p>한 작품을 일곱 가지 방법으로 읽습니다.</p></a>
   </div>
 
-  <div class="sec-head"><h2>배우기 · 나누기</h2></div>
-  <div class="grid c4">
-    <a class="card hover" href="learn.html"><h3>알고리즘 배움터</h3><p class="muted">K-means·히스토그램·노탄·에지·중앙값분할·모자이크·구도. 쉬운→깊은 설명.</p></a>
-    <a class="card hover" href="gallery.html"><h3>전시 갤러리</h3><p class="muted">친구들 작품을 감상하고 구조화된 피드백을 남겨요.</p></a>
-    <a class="card hover" href="quiz.html"><h3>분석 퀴즈 🎯</h3><p class="muted">그림을 분석해 출제하고, 친구 문제를 맞혀 순위를 겨뤄요.</p></a>
-    <a class="card hover" href="notes.html"><h3>작업 노트</h3><p class="muted">과정·버전·성찰을 기록 — 그대로 포트폴리오가 됩니다.</p></a>
+  <div class="sec-head"><h2>배우기</h2></div>
+  <div class="rows grid c3">
+    <a href="learn.html"><h3>알고리즘 배움터</h3><p>K-means부터 구도 분석까지 원리 설명</p></a>
+    <a href="critique.html"><h3>데이터 비평</h3><p>차트를 사실, 해석, 가치 순서로 따져 봅니다.</p></a>
+    <a href="journey.html"><h3>학습 여정</h3><p>학기 흐름과 평가 기준</p></a>
   </div>
 
-  <div class="card" style="margin-top:24px">
-    <h3 class="with-info">오늘의 탐구 문제 <span data-info="kmeans" class="info-ic">ⓘ</span></h3>
-    <ol style="line-height:1.9; font-size:14px; margin:6px 0 0">
-      <li>K(또는 매핑)를 바꾸면 작품의 구조는 어떻게 달라지나?</li>
-      <li>어떤 설정이 원작/주제의 의도를 가장 잘 보존하나?</li>
-      <li>점 개수·밀도를 바꾸면 정보량·감정 전달이 어떻게 달라지나?</li>
-      <li>소리·마우스 인터랙션이 관람 경험을 어떻게 바꾸나?</li>
-    </ol>
+  <div class="sec-head"><h2>나누기</h2></div>
+  <div class="rows grid c4">
+    <a href="gallery.html"><h3>전시 갤러리</h3><p>친구 작품에 피드백을 씁니다.</p></a>
+    <a href="exhibit.html"><h3>키오스크 전시</h3><p>큰 화면 슬라이드쇼와 QR 감상</p></a>
+    <a href="quiz.html"><h3>분석 퀴즈</h3><p>문제를 내고 친구 것을 풉니다.</p></a>
+    <a href="notes.html"><h3>작업 노트</h3><p>과정과 성찰 기록이 포트폴리오가 됩니다.</p></a>
   </div>
-  <p class="footer-note">막히면 ⓘ와 💡를 누르세요 · AI 결과는 정답이 아니라 해석입니다</p>
-</div>
+
+  <div class="sec-head"><h2>안내</h2></div>
+  <div class="rows grid c4">
+    <a href="index.html"><h3>소개</h3><p>쓰인 기술과 데이터 보관 위치</p></a>
+    <a href="start.html"><h3>사용 안내</h3><p>5분 빠른 시작, 낱말 사전, 자주 묻는 것</p></a>
+    <a href="login.html"><h3>로그인</h3><p>이름과 PIN으로 시작</p></a>
+    <a href="admin.html"><h3>교사 대시보드</h3><p>학급 작업 관리</p></a>
+  </div>
+
+  <div class="sec-head"><h2 class="with-info">탐구 질문 <span data-info="kmeans" class="info-ic">ⓘ</span></h2></div>
+  <ul class="questions">
+    <li>K나 매핑을 바꾸면 작품 구조는 어떻게 달라지나요?</li>
+    <li>원작의 의도를 가장 잘 지키는 설정은 무엇인가요?</li>
+    <li>점의 개수와 밀도는 정보와 감정에 어떤 영향을 주나요?</li>
+    <li>소리와 마우스 반응이 있으면 보는 경험은 어떤가요?</li>
+  </ul>
+</main>
 
 <script src="js/explain.js"></script>
 <script src="js/guide.js"></script>
 <script src="js/auth.js"></script>
 <script src="js/ui.js"></script>
-<script>UI.mountIdeaBar('idea', 'hub');</script>
 </body>
 </html>

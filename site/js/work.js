@@ -39,7 +39,7 @@
     // 갤러리식 평점(있으면)
     const old = (f.intent || f.evidence || f.interaction || f.ethics) ?
       `<div class="muted" style="font-size:12px">의도 ${'★'.repeat(f.intent||0)} 근거 ${'★'.repeat(f.evidence||0)} 인터랙션 ${'★'.repeat(f.interaction||0)} 윤리 ${'★'.repeat(f.ethics||0)}</div>` : '';
-    const rub = f.rubric ? `<div class="muted" style="font-size:12px">🎯 매핑의도 ${'●'.repeat(f.rubric.intent||0)} · 판단흔적 ${'●'.repeat(f.rubric.trace||0)} · 도구주체성 ${'●'.repeat(f.rubric.agency||0)} · 감각귀환 ${'●'.repeat(f.rubric.ret||0)}</div>` : '';
+    const rub = f.rubric ? `<div class="muted" style="font-size:12px">매핑의도 ${'●'.repeat(f.rubric.intent||0)} · 판단흔적 ${'●'.repeat(f.rubric.trace||0)} · 도구주체성 ${'●'.repeat(f.rubric.agency||0)} · 감각귀환 ${'●'.repeat(f.rubric.ret||0)}</div>` : '';
     return `<div class="lvl" style="margin:8px 0"><div class="lvl-b">
       <b>${esc(f.by || '관람객')}</b> <span style="color:var(--accent)">${stars}</span>
       ${f.comment ? `<div style="margin:4px 0">${esc(f.comment)}</div>` : ''}
@@ -53,7 +53,7 @@
     const when = n.updatedAt ? new Date(n.updatedAt).toLocaleDateString('ko-KR') : '';
     let inner = '';
     if (n.memos && Object.keys(n.memos).length) inner = Object.entries(n.memos).map(([k, v]) => `<b>${esc(k)}</b>: ${esc(v)}`).join('<br>');
-    else inner = [n.aiHelp && ('🤖 ' + esc(n.aiHelp)), n.myDecision && ('🙋 ' + esc(n.myDecision)), n.line && ('✍ ' + esc(n.line)), n.intent && ('의도: ' + esc(n.intent))].filter(Boolean).join('<br>');
+    else inner = [n.aiHelp && ('AI가 도운 것: ' + esc(n.aiHelp)), n.myDecision && ('내가 결정한 것: ' + esc(n.myDecision)), n.line && ('한 줄: ' + esc(n.line)), n.intent && ('의도: ' + esc(n.intent))].filter(Boolean).join('<br>');
     return `<div class="lvl" style="margin:8px 0"><div class="lvl-b"><span class="badge">${NOTE_KIND[n.kind] || n.kind}</span>
       <span class="muted" style="font-size:11px">${when}</span><div style="margin-top:4px">${inner || '<span class="muted">내용 없음</span>'}</div></div></div>`;
   }
@@ -67,20 +67,20 @@
     const st = story(work);
     const docentHTML = window.Docent ? `
       <div class="card" style="margin-top:16px">
-        <h3>🎙 도슨트 해설 <span class="muted" style="font-size:12px">(자동 생성)</span></h3>
+        <h3>도슨트 해설 <span class="muted" style="font-size:12px">(자동 생성)</span></h3>
         <p style="line-height:1.75;margin:0">${esc(Docent.commentary(work))}</p>
       </div>` : '';
     const rec = (work.settings && work.settings.record) || {};
-    const recItems = [['감각 먼저', rec.sense], ['무엇을 셌나', rec.count], ['뺀 것(생략)', rec.omit], ['척도·매핑 이유', rec.scale], ['놓친 진실(메타비평)', rec.miss]].filter(x => x[1]);
+    const recItems = [['감각 먼저', rec.sense], ['무엇을 셌나', rec.count], ['뺀 것(생략)', rec.omit], ['척도·매핑 이유', rec.scale], ['빠진 진실(메타비평)', rec.miss]].filter(x => x[1]);
     const recordHTML = recItems.length ? `
       <div class="card" style="margin-top:16px">
-        <h3 class="with-info">📝 데이터 선택 기록 <span class="info-ic" data-info="data-humanism">ⓘ</span></h3>
+        <h3 class="with-info">데이터 선택 기록 <span class="info-ic" data-info="data-humanism">ⓘ</span></h3>
         ${recItems.map(([k, v]) => `<p style="margin:5px 0"><b>${k}</b> · ${esc(v)}</p>`).join('')}
       </div>` : '';
     const notes = (work.userId ? (await Store.listNotes(work.userId)) : []).filter(hasContent).slice(0, 8);
     const processHTML = notes.length ? `
       <div class="card" style="margin-top:16px">
-        <h3>🧭 작가의 과정·성찰 <span class="muted" style="font-size:12px">— 학습 과정도 작품의 일부예요</span></h3>
+        <h3>작가의 과정·성찰 <span class="muted" style="font-size:12px">— 학습 과정도 작품의 일부예요</span></h3>
         ${notes.map(noteHTML).join('')}
       </div>` : '';
     $('#work-root').innerHTML = `
@@ -104,10 +104,10 @@
 
       <div class="card" style="margin-top:16px">
         <h3 class="with-info">감상·비평 <span class="info-ic" data-info="critique">ⓘ</span> <span class="muted" style="font-size:12px">(${fbs.length})</span></h3>
-        <div id="crit-list">${fbs.length ? fbs.map(critiqueCard).join('') : '<p class="muted">첫 감상을 남겨 보세요.</p>'}</div>
+        <div id="crit-list">${fbs.length ? fbs.map(critiqueCard).join('') : '<p class="muted">아직 감상이 없어요.</p>'}</div>
 
         <hr class="sep">
-        <h3 style="font-size:15px">비평 남기기</h3>
+        <h3 style="font-size:15px">비평 쓰기</h3>
         <div class="grid c2">
           <div><label class="field">이름(관람객)</label><input id="c-name" type="text" value="${u ? esc(u.display) : ''}" placeholder="이름 또는 별명"></div>
           <div><label class="field">별점</label>
@@ -145,7 +145,7 @@
     const comment = v('c-comment'), d = v('c-describe'), a = v('c-analyze'), i = v('c-interpret'), j = v('c-judge');
     const rb = { intent: +v('rb-intent'), trace: +v('rb-trace'), agency: +v('rb-agency'), ret: +v('rb-return') };
     const hasRb = rb.intent || rb.trace || rb.agency || rb.ret;
-    if (!comment && !d && !a && !i && !j && !hasRb) { UI.toast('한마디·4단계·4영역 중 하나는 남겨 주세요.'); return; }
+    if (!comment && !d && !a && !i && !j && !hasRb) { UI.toast('한마디·4단계·4영역 중 하나는 적어 주세요.'); return; }
     const u = Auth.current();
     await Store.addFeedback({
       workId: id, userId: u ? u.userId : undefined, by: name, kind: 'critique',

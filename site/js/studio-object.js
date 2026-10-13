@@ -172,7 +172,7 @@
       await liveVideo.play();
       live = true;
       const b = $('#btn-od-cam'); if (b) { b.textContent = '■ 카메라 끄기'; b.classList.add('rec'); }
-      setStatus('📹 실시간 감지 중 — 카메라를 사물(사람·컵·휴대폰·의자…)에 향해 보세요. 영상은 저장되지 않아요.');
+      setStatus('실시간 감지 중 — 카메라를 사물(사람·컵·휴대폰·의자…)에 향해 보세요. 영상은 저장되지 않아요.');
       requestAnimationFrame(liveStep);
     } catch (e) {
       live = false;
@@ -186,7 +186,7 @@
     live = false;
     if (liveStream) { liveStream.getTracks().forEach(t => t.stop()); liveStream = null; }
     liveVideo = null;
-    const b = $('#btn-od-cam'); if (b) { b.textContent = '📹 실시간 카메라'; b.classList.remove('rec'); }
+    const b = $('#btn-od-cam'); if (b) { b.textContent = '실시간 카메라'; b.classList.remove('rec'); }
   }
   function toggleLive() { if (live) { stopLive(); setStatus('카메라를 껐어요.'); } else startLive(); }
   async function liveStep() {
@@ -209,14 +209,14 @@
   async function detectReal() {
     stopLive();
     if (busy || !srcCanvas) return; busy = true;
-    const btn = $('#btn-od-detect'); if (btn) { btn.disabled = true; btn.textContent = '🤖 감지 중…'; }
+    const btn = $('#btn-od-detect'); if (btn) { btn.disabled = true; btn.textContent = '감지 중…'; }
     try {
       const m = await ensureModel();
       const dets = await m.detect(srcCanvas, 40);
       applyDetections(dets, dets.length ? 'AI 감지 완료 · ' + dets.length + '개' : 'AI가 아무것도 찾지 못했어요 — 이게 결과이자 ‘비평거리’예요.');
     } catch (e) {
       setStatus('AI 모델을 불러오지 못했어요(네트워크 차단/오프라인일 수 있어요). 아래 ‘오프라인 예시’로 객체 감지가 무엇인지 체험해 보세요.', 'warn');
-    } finally { busy = false; if (btn) { btn.disabled = false; btn.textContent = '🤖 AI로 사물 감지'; } }
+    } finally { busy = false; if (btn) { btn.disabled = false; btn.textContent = 'AI로 사물 감지'; } }
   }
 
   /* ----------------------------- 입력 ----------------------------- */

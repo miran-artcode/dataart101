@@ -38,17 +38,17 @@
       ctx.fillText(d.labels[i], x(i), padT + plotH + 14);
     });
     ctx.fillStyle = getCSS('--text'); ctx.textAlign = 'left'; ctx.font = '12px sans-serif';
-    ctx.fillText(d.title + ' (' + d.unit + ')' + (axis === 'cut' ? '  · ⚠ 축 잘림' : ''), padL, 12);
+    ctx.fillText(d.title + ' (' + d.unit + ')' + (axis === 'cut' ? '  · 축 잘림' : ''), padL, 12);
     $('#crit-source').textContent = d.source + ' · y축 ' + (axis === 'zero' ? '0부터' : '잘림(' + yMin.toFixed(0) + '~)');
     $('#crit-rhetoric').innerHTML = axis === 'cut'
-      ? '<span class="ic">⚠️</span><div><b>축을 자르니 변화가 훨씬 ‘극적’으로 보이죠?</b> 같은 숫자인데 인상이 달라져요 — 이게 차트의 ‘수사(rhetoric)’예요. 어떤 축이 더 ‘정직’할까요? 작가는 왜 이렇게 그렸을까요?</div>'
-      : '<span class="ic">📏</span><div><b>0부터 그린 정직한 축이에요.</b> 위의 ‘축 잘라서’를 눌러 같은 데이터가 얼마나 달라 보이는지 비교해 보세요.</div>';
+      ? '<div><b>축을 자르니 변화가 훨씬 ‘극적’으로 보이죠?</b> 같은 숫자인데 인상이 달라져요 — 이게 차트의 ‘수사(rhetoric)’예요. 어떤 축이 더 ‘정직’할까요? 작가는 왜 이렇게 그렸을까요?</div>'
+      : '<div><b>0부터 그린 정직한 축이에요.</b> 위의 ‘축 잘라서’를 눌러 같은 데이터가 얼마나 달라 보이는지 비교해 보세요.</div>';
   }
   function getCSS(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim() || '#888'; }
 
   async function save() {
     const u = Auth.current();
-    if (!u) { UI.toast('저장하려면 로그인하세요.'); setTimeout(() => location.href = 'index.html?next=critique.html', 900); return; }
+    if (!u) { UI.toast('저장하려면 로그인하세요.'); setTimeout(() => location.href = 'login.html?next=critique.html', 900); return; }
     const v = id => ($('#' + id).value || '').trim();
     if (!v('q1') && !v('q2') && !v('q3')) { UI.toast('비평을 한 가지 이상 적어 주세요.'); return; }
     await Store.saveNote({ userId: u.userId, by: u.display, kind: 'reflection', title: '데이터 비평 · ' + DATA[cur].title,

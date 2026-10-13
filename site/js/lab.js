@@ -128,7 +128,7 @@
 
   async function saveNote() {
     const u = Auth.current();
-    if (!u) { UI.toast('저장하려면 로그인하세요.'); setTimeout(() => location.href = 'index.html?next=lab.html', 900); return; }
+    if (!u) { UI.toast('저장하려면 로그인하세요.'); setTimeout(() => location.href = 'login.html?next=lab.html', 900); return; }
     await Store.saveNote({ userId: u.userId, by: u.display, kind: 'lab', title: '분석실 해석 메모',
       memos: getMemos(), palette: lastPalette.map(hex), composition: lastComp ? lastComp.centroid : null });
     UI.toast('작업노트에 저장했습니다.');

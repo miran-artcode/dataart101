@@ -1,9 +1,9 @@
 /*
  * admin-gate.js — 교사 관리자 페이지 비밀번호 잠금
  * -----------------------------------------------------------------------------
- * ⚠ 정적 사이트의 '가벼운 잠금'입니다(강한 보안 아님). 비밀번호는 평문 대신
+ * 정적 사이트의 '가벼운 잠금'입니다(강한 보안 아님). 비밀번호는 평문 대신
  *   SHA-256 해시로만 비교하지만, 클라이언트에서 우회 가능하므로 민감정보는 올리지 마세요.
- *   관리자: sooremond@gmail.com / 비밀번호 해시는 'admin2026'.
+ *   비밀번호를 바꾸려면 새 비밀번호의 SHA-256 해시를 HASH에 넣으세요(평문은 코드에 적지 않음).
  */
 (function (global) {
   'use strict';
@@ -63,7 +63,7 @@
   function addLockBtn() {
     if (document.getElementById('admin-unlock-btn')) return;
     const b = document.createElement('button');
-    b.id = 'admin-unlock-btn'; b.className = 'btn sm'; b.textContent = '🔒 관리자 잠금';
+    b.id = 'admin-unlock-btn'; b.className = 'btn sm'; b.textContent = '관리자 잠금';
     b.addEventListener('click', () => { sessionStorage.removeItem(KEY); location.reload(); });
     document.body.appendChild(b);
   }
@@ -71,7 +71,7 @@
     injectStyle(); document.body.classList.add('admin-locked');
     const o = document.createElement('div'); o.id = 'admin-lock';
     o.innerHTML = `<div class="box">
-      <h2 style="margin:0 0 6px">🔒 교사 관리자 로그인</h2>
+      <h2 style="margin:0 0 6px">교사 관리자 로그인</h2>
       <p class="muted" style="font-size:12.5px;margin:0 0 14px">관리자 전용 페이지입니다. 관리자 <b>${EMAIL}</b></p>
       <label class="field">관리자 비밀번호</label>
       <input id="admin-pw" type="password" placeholder="비밀번호" autocomplete="off">

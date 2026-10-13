@@ -15,12 +15,12 @@
 
   // 예시 데이터를 '사회 문제'와 연결 — 의미 있는 시각화로(데이터=사회현상을 드러내는 시각자료).
   const SAMPLES = {
-    climate: { name: '기후위기 · 한반도 평균기온', issue: '🌡 기후위기 — 점이 점점 위로·뜨겁게. 이 변화를 세상에 어떻게 ‘보여줄’까요?', csv: '연도,평균기온\n1980,12.2\n1990,12.6\n2000,13.1\n2010,13.4\n2015,13.6\n2020,13.9\n2023,14.2' },
-    finedust: { name: '대기오염 · 월별 초미세먼지', issue: '😷 대기오염 — 봄철 농도가 치솟는 리듬. 보이지 않는 위협을 점으로.', csv: '월,초미세먼지\n1월,42\n2월,55\n3월,68\n4월,60\n5월,38\n6월,28\n7월,22\n8월,20\n9월,26\n10월,34\n11월,46\n12월,50' },
-    inequality: { name: '소득 불평등 · 분위별 월소득', issue: '⚖ 불평등 — 1분위와 10분위의 간극을 점의 크기·거리로.', csv: '소득분위,월소득\n1분위,90\n2분위,150\n3분위,210\n4분위,270\n5분위,340\n6분위,420\n7분위,520\n8분위,650\n9분위,850\n10분위,1300' },
-    extinction: { name: '지역소멸 · 지역별 인구·청년', issue: '🏚 지역소멸 — 농촌일수록 인구는 줄고 청년은 적게. 사라지는 것을 어떻게 기억할까?', csv: '지역,인구변화율,청년비율\n수도권,5,28\n광역시,-2,22\n중소도시,-8,16\n농촌,-15,9' },
-    animal: { name: '동물권 · 연도별 유기동물', issue: '🐾 동물권 — 늘어나는 유기동물 수. 숫자 뒤의 생명을 점으로.', csv: '연도,유기동물수\n2016,89000\n2017,102000\n2018,121000\n2019,135000\n2020,128000\n2021,118000\n2022,113000' },
-    emotion: { name: '(개인) 우리 반 하루 감정', issue: '🙂 내 삶의 데이터 — 숫자로는 평온해 보여도 사실은? (데이터 휴머니즘)', csv: '시간,감정온도,활동\n9시,3,수업\n10시,4,발표\n11시,3,토론\n12시,2,점심\n13시,2,휴식\n14시,1,체육\n15시,2,실습\n16시,4,정리\n17시,5,하교' }
+    climate: { name: '기후위기 · 한반도 평균기온', issue: '기후위기 — 점이 점점 위로·뜨겁게. 이 변화를 세상에 어떻게 ‘보여줄’까요?', csv: '연도,평균기온\n1980,12.2\n1990,12.6\n2000,13.1\n2010,13.4\n2015,13.6\n2020,13.9\n2023,14.2' },
+    finedust: { name: '대기오염 · 월별 초미세먼지', issue: '대기오염 — 봄철 농도가 치솟는 리듬. 보이지 않는 위협을 점으로.', csv: '월,초미세먼지\n1월,42\n2월,55\n3월,68\n4월,60\n5월,38\n6월,28\n7월,22\n8월,20\n9월,26\n10월,34\n11월,46\n12월,50' },
+    inequality: { name: '소득 불평등 · 분위별 월소득', issue: '불평등 — 1분위와 10분위의 간극을 점의 크기·거리로.', csv: '소득분위,월소득\n1분위,90\n2분위,150\n3분위,210\n4분위,270\n5분위,340\n6분위,420\n7분위,520\n8분위,650\n9분위,850\n10분위,1300' },
+    extinction: { name: '지역소멸 · 지역별 인구·청년', issue: '지역소멸 — 농촌일수록 인구는 줄고 청년은 적게. 사라지는 것을 어떻게 기억할까?', csv: '지역,인구변화율,청년비율\n수도권,5,28\n광역시,-2,22\n중소도시,-8,16\n농촌,-15,9' },
+    animal: { name: '동물권 · 연도별 유기동물', issue: '동물권 — 늘어나는 유기동물 수. 숫자 뒤의 생명을 점으로.', csv: '연도,유기동물수\n2016,89000\n2017,102000\n2018,121000\n2019,135000\n2020,128000\n2021,118000\n2022,113000' },
+    emotion: { name: '(개인) 우리 반 하루 감정', issue: '내 삶의 데이터 — 숫자로는 평온해 보여도 사실은? (데이터 휴머니즘)', csv: '시간,감정온도,활동\n9시,3,수업\n10시,4,발표\n11시,3,토론\n12시,2,점심\n13시,2,휴식\n14시,1,체육\n15시,2,실습\n16시,4,정리\n17시,5,하교' }
   };
 
   const state = {
@@ -221,7 +221,7 @@
     const ro = $('#rec-omit'); if (ro && d.omit) ro.value = d.omit;
     const ss = $('#sel-sample'); if (ss) ss.value = '';           // 샘플 드롭다운이 오해를 주지 않게
     applyDataset(ds, d.name || '가져온 데이터');
-    const di = $('#data-issue'); if (di) di.textContent = d.issue || '🔗 다른 스튜디오에서 온 데이터예요 — 어떤 열을 점의 무엇으로 바꿀지 설계해 보세요.';
+    const di = $('#data-issue'); if (di) di.textContent = d.issue || '다른 스튜디오에서 온 데이터예요 — 어떤 열을 점의 무엇으로 바꿀지 설계해 보세요.';
     if (window.UI) UI.toast('다른 스튜디오에서 온 데이터를 불러왔어요.');
     return true;
   }
@@ -313,10 +313,10 @@
   function rulesText() { return describeRule({ mapping: state.mapping }); }
   function mdToHtml(t) { return esc(t).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>').replace(/_(.+?)_/g, '<i>$1</i>').replace(/\n/g, '<br>'); }
   async function coach() {
-    UI.modal('🧭 감상 코치', '<div class="spinner"></div> 질문을 준비하는 중…', '답이 아니라 질문이에요');
+    UI.modal('감상 코치', '<div class="spinner"></div> 질문을 준비하는 중…', '답이 아니라 질문이에요');
     const res = await Coach.ask({ kind: 'data', intent: $('#in-intent').value, dataName: $('#in-dataname').value || state.dataName, rules: rulesText() });
     const note = res.source.indexOf('api') === 0 ? '실제 모델' : '오프라인 코치';
-    UI.modal('🧭 감상 코치 <span class="badge">' + note + '</span>', '<div class="lvl-b">' + mdToHtml(res.text) + '</div>', '답이 아니라 질문이에요');
+    UI.modal('감상 코치 <span class="badge">' + note + '</span>', '<div class="lvl-b">' + mdToHtml(res.text) + '</div>', '답이 아니라 질문이에요');
   }
 
   /* ----------------------------- 저장/전시 ----------------------------- */
@@ -333,7 +333,7 @@
       record: { sense: v('rec-sense'), count: v('rec-count'), omit: v('rec-omit'), scale: v('rec-scale'), miss: v('rec-miss') },
       fields: state.dataset ? state.dataset.fields : [], rows: state.dataset ? state.dataset.rows : [] };
   }
-  function requireUser() { const u = Auth.current(); if (!u) { UI.toast('로그인이 필요합니다.'); setTimeout(() => location.href = 'index.html?next=studio-data.html', 900); return null; } return u; }
+  function requireUser() { const u = Auth.current(); if (!u) { UI.toast('로그인이 필요합니다.'); setTimeout(() => location.href = 'login.html?next=studio-data.html', 900); return null; } return u; }
   async function saveNote() {
     const u = requireUser(); if (!u) return;
     await Store.saveNote({ userId: u.userId, by: u.display, kind: 'data', title: ($('#in-dataname').value || state.dataName), intent: $('#in-intent').value, evidence: $('#in-evidence').value, settings: settings() });
@@ -344,7 +344,7 @@
     const intent = $('#in-intent').value.trim(), evidence = $('#in-evidence').value.trim();
     if (!intent || !evidence) { UI.toast('전시 전에 ‘의도 한 문장 + 근거 1개 이상’을 채워 주세요.'); return; }
     await Store.saveWork({ userId: u.userId, by: u.display, klass: u.klass, kind: 'data', title: ($('#in-dataname').value || state.dataName), intent, evidence, dataName: $('#in-dataname').value || state.dataName, settings: settings(), thumb: thumb(), exhibited: true });
-    UI.toast('🎉 갤러리에 전시했습니다!');
+    UI.toast('갤러리에 전시했습니다!');
   }
   function saveImage() { const a = document.createElement('a'); a.download = 'data_art_' + Date.now() + '.png'; a.href = p5i.canvas.toDataURL('image/png'); a.click(); UI.toast('이미지를 저장했습니다.'); }
 
@@ -376,7 +376,7 @@
       const tip = (sel, t) => { const el = $(sel); if (el) el.title = t; };
       tip('#r-speed', '전체 속도 — 작으면 잔잔, 크면 활발해요.');
       tip('#r-vib', '떨림 — 0이면 고요, 크면 들썩여요.');
-      tip('#r-trail', '낮출수록 자취(궤적)가 남아 ‘흐름’이 보여요.');
+      tip('#r-trail', '낮출수록 지난 자취가 보여요.');
       tip('#map-colormode', '수치는 그라데이션, 범주는 라벨별 색 — 색상환에서 직접 골라요.');
       tip('#sel-sample', '사회문제와 연결된 예시 — 의미 있는 시각화로.');
     })();

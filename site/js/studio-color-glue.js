@@ -42,16 +42,16 @@
     if (!bar) return;
     const mk = (txt, title) => { const b = document.createElement('button'); b.className = 'btn'; b.textContent = txt; if (title) b.title = title; return b; };
     const home = document.createElement('a'); home.href = 'hub.html'; home.className = 'btn ghost'; home.textContent = '← 허브'; home.style.textDecoration = 'none';
-    const bCoach = mk('🧭 코치', '감상 코치에게 질문받기');
-    const bExhibit = mk('🖼 전시', '갤러리에 전시하기');
+    const bCoach = mk('코치', '감상 코치에게 질문받기');
+    const bExhibit = mk('전시', '갤러리에 전시하기');
     bar.insertBefore(home, bar.firstChild);
     bar.appendChild(bCoach); bar.appendChild(bExhibit);
     bCoach.addEventListener('click', coach);
     bExhibit.addEventListener('click', exhibitForm);
 
-    const bTheme = mk('🌗', '밝은/어두운 테마');
+    const bTheme = mk('테마', '밝은/어두운 테마');
     bar.appendChild(bTheme);
-    const setIcon = () => { bTheme.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '🌙' : '🌞'; };
+    const setIcon = () => { bTheme.textContent = document.documentElement.getAttribute('data-theme') === 'light' ? '어둡게' : '밝게'; };
     setIcon();
     bTheme.addEventListener('click', () => {
       const light = document.documentElement.getAttribute('data-theme') === 'light';
@@ -63,20 +63,20 @@
 
   async function coach() {
     if (!window.Coach) { toast('코치 모듈이 없습니다.'); return; }
-    const b = modal('🧭 감상 코치', '<span style="opacity:.7">질문을 준비하는 중…</span>');
+    const b = modal('감상 코치', '<span style="opacity:.7">질문을 준비하는 중…</span>');
     const res = await Coach.ask(window.ColorStudio.context());
     const tag = res.source.indexOf('api') === 0 ? '실제 모델' : '오프라인 코치';
-    modal('🧭 감상 코치 <span style="font-size:12px;color:#9aa3bd">(' + tag + ')</span>', md(res.text));
+    modal('감상 코치 <span style="font-size:12px;color:#9aa3bd">(' + tag + ')</span>', md(res.text));
   }
 
   function exhibitForm() {
     if (!window.Store || !window.Auth) { toast('저장 모듈이 없습니다.'); return; }
     const u = Auth.current();
-    if (!u) { toast('전시하려면 로그인하세요.'); setTimeout(() => location.href = 'index.html?next=studio-color.html', 900); return; }
+    if (!u) { toast('전시하려면 로그인하세요.'); setTimeout(() => location.href = 'login.html?next=studio-color.html', 900); return; }
     if (!window.ColorStudio.hasAnalysis()) { toast('먼저 이미지를 분석하세요.'); return; }
     const meta = window.ColorStudio.meta();
     const inp = 'width:100%;font:inherit;font-size:14px;background:#0a0c12;color:#e8ecf6;border:1px solid #2a3145;border-radius:8px;padding:9px 11px;margin-top:4px';
-    const b = modal('🖼 갤러리에 전시', `
+    const b = modal('갤러리에 전시', `
       <p style="color:#9aa3bd;font-size:12.5px;margin:0 0 10px">‘의도 한 문장 + 조형 근거 1개’를 채워야 전시할 수 있어요(근거가 먼저!).</p>
       <label style="font-size:12px;color:#9aa3bd">제목</label>
       <input id="g-title" style="${inp}" value="${esc(meta.title || '')}" placeholder="작품 제목">
@@ -96,7 +96,7 @@
       await Store.saveWork({ userId: u.userId, by: u.display, klass: u.klass, kind: 'color', title, intent, evidence,
         settings: window.ColorStudio.settings(), meta, thumb, srcImg: window.ColorStudio.sourceURL(), exhibited: true });
       document.getElementById('glue-modal').style.display = 'none';
-      toast('🎉 갤러리에 전시했습니다!');
+      toast('갤러리에 전시했습니다!');
     });
   }
 

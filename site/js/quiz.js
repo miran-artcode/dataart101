@@ -98,8 +98,8 @@
       host.innerHTML = '<label class="field">보기(정답을 ◉로 선택)</label>' +
         qGen.options.map((o, i) => '<div style="display:flex;gap:8px;align-items:center;margin:4px 0"><input type="radio" name="q-correct" value="' + i + '"' + (i === 0 ? ' checked' : '') + '><input type="text" class="q-optin" data-i="' + i + '" placeholder="보기 ' + (i + 1) + '"></div>').join('');
     } else {
-      host.innerHTML = '<label class="field">자동 생성된 보기 (✅ = 정답)</label>' +
-        qGen.options.map((o, i) => '<div class="qopt" style="cursor:default">' + (o.color ? '<span class="sw" style="background:' + o.color + '"></span>' : '') + esc(o.label || (o.color ? '이 색' : '')) + (i === qGen.answer ? ' <b style="color:var(--good)">✅ 정답</b>' : '') + '</div>').join('');
+      host.innerHTML = '<label class="field">자동 생성된 보기 (= 정답)</label>' +
+        qGen.options.map((o, i) => '<div class="qopt" style="cursor:default">' + (o.color ? '<span class="sw" style="background:' + o.color + '"></span>' : '') + esc(o.label || (o.color ? '이 색' : '')) + (i === qGen.answer ? ' <b style="color:var(--good)">정답</b>' : '') + '</div>').join('');
     }
   }
 
@@ -113,7 +113,7 @@
   function thumbURL(src, w) { w = w || 220; const ar = src.width / src.height; const c = document.createElement('canvas'); c.width = w; c.height = Math.round(w / ar); c.getContext('2d').drawImage(src, 0, 0, c.width, c.height); return c.toDataURL('image/jpeg', 0.62); }
   async function submitQuiz() {
     const u = Auth.current();
-    if (!u) { UI.toast('출제하려면 로그인하세요.'); setTimeout(() => location.href = 'index.html?next=quiz.html', 900); return; }
+    if (!u) { UI.toast('출제하려면 로그인하세요.'); setTimeout(() => location.href = 'login.html?next=quiz.html', 900); return; }
     if (!qAn || !qGen) { UI.toast('먼저 이미지를 분석하세요.'); return; }
     const type = $('#q-type').value;
     let question = $('#q-question').value.trim(), options = qGen.options, answer = qGen.answer, answers = null;
@@ -138,7 +138,7 @@
       thumb: thumbURL(qSrc), chartImg: cv ? cv.toDataURL('image/png') : '', chartType: $('#q-chart').value
     };
     await Store.saveQuiz(quiz);
-    UI.toast('🎉 퀴즈를 출제했습니다!');
+    UI.toast('퀴즈를 출제했습니다!');
     qTags.clear(); $('#q-title').value = ''; $('#q-explain').value = '';
     if ($('#q-hint')) $('#q-hint').value = ''; if ($('#q-story')) $('#q-story').value = '';
     document.querySelectorAll('.tag-chip.on').forEach(c => c.classList.remove('on'));
@@ -164,18 +164,18 @@
     const isFree = q.qtype === 'free';
     const head =
       '<div class="qimg">' + (q.thumb ? '<img src="' + q.thumb + '">' : '') + (q.chartImg ? '<img src="' + q.chartImg + '">' : '') + '</div>' +
-      (q.story ? '<p class="muted" style="font-size:12.5px;margin:8px 0 0">🧑 ' + esc(q.story) + '</p>' : '') +
+      (q.story ? '<p class="muted" style="font-size:12.5px;margin:8px 0 0">' + esc(q.story) + '</p>' : '') +
       '<h3 style="margin:12px 0 4px">' + esc(q.question) + '</h3>' +
       '<div class="muted" style="font-size:12px;margin-bottom:8px">' + esc(q.by || '') + ' · ' + esc(q.difficulty || '') + (q.tags && q.tags.length ? ' · ' + q.tags.map(esc).join('·') : '') + '</div>' +
-      (q.hint ? '<button id="qa-hint-btn" class="btn sm ghost" style="margin-bottom:8px">💡 힌트 보기</button><div id="qa-hint" class="hide" style="font-size:12.5px;color:var(--accent2);margin-bottom:8px"></div>' : '');
+      (q.hint ? '<button id="qa-hint-btn" class="btn sm ghost" style="margin-bottom:8px">힌트 보기</button><div id="qa-hint" class="hide" style="font-size:12.5px;color:var(--accent2);margin-bottom:8px"></div>' : '');
     const interact = isFree
       ? '<div style="display:flex;gap:8px"><input id="qa-input" type="text" placeholder="정답을 입력하세요" style="flex:1"><button id="qa-go" class="btn primary">제출</button></div>'
       : '<div id="qa-options">' + (q.options || []).map((o, i) => '<button class="qopt" data-i="' + i + '">' + (o.color ? '<span class="sw" style="background:' + o.color + '"></span>' : '') + esc(o.label || '이 색') + '</button>').join('') + '</div>';
     UI.modal(esc(q.title || '퀴즈'), head + interact + '<div id="qa-result"></div>', '맞혀 보세요!');
     const already = done.has(id);
-    if (q.hint) { const hb = $('#qa-hint-btn'); if (hb) hb.addEventListener('click', () => { const hv = $('#qa-hint'); hv.textContent = '💡 ' + q.hint; hv.classList.remove('hide'); hb.classList.add('hide'); }); }
+    if (q.hint) { const hb = $('#qa-hint-btn'); if (hb) hb.addEventListener('click', () => { const hv = $('#qa-hint'); hv.textContent = '힌트: ' + q.hint; hv.classList.remove('hide'); hb.classList.add('hide'); }); }
     const reveal = async (correct) => {
-      $('#qa-result').innerHTML = '<div class="callout ' + (correct ? '' : 'warn') + '" style="margin-top:12px"><span class="ic">' + (correct ? '🎉' : '🤔') + '</span><div><b>' + (correct ? '정답!' : '아쉬워요') + '</b>' +
+      $('#qa-result').innerHTML = '<div class="callout ' + (correct ? '' : 'warn') + '" style="margin-top:12px"><div><b>' + (correct ? '정답!' : '아쉬워요') + '</b>' +
         (isFree && q.answers ? '<br>정답: ' + q.answers.map(esc).join(' / ') : '') +
         (q.explanation ? '<br><b>출제자 해설</b>: ' + esc(q.explanation) : '') + '</div></div>';
       if (!already) { markDone(id); await Store.addQuizAnswer({ quizId: id, userId: u ? u.userId : undefined, by: u ? u.display : '익명', correct: correct }); }
@@ -202,7 +202,7 @@
     const by = {};
     ans.forEach(a => { const k = a.userId || a.by || '익명'; if (!by[k]) by[k] = { name: a.by || '익명', correct: 0, total: 0 }; by[k].total++; if (a.correct) by[k].correct++; });
     const rows = Object.values(by).sort((a, b) => b.correct - a.correct || b.total - a.total);
-    const medal = i => i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : (i + 1);
+    const medal = i => i + 1;
     $('#rank-table').querySelector('tbody').innerHTML = rows.length ? rows.map((r, i) =>
       '<tr><td class="rank-medal">' + medal(i) + '</td><td>' + esc(r.name) + '</td><td>' + r.correct + '</td><td>' + r.total + '</td><td>' + Math.round(r.correct / r.total * 100) + '%</td></tr>').join('')
       : '<tr><td colspan="5" class="muted">아직 푼 기록이 없어요.</td></tr>';

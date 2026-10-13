@@ -3,24 +3,21 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>작업 노트 · 데이터의 눈</title>
+<title>작업 노트 · 보는 법</title>
 <link rel="stylesheet" href="css/site.css" />
 </head>
 <body>
 <div id="app-header"></div>
 <div class="wrap narrow">
   <div class="page-head">
-    <span class="eyebrow">작업 노트</span>
-    <h1>과정·버전·성찰 — 곧 포트폴리오</h1>
-    <p>저장한 작업과 메모가 시간순으로 쌓입니다. ‘AI가 도운 것 / 내가 결정한 것’을 나눠 적어 발표에 쓰세요.</p>
+    <h1>작업 노트</h1>
   </div>
-  <div id="idea"></div>
 
   <div class="card">
     <h3>새 성찰 기록</h3>
     <div class="grid c2">
-      <div><label class="field">🤖 AI(알고리즘)가 도운 것</label><textarea id="r-ai" rows="3" placeholder="예: K-means가 색을 8개로 요약"></textarea></div>
-      <div><label class="field">🙋 내가 결정한 것</label><textarea id="r-me" rows="3" placeholder="예: K=5 선택, 소리에 폭발 규칙 설계"></textarea></div>
+      <div><label class="field">AI(알고리즘)가 도운 것</label><textarea id="r-ai" rows="3" placeholder="예: K-means가 색을 8개로 요약"></textarea></div>
+      <div><label class="field">내가 결정한 것</label><textarea id="r-me" rows="3" placeholder="예: K=5 선택, 소리에 폭발 규칙 설계"></textarea></div>
     </div>
     <label class="field">한 줄 성찰 (오늘 배운 것 / 바꾼 것과 이유)</label>
     <input id="r-line" type="text" placeholder="예: K를 줄였더니 분위기가 단순해져 의도에 더 맞았다">
@@ -44,7 +41,7 @@
   document.getElementById('who').textContent = u ? `${u.display} 님의 기록` : '로그인하면 내 기록이 보여요.';
 
   async function render() {
-    if (!u) { document.getElementById('timeline').innerHTML = UI.callout('로그인하면 저장한 작업과 성찰이 시간순으로 모여요. <a href="index.html?next=notes.html">로그인</a>', 'info'); return; }
+    if (!u) { document.getElementById('timeline').innerHTML = UI.callout('로그인하면 저장한 작업과 성찰이 시간순으로 모여요. <a href="login.html?next=notes.html">로그인</a>', 'info'); return; }
     const notes = await Store.listNotes(u.userId);
     const works = await Store.listWorks({ userId: u.userId });
     const items = [...notes.map(n => ({ t: n.updatedAt, type: 'note', d: n })), ...works.map(w => ({ t: w.updatedAt, type: 'work', d: w }))]
@@ -64,7 +61,7 @@
       const n = it.d;
       let inner = '';
       if (n.memos) inner = Object.entries(n.memos).map(([k, v]) => `<b>${k}</b>: ${UI.escapeHTML(v)}`).join('<br>');
-      else inner = `${n.aiHelp?`🤖 ${UI.escapeHTML(n.aiHelp)}<br>`:''}${n.myDecision?`🙋 ${UI.escapeHTML(n.myDecision)}<br>`:''}${n.line?UI.escapeHTML(n.line):''}`;
+      else inner = `${n.aiHelp?`${UI.escapeHTML(n.aiHelp)}<br>`:''}${n.myDecision?`${UI.escapeHTML(n.myDecision)}<br>`:''}${n.line?UI.escapeHTML(n.line):''}`;
       return `<div class="card" style="margin-bottom:12px"><span class="badge">${KIND[n.kind]||n.kind}</span>
         <h4 style="margin:6px 0 2px">${UI.escapeHTML(n.title||'성찰')}</h4>
         <p class="muted" style="font-size:12px;margin:0 0 6px">${when}</p>
@@ -73,7 +70,7 @@
   }
 
   document.getElementById('btn-save').addEventListener('click', async () => {
-    if (!u) { UI.toast('로그인이 필요합니다.'); setTimeout(()=>location.href='index.html?next=notes.html',800); return; }
+    if (!u) { UI.toast('로그인이 필요합니다.'); setTimeout(()=>location.href='login.html?next=notes.html',800); return; }
     const ai = document.getElementById('r-ai').value.trim(), me = document.getElementById('r-me').value.trim(), line = document.getElementById('r-line').value.trim();
     if (!ai && !me && !line) { UI.toast('내용을 입력하세요.'); return; }
     await Store.saveNote({ userId: u.userId, by: u.display, kind: 'reflection', title: '성찰 기록', aiHelp: ai, myDecision: me, line });

@@ -48,7 +48,7 @@
       if (ctx.K) qs.push(`K=${ctx.K}로 정한 근거는 무엇인가요? K를 절반으로 줄이면 무엇이 단순해지고, 무엇을 잃게 될까요? (탐구문제 1·2)`);
       if (ctx.space) qs.push(`색공간을 ${String(ctx.space).toUpperCase()}로 골랐네요. RGB와 LAB로 각각 군집화하면 팔레트가 왜 달라질까요?`);
       if (ctx.N) qs.push(`점 개수 N=${ctx.N}는 '해상도'이자 '표현 전략'이에요. 더 적게/많게 했을 때 정보량과 감정 전달은 어떻게 달라지나요?`);
-      qs.push('이 색 분석(K-means)이 "놓친 것"은 무엇일까요? (힌트: 알고리즘은 색이 화면 어디에 있는지를 모릅니다)');
+      qs.push('이 색 분석(K-means)의 한계는 무엇일까요? (힌트: 알고리즘은 색이 화면 어디에 있는지를 모릅니다)');
     } else if (ctx.kind === 'data') {
       qs.push(`무엇을 데이터로 골랐나요(${ctx.dataName || '예: 감정·걸음·소음·기온'})? 그 선택이 '우리'를 어떻게 드러내나요?`);
       qs.push('값→크기, 변화량→속도, 증가/감소→방향(벡터), 빈도→밀도 중 주제에 가장 중요한 매핑은 무엇이고, 왜 그렇게 생각하나요?');
@@ -67,7 +67,7 @@
   }
 
   function formatOffline(qs) {
-    return '🧭 **감상 코치 — 답이 아니라 질문이에요.**\n\n' +
+    return '**감상 코치 — 답이 아니라 질문이에요.**\n\n' +
       qs.map((q, i) => `**${i + 1}.** ${q}`).join('\n\n') +
       '\n\n_정답을 찾기보다, 당신의 선택에 근거를 붙여 보세요. 메모/노트에 적으면 그대로 리포트가 됩니다._';
   }
@@ -140,7 +140,7 @@
         try {
           const text = await callModel(ctx, cfg);
           if (text && text.trim()) {
-            const out = '🤖 **감상 코치 (AI)**\n\n' + text.trim() +
+            const out = '**감상 코치 (AI)**\n\n' + text.trim() +
               '\n\n_AI의 질문도 정답이 아니에요. 동의/반박하며 당신의 근거를 세워 보세요._';
             cache.set(key, out);
             return { text: out, source: 'api' };

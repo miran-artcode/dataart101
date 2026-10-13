@@ -59,7 +59,7 @@
     if (timer) { clearInterval(timer); timer = null; }
     $('#btn-csv').disabled = rows.length === 0; $('#btn-send').disabled = rows.length === 0;
     $('#rec-status').innerHTML = msg || (rows.length ? '추출 완료 · ' + rows.length + '프레임' : '');
-    $('#btn-rec').textContent = '🎤 녹음 시작'; $('#btn-rec').classList.remove('rec'); recording = false;
+    $('#btn-rec').textContent = '녹음 시작'; $('#btn-rec').classList.remove('rec'); recording = false;
   }
 
   /* ----------------------------- 마이크 ----------------------------- */
@@ -133,11 +133,11 @@
       rows.push({ 밤: n, 상황: c, 음량: rnd(s.음량[0], s.음량[1]), 깊이: rnd(s.깊이[0], s.깊이[1]), 규칙성: rnd(s.규칙성[0], s.규칙성[1]), 뒤척임: rnd(s.뒤척임[0], s.뒤척임[1]) });
     }
     datasetName = '아빠의 한 달 코골이';
-    datasetIssue = '🛏 아빠의 한 달 — 상황(평일·야근·월급날·주말·아픈날)에 따라 달라지는 코골이의 리듬';
+    datasetIssue = '아빠의 한 달 — 상황(평일·야근·월급날·주말·아픈날)에 따라 달라지는 코골이의 리듬';
     renderViz();
     $('#frame-info').textContent = '30밤 · 상황별 코골이 이야기';
     $('#sample-story').style.display = '';
-    $('#sample-story').innerHTML = '<span class="ic">🛏</span><div><b>아빠의 한 달 코골이 — 30밤의 이야기</b><br>같은 코골이도 그날의 <b>상황</b>에 따라 달라져요:<br>• <b>야근</b>한 밤 — 크고 깊지만 <b>불규칙·뒤척임↑</b>(고단함).<br>• <b>월급날</b> — 한결 편안·규칙적.<br>• <b>주말</b> — 늦잠으로 가장 <b>깊고 길게</b>.<br>• <b>아픈 날</b> — 코가 막혀 작고 거칠고 뒤척여요.<br><br>점 스튜디오에서 <b>색 = 상황</b>으로 칠하고 <b>음량 → 크기 · 뒤척임 → 진동</b>으로 매핑하면, 숫자 뒤의 ‘피로의 들썩임’과 ‘한 달의 리듬’이 보여요. “이 소리를 점으로 옮긴다면, 나는 아빠의 <b>무엇</b>을 보여주고 싶은가?”</div>';
+    $('#sample-story').innerHTML = '<div><b>아빠의 한 달 코골이 — 30밤의 이야기</b><br>같은 코골이도 그날의 <b>상황</b>에 따라 달라져요:<br>• <b>야근</b>한 밤 — 크고 깊지만 <b>불규칙·뒤척임↑</b>(고단함).<br>• <b>월급날</b> — 한결 편안·규칙적.<br>• <b>주말</b> — 늦잠으로 가장 <b>깊고 길게</b>.<br>• <b>아픈 날</b> — 코가 막혀 작고 거칠고 뒤척여요.<br><br>점 스튜디오에서 <b>색 = 상황</b>으로 칠하고 <b>음량 → 크기 · 뒤척임 → 진동</b>으로 매핑하면, 숫자 뒤의 ‘피로의 들썩임’과 ‘한 달의 리듬’이 보여요. “이 소리를 점으로 옮긴다면, 나는 아빠의 <b>무엇</b>을 보여주고 싶은가?”</div>';
     $('#snd-intent').value = $('#snd-intent').value || '아빠의 코골이에서 한 달의 리듬과 고단함, 곁에 있다는 감각을';
     $('#snd-omit').value = $('#snd-omit').value || '소리의 크기·깊이·뒤척임만 셈 · 말소리·음색은 제외';
     finalize('샘플 불러옴 · 30밤(상황별)');

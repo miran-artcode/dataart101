@@ -3,28 +3,30 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>데이터 점 스튜디오 · 데이터가 춤추는 점</title>
+<title>데이터 점 스튜디오 · 보는 법</title>
 <link rel="stylesheet" href="css/site.css" />
 <style>
-  .dstudio { display: grid; grid-template-columns: 1fr 350px; gap: 16px; align-items: start; }
-  /* 작품창과 설정 패널(세로 바)의 높이를 같게 — 아래 선이 맞도록 */
-  .dstudio { --dh: max(460px, calc(100vh - 120px)); }
+  .dstudio { --aside: 350px; --gap: 16px; }   /* 두 단은 .split (site.css) */
+  /* 작품창과 설정 패널(세로 바)의 높이를 같게 — 아래 선이 맞도록. dvh = 주소창을 뺀 실제 보이는 높이 */
+  .dstudio { --dh: max(460px, calc(100vh - var(--header-h) - 60px)); }
+  @supports (height: 100dvh) { .dstudio { --dh: max(460px, calc(100dvh - var(--header-h) - 60px)); } }
   #dstage { position: relative; background: #07080d; border: 1px solid var(--line); border-radius: var(--radius); height: var(--dh); overflow: hidden; box-shadow: var(--shadow); }
   #dstage canvas { display: block; }
-  .dpanel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); height: var(--dh); overflow-y: auto; box-shadow: var(--shadow); position: sticky; top: 86px; }
+  .dpanel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); height: var(--dh); overflow-y: auto; box-shadow: var(--shadow); position: sticky; top: calc(var(--header-h) + 26px); }
   .dpanel details { border-bottom: 1px solid var(--line); }
   .dpanel summary { cursor: pointer; padding: 12px 15px; font-weight: 700; font-size: 13.5px; list-style: none; }
   .dpanel summary::-webkit-details-marker { display: none; }
   .dpanel .sect { padding: 4px 15px 16px; }
-  @media (max-width: 880px) { .dstudio { grid-template-columns: 1fr; } #dstage { height: 52vh; } .dpanel { height: auto; position: static; } }
+  /* 옆 패널이 아래로 내려갔을 때(그리드 lg 미만) */
+  @container (max-width: 879.98px) { #dstage { height: 52vh; height: 52dvh; } .dpanel { height: auto; position: static; } }
   .map-grid { display: flex; flex-direction: column; gap: 7px; }
   .map-row { display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
   .map-row > span:first-child { flex: 0 0 52px; color: var(--muted); }
   .map-row select { flex: 1; }
   .field-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
   .field-chips .chip { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
-  .field-chips .chip.num { color: var(--accent2); border-color: rgba(78,195,255,.4); }
-  .field-chips .chip.cat { color: var(--good); border-color: rgba(81,216,138,.4); }
+  .field-chips .chip.num { color: var(--text); }
+  .field-chips .chip.cat { color: var(--muted); border-style: dashed; }
   #label-config { margin-top: 8px; display: flex; flex-direction: column; gap: 6px; }
   .label-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
   input[type=color] { width: 42px; height: 26px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; cursor: pointer; vertical-align: middle; }
@@ -35,34 +37,31 @@
 
 <div class="wrap">
   <div class="page-head">
-    <span class="eyebrow">데이터 점 스튜디오 · 1단계 기초</span>
-    <h1>데이터가 춤추는 점</h1>
-    <p>우리 데이터(여러 열)를 점의 <b>크기·속도·방향·밀도·투명도·형태·색</b>으로 번역해 움직이는 작품으로. <b>어떤 열을 어떻게</b> 매핑할지 직접 설계하세요 — 매핑은 ‘효과’가 아니라 <b>해석</b>이에요.</p>
+    <h1>데이터 점 스튜디오</h1>
   </div>
-  <div id="idea"></div>
 
-  <div class="dstudio">
+  <div class="dstudio split">
     <section id="dstage"></section>
 
     <aside class="dpanel">
       <details open>
-        <summary>1 · 데이터</summary>
+        <summary>데이터</summary>
         <div class="sect">
           <label class="field">샘플 데이터</label>
           <select id="sel-sample">
-            <option value="climate">🌡 기후위기 · 평균기온</option>
-            <option value="finedust">😷 대기오염 · 미세먼지</option>
-            <option value="inequality">⚖ 소득 불평등</option>
-            <option value="extinction">🏚 지역소멸 · 인구</option>
-            <option value="animal">🐾 동물권 · 유기동물</option>
-            <option value="emotion">🙂 (개인) 우리 반 감정</option>
+            <option value="climate">기후위기 · 평균기온</option>
+            <option value="finedust">대기오염 · 미세먼지</option>
+            <option value="inequality">소득 불평등</option>
+            <option value="extinction">지역소멸 · 인구</option>
+            <option value="animal">동물권 · 유기동물</option>
+            <option value="emotion">(개인) 우리 반 감정</option>
           </select>
           <label class="field" style="margin-top:10px">직접 입력 / 붙여넣기 (CSV·숫자) <span class="info-ic" data-info="data-clean">ⓘ</span></label>
           <textarea id="ta-data" rows="4" placeholder="첫 줄에 열 이름(머리글)도 가능:&#10;시간,감정온도,활동&#10;9시,3,수업&#10;10시,4,발표"></textarea>
           <div style="display:flex; gap:8px; margin-top:8px; flex-wrap:wrap">
             <button id="btn-apply-data" class="btn sm">적용</button>
             <button id="btn-upload-csv" class="btn sm">CSV 열기</button>
-            <button id="btn-template" class="btn sm ghost" title="작성 양식(CSV)을 내려받아 채워 오세요">⬇ 양식 받기</button>
+            <button id="btn-template" class="btn sm ghost" title="작성 양식(CSV)을 내려받아 채워 오세요">양식 받기</button>
             <input id="csv" type="file" accept=".csv,text/csv,text/plain" hidden />
           </div>
           <p class="muted" id="data-info" style="font-size:11.5px; margin-top:8px"></p>
@@ -72,9 +71,9 @@
       </details>
 
       <details open>
-        <summary>2 · 매핑 설정 — 무엇을 어떻게</summary>
+        <summary>매핑</summary>
         <div class="sect">
-          <p class="muted" style="font-size:12px;margin:0 0 8px">데이터의 <b>어떤 열</b>을 점의 <b>어떤 특성</b>으로 바꿀지 골라요. (크기·속도·방향·밀도·투명도는 수치 열)</p>
+          <p class="muted" style="font-size:12px;margin:0 0 8px">데이터 열을 점의 특성에 연결합니다. 크기·속도·방향·밀도·투명도는 수치 열만 됩니다.</p>
           <div class="map-grid">
             <div class="map-row"><span>크기 ←</span><select id="map-size" data-map="size"></select><span class="info-ic" data-info="map-size">ⓘ</span></div>
             <div class="map-row"><span>속도 ←</span><select id="map-speed" data-map="speed"></select><span class="info-ic" data-info="map-speed">ⓘ</span></div>
@@ -107,13 +106,13 @@
       </details>
 
       <details open>
-        <summary>3 · 움직임 · 잔상</summary>
+        <summary>움직임·잔상</summary>
         <div class="sect">
           <label class="field">기본 속도 <output id="o-speed">1</output></label><input id="r-speed" type="range" min="0" max="3" step="0.1" value="1">
           <label class="field">진동 <output id="o-vib">1</output></label><input id="r-vib" type="range" min="0" max="4" step="0.1" value="1">
           <label class="field">잔상(트레일) <output id="o-trail">200</output></label><input id="r-trail" type="range" min="20" max="255" step="5" value="200">
           <label class="field">점 크기 배율 <output id="o-pscale">1</output></label><input id="r-pscale" type="range" min="0.3" max="3" step="0.1" value="1" title="모든 점의 크기를 한꺼번에 키우거나 줄여요(매핑된 크기에 곱해져요).">
-          <label class="field">응집력(제자리로) <output id="o-coh">1</output></label><input id="r-coh" type="range" min="0.2" max="2.5" step="0.1" value="1" title="점이 제 자리(배치)로 돌아가려는 힘 — 크면 단단히 모이고, 작으면 느슨히 흩어져 떠돌아요.">
+          <label class="field">응집력 <output id="o-coh">1</output></label><input id="r-coh" type="range" min="0.2" max="2.5" step="0.1" value="1" title="점이 배치 위치로 돌아가려는 힘 — 크면 단단히 모이고, 작으면 느슨히 흩어져 떠돌아요.">
           <label class="field">배치(어디에) <span class="info-ic" data-info="data-layout">ⓘ</span></label>
           <select id="sel-layout">
             <option value="timeline">시간축 (가로 흐름)</option>
@@ -123,8 +122,8 @@
           </select>
           <label class="field">움직임 방식 (어떻게) <span class="info-ic" data-info="data-motion">ⓘ</span></label>
           <select id="sel-motionstyle">
-            <option value="vibrate">제자리 진동 (기본)</option>
-            <option value="orbit">궤도 (제자리 주위 회전)</option>
+            <option value="vibrate">진동 (기본)</option>
+            <option value="orbit">궤도 (원래 위치 주위 회전)</option>
             <option value="wave">파동 (시간 따라 출렁)</option>
             <option value="burst">분출 (방향대로 흐름)</option>
           </select>
@@ -137,14 +136,14 @@
             <option value="paper">따뜻한 종이</option>
             <option value="white">전시 흰색</option>
           </select>
-          <p class="muted" style="font-size:11.5px;margin-top:8px">속도·방향은 ‘변화량(데이터가 얼마나 변했나)’으로 움직여요. <b>배치</b>=점이 어디에 살지, <b>움직임 방식</b>=어떤 식으로 움직일지, <b>응집력</b>=얼마나 단단히 모일지 — 데이터의 특성이 곧 움직임이 됩니다.</p>
+          <p class="muted" style="font-size:11.5px;margin-top:8px">속도·방향은 데이터 변화량을 따릅니다. <b>배치</b>: 점의 위치 · <b>움직임 방식</b>: 움직이는 형태 · <b>응집력</b>: 모이는 정도</p>
         </div>
       </details>
 
       <details open>
-        <summary>4 · 데이터 선택 기록 (제작 문서) <span class="info-ic" data-info="data-humanism">ⓘ</span></summary>
+        <summary>데이터 선택 기록<span class="info-ic" data-info="data-humanism">ⓘ</span></summary>
         <div class="sect">
-          <p class="muted" style="font-size:12px;margin:0 0 8px">‘객관적 데이터’ 뒤의 <b>나의 선택</b>을 적어요. 무엇을 세고 무엇을 뺐는지가 곧 창작이에요(프롬프트=작가노트처럼).</p>
+          <p class="muted" style="font-size:12px;margin:0 0 8px">무엇을 세고 무엇을 뺐는지 적습니다.</p>
           <label class="field">① 감각 먼저 — 데이터가 되기 전, 이 주제를 몸으로 어떻게 느꼈나요?</label>
           <textarea id="rec-sense" rows="2" placeholder="예: 시험 주간 일주일, 쉬는 시간마다 한숨이 늘었다"></textarea>
           <label class="field">② 무엇을 ‘셌’나요? (셈의 단위·기준)</label>
@@ -153,13 +152,13 @@
           <input id="rec-omit" type="text" placeholder="예: 점심시간·개인적인 이유는 제외">
           <label class="field">④ 왜 이 척도·축·색·매핑인가요?</label>
           <input id="rec-scale" type="text" placeholder="예: 변화가 큰 순간을 빠른 움직임으로">
-          <label class="field">⑤ 이 데이터가 놓친 ‘내 삶의 진실’은? (메타비평)</label>
+          <label class="field">⑤ 이 데이터에서 빠진 ‘내 삶의 진실’은? (메타비평)</label>
           <textarea id="rec-miss" rows="2" placeholder="예: 숫자로는 평온해 보이지만 사실 가장 불안했다"></textarea>
         </div>
       </details>
 
       <details open>
-        <summary>5 · 의도 · 근거 <span class="badge core">저장 전 필수</span></summary>
+        <summary>의도·근거<span class="badge core">저장 전 필수</span></summary>
         <div class="sect">
           <label class="field">데이터 주제(무엇의 데이터인가)</label>
           <input id="in-dataname" type="text" placeholder="예: 우리 반 하루 감정 온도">
@@ -171,20 +170,19 @@
       </details>
 
       <details open>
-        <summary>6 · 코치 · 저장 · 공유</summary>
+        <summary>코치·저장·공유</summary>
         <div class="sect">
-          <button id="btn-coach" class="btn wide" style="margin-bottom:8px">🧭 감상 코치에게 질문받기</button>
+          <button id="btn-coach" class="btn wide" style="margin-bottom:8px">감상 코치에게 질문받기</button>
           <div style="display:flex; gap:8px; flex-wrap:wrap">
             <button id="btn-img" class="btn sm">이미지 저장</button>
             <button id="btn-note" class="btn sm">작업노트 저장</button>
             <button id="btn-exhibit" class="btn sm accent2">전시하기</button>
           </div>
-          <p class="muted" style="font-size:11.5px; margin-top:8px">⚠ 개인 데이터는 익명·집계로! 낙인찍지 않도록 설명은 상황·맥락 중심으로.</p>
+          <p class="muted" style="font-size:11.5px; margin-top:8px">개인 데이터는 익명·집계로 씁니다.</p>
         </div>
       </details>
     </aside>
   </div>
-  <p class="footer-note">인터랙션은 효과가 아니라 해석이에요 · 표본 수·한계를 작품 설명에 밝히세요</p>
 </div>
 
 <script src="vendor/p5.min.js"></script>

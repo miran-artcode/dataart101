@@ -1,7 +1,7 @@
 /*
  * auth.js — 간단 로그인 (이름 · 반-번호 · PIN 4자리)
  * -----------------------------------------------------------------------------
- * ⚠ 보안 주의: 4자리 PIN은 '진짜 보안'이 아니라 실수로 덮어쓰는 걸 막는 잠금 수준입니다.
+ * 보안 주의: 4자리 PIN은 '진짜 보안'이 아니라 실수로 덮어쓰는 걸 막는 잠금 수준입니다.
  *   미성년자 정보이므로 학교 개인정보 방침을 먼저 확인하세요. 표시 이름은 학생이
  *   실명/이니셜/별명 중 고를 수 있습니다(기본값은 실명).
  */
@@ -45,7 +45,7 @@
     logout() { localStorage.removeItem(K_SESSION); },
     // 보호 페이지에서 사용: 로그인 안 되어 있으면 index 로 보냄
     requireLogin() {
-      if (!this.current()) { location.href = 'index.html?next=' + encodeURIComponent(location.pathname.split('/').pop()); return false; }
+      if (!this.current()) { location.href = 'login.html?next=' + encodeURIComponent(location.pathname.split('/').pop()); return false; }
       return true;
     }
   };

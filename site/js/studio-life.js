@@ -106,7 +106,7 @@
   function exportCSV() { const blob = new Blob(['﻿' + toCSV()], { type: 'text/csv;charset=utf-8' }); const a = document.createElement('a'); a.download = 'life_data_' + Date.now() + '.csv'; a.href = URL.createObjectURL(blob); a.click(); UI.toast('CSV로 내보냈어요.'); }
   function send() {
     if (!rows.length) return;
-    const payload = { name: dataName, csv: toCSV(), intent: $('#life-intent').value.trim(), issue: '🧑 내 삶에서 온 데이터 — 무엇을 셀지 내가 정했어요' };
+    const payload = { name: dataName, csv: toCSV(), intent: $('#life-intent').value.trim(), issue: '내 삶에서 온 데이터 — 무엇을 셀지 내가 정했어요' };
     try { localStorage.setItem('dn_data_incoming', JSON.stringify(payload)); } catch (e) { UI.toast('전송 실패(용량).'); return; }
     UI.toast('데이터 점 스튜디오로 보냅니다…'); setTimeout(() => location.href = 'studio-data.html', 600);
   }

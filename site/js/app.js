@@ -49,6 +49,7 @@
   }
   function setBusy(on) { $('#busy').classList.toggle('show', !!on); }
   function fmt(n) { return n.toLocaleString('ko-KR'); }
+  function fmtK(k) { return k === Infinity ? '∞' : String(k); }
 
   // 캔버스 안에서 이미지가 놓일 사각형(비율 유지, 가운데 정렬)
   function imageRect() {
@@ -165,7 +166,7 @@
     }
     const adjusted = analysis.requestedK > analysis.K;
     const note = adjusted
-      ? '입력 K=' + fmt(analysis.requestedK) + ' → 실제 K=' + fmt(analysis.K) + ' (이미지 색 수·성능 한계로 자동 조정)'
+      ? '입력 K=' + fmt(analysis.requestedK) + ' → 실제 K=' + fmt(analysis.K) + (analysis.requestedK === Infinity ? ' (그림의 서로 다른 색 전부)' : ' (이미지의 서로 다른 색 수까지만 가능)')
       : 'K=' + fmt(analysis.K);
     const manyNote = analysis.K > 60 ? ' · 상위 색만 표시(나머지는 평균색 ‘기타’로 묶음)' : '';
     $('#palette-meta').textContent = note + ' · ' + (state.space === 'lab' ? 'LAB' : 'RGB') + ' · 비율 높은 순' + manyNote;
@@ -457,7 +458,7 @@
       () => toast('복사 실패(브라우저 권한 확인).'));
   }
   function exportSettings() {
-    const data = { app: '그림이 분해되어 다시 연주되다', version: 1, savedAt: new Date().toISOString(), state };
+    const data = { app: '그림이 분해되어 다시 연주되다', version: 1, savedAt: new Date().toISOString(), state: Object.assign({}, state, { K: state.K === Infinity ? '∞' : state.K }) };
     download('settings_' + Date.now() + '.json', JSON.stringify(data, null, 2), 'application/json');
     toast('설정(JSON)을 저장했습니다.');
   }
@@ -468,6 +469,7 @@
         const data = JSON.parse(r.result);
         const s = data.state || data;
         Object.keys(state).forEach(k => { if (s[k] !== undefined) state[k] = s[k]; });
+        if (s.K === null || s.K === '∞') state.K = Infinity;   // JSON은 Infinity를 null로 저장한다
         if (s.meta) state.meta = Object.assign(state.meta, s.meta);
         syncControls();
         runAnalysis();
@@ -501,13 +503,13 @@
 - 출처·라이선스: ${m.source || '(미기재)'}
 - 제작자(학생): ${m.student || '(미기재)'}
 - 전처리: 리사이즈 ${analysis.width}×${analysis.height}px · 색공간 ${state.space.toUpperCase()} · 샘플링 ${sampleName}
-- 최종 K: **${state.K}** · 난수 시드 ${state.seed}
+- 최종 K: **${fmtK(state.K)}** · 난수 시드 ${state.seed}
 
 | # | HEX | RGB | 비율 |
 |---|-----|-----|------|
 ${rows}
 
-- 한계(손실/근사): K-means는 색을 ${state.K}개로 "요약"하므로 미세한 색·질감이 사라집니다. 결과는 정답이 아니라 하나의 해석입니다.
+- 한계(손실/근사): K-means는 색을 ${fmtK(state.K)}개로 "요약"하므로 미세한 색·질감이 사라집니다. 결과는 정답이 아니라 하나의 해석입니다.
 
 ### B) 인터랙션 설계서
 - 관람 경험 목표(한 문장): ${m.intent || '(미기재)'}
@@ -538,7 +540,7 @@ _생성: ${new Date().toLocaleString('ko-KR')}_
   /* ----------------------------- 컨트롤 ↔ 상태 동기화 ----------------------------- */
   // 화면의 입력값을 state 기준으로 다시 맞춘다(프리셋/불러오기 후 호출)
   function syncControls() {
-    setVal('#rng-k', Math.min(state.K, 64)); setVal('#num-k', state.K); setOut('#out-k', fmt(state.K));
+    setVal('#rng-k', Math.min(state.K, 64)); setVal('#num-k', fmtK(state.K)); setOut('#out-k', fmtK(state.K));
     setVal('#sel-space', state.space); setVal('#sel-sampling', state.sampling);
     setVal('#rng-n', state.N); setOut('#out-n', fmt(state.N));
     setVal('#rng-size', state.size); setOut('#out-size', state.size);
@@ -599,17 +601,24 @@ _생성: ${new Date().toLocaleString('ko-KR')}_
     holder.addEventListener('drop', e => { if (e.dataTransfer.files[0]) loadFromFile(e.dataTransfer.files[0]); });
 
     // 분석 파라미터(변경 시 재분석이 필요한 것들)
-    // K: 슬라이더(빠른 범위) + 숫자 입력(1 ~ 1,000,000 까지). 실제 K는 이미지·성능 한계로 자동 조정.
+    // K: 슬라이더(빠른 범위) + 직접 입력(상한 없음, ∞ 가능). 실제 K는 이미지의 색 수까지.
     const rngK = $('#rng-k'), numK = $('#num-k');
+    const parseK = t => {
+      t = String(t).trim().replace(/[,\s]/g, '');
+      if (/^(∞|inf|infinity|무한|무한대)$/i.test(t)) return Infinity;
+      const v = Number(t);
+      return isFinite(v) ? v : (v === Infinity ? Infinity : 1);
+    };
     const setK = (v, reanalyze) => {
-      v = Math.max(1, Math.min(Math.floor(v || 1), 1000000));
-      state.K = v; setOut('#out-k', fmt(v));
+      v = v === Infinity ? Infinity : Math.max(1, Math.floor(v || 1));
+      state.K = v; setOut('#out-k', fmtK(v));
       if (rngK) rngK.value = Math.min(v, +rngK.max);
-      if (numK && document.activeElement !== numK) numK.value = v;
+      if (numK && document.activeElement !== numK) numK.value = fmtK(v);
       if (reanalyze) runAnalysis();
     };
     if (rngK) { rngK.addEventListener('input', () => setK(+rngK.value, false)); rngK.addEventListener('change', () => setK(+rngK.value, true)); }
-    if (numK) { numK.addEventListener('change', () => setK(+numK.value, true)); numK.addEventListener('keydown', e => { if (e.key === 'Enter') { setK(+numK.value, true); numK.blur(); } }); }
+    if (numK) { numK.addEventListener('change', () => setK(parseK(numK.value), true)); numK.addEventListener('keydown', e => { if (e.key === 'Enter') { numK.blur(); } }); numK.addEventListener('blur', () => { numK.value = fmtK(state.K); }); }
+    const infK = $('#btn-k-inf'); if (infK) infK.addEventListener('click', () => setK(Infinity, true));
     // 팔레트 차트 전환
     document.querySelectorAll('[data-pchart]').forEach(b => b.addEventListener('click', () => {
       state.palChart = b.dataset.pchart;

@@ -86,9 +86,10 @@
             </label>
             <div class="row two" style="margin-top:4px">
               <input id="rng-k" type="range" min="1" max="512" step="1" value="8" title="드래그로 K를 빠르게 바꿔요(1~512). 더 큰 값은 아래 숫자칸에 직접 입력." />
-              <input id="num-k" type="number" min="1" max="1000000" step="1" value="8" title="직접 숫자 입력 — 수천·수만 개까지 가능해요. 이미지의 실제 색 수·k-means 비용에 맞춰 실제 K가 자동 조정되고, K가 매우 크면 분석에 시간이 걸려요." />
+              <input id="num-k" type="text" inputmode="numeric" value="8" title="직접 입력 — 상한이 없어요. 아주 큰 수나 ∞(또는 inf·무한)를 넣으면 그림의 색 전부를 대표색으로 씁니다. 실제 K는 이미지의 서로 다른 색 수까지이고, K가 크면 분석에 시간이 걸려요." />
+              <button id="btn-k-inf" class="mini" type="button" title="K = ∞ : 그림에 있는 모든 색을 그대로 대표색으로">∞</button>
             </div>
-            <p class="hint" style="margin:2px 0 0">숫자칸에는 512보다 큰 K도 넣을 수 있습니다. 실제 K는 이미지 색 수에 맞춰 조정되고, 크면 분석이 오래 걸립니다.</p>
+            <p class="hint" style="margin:2px 0 0">숫자칸에는 상한 없이 넣을 수 있고, ∞를 누르면 그림의 모든 색을 씁니다. 실제 K는 이미지의 서로 다른 색 수까지이고, 크면 분석이 오래 걸립니다.</p>
             <p id="k-note" class="hint"></p>
           </div>
           <div class="row two">

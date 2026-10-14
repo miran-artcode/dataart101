@@ -76,7 +76,7 @@
   Charts.bars = function (cv, palette) {
     const { ctx, w, h } = setup(cv);
     const pad = 8, n = palette.length, bw = (w - pad * 2) / n;
-    const max = Math.max(...palette.map(p => p.ratio), 0.001);
+    const max = palette.reduce((m, p) => Math.max(m, p.ratio), 0.001);
     palette.forEach((p, i) => {
       const bh = (p.ratio / max) * (h - 30);
       const x = pad + i * bw;
@@ -98,7 +98,7 @@
     };
     const arr = palette.map(p => { const c = toHsl(p.r, p.g, p.b); return { p, h: c[0], s: c[1], l: c[2] }; })
       .sort((a, b) => (a.s < 0.12 && b.s < 0.12) ? a.l - b.l : (a.s < 0.12 ? -1 : (b.s < 0.12 ? 1 : a.h - b.h)));
-    const n = arr.length, maxR = Math.max(...palette.map(p => p.ratio), 0.001), aw = Math.PI * 2 / n;
+    const n = arr.length, maxR = palette.reduce((m, p) => Math.max(m, p.ratio), 0.001), aw = Math.PI * 2 / n;
     ctx.strokeStyle = 'rgba(127,127,127,0.18)'; ctx.lineWidth = 1;
     [1 / 3, 2 / 3, 1].forEach(f => { ctx.beginPath(); ctx.arc(cx, cy, R * f, 0, Math.PI * 2); ctx.stroke(); });
     arr.forEach((o, i) => {

@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>보는 법</title>
-<meta name="description" content="서울미술고 데이터아트 수업 사이트 「보는 법」 소개 페이지입니다." />
+<meta name="description" content="서울미술고 데이터아트 수업 사이트 「보는 법」. 그림을 점으로 읽고, 데이터로 만들고, 전시합니다." />
 <link rel="stylesheet" href="css/site.css" />
 <style>
   /* 이 페이지 전용. 강조색은 고정하지 않고, 첫 화면 그림의 K-means 대표색에서 가져온다(--mark). */
@@ -149,207 +149,31 @@
 
   <section class="sec" aria-labelledby="flow-title">
     <div class="sec-head">
-      <h2 id="flow-title">그림 한 점이 작품이 되기까지</h2>
+      <h2 id="flow-title">수업은 세 단계로 돌아갑니다</h2>
+      <p>단원(그림 · 소리 · 내 삶 · 사회문제)마다 같은 세 단계를 반복합니다.</p>
     </div>
-    <ol class="flow grid c4">
+    <ol class="flow grid c3">
       <li>
-        <h3>분석</h3>
-        <p>명화나 내 데이터를 알고리즘으로 쪼개 보고 한계를 적습니다.</p>
-        <p class="pages"><a href="lab.html">알고리즘 분석실</a><a href="learn.html">배움터</a></p>
+        <h3>1 읽기</h3>
+        <p>명화나 내 데이터를 알고리즘으로 쪼개 보고, 무엇이 사라졌는지 적습니다.</p>
+        <p class="pages"><a href="lab.html">알고리즘 분석실</a><a href="studio-object.html">객체 감지</a><a href="critique.html">데이터 비평</a></p>
       </li>
       <li>
-        <h3>창작</h3>
+        <h3>2 만들기</h3>
         <p>점의 색·크기·움직임에 데이터를 연결하고 의도와 근거를 씁니다.</p>
         <p class="pages"><a href="studio-color.html">색 군집 스튜디오</a><a href="studio-data.html">데이터 점 스튜디오</a></p>
       </li>
       <li>
-        <h3>전시</h3>
-        <p>근거를 적은 작품만 걸립니다. 큰 화면에는 QR 코드가 함께 나옵니다.</p>
+        <h3>3 나누기</h3>
+        <p>근거를 적은 작품만 걸립니다. 친구와 관람객이 단계별로 읽고 비평합니다.</p>
         <p class="pages"><a href="gallery.html">전시 갤러리</a><a href="exhibit.html">키오스크 전시</a></p>
       </li>
-      <li>
-        <h3>비평</h3>
-        <p>친구와 관람객이 단계별로 읽고, 차트 자체도 따져 봅니다.</p>
-        <p class="pages"><a href="critique.html">데이터 비평</a><a href="notes.html">작업 노트</a></p>
-      </li>
     </ol>
-  </section>
-
-  <section class="sec" aria-labelledby="map-title">
-    <div class="sec-head">
-      <h2 id="map-title">사이트 안에서 돌아가는 기술</h2>
-    </div>
-
-    <div class="map-group split reverse">
-      <h3>색과 이미지<small>그림을 숫자로 바꾸고, 다시 그림으로</small></h3>
-      <ul class="items">
-        <li class="item">
-          <h4>대표색 찾기 (K-means 군집)</h4>
-          <p>그림 속 수만 개의 픽셀을 비슷한 색끼리 K개 무리로 묶고, 각 무리의 평균색을 대표색으로 씁니다.</p>
-          <p class="where">색 군집 스튜디오, 알고리즘 분석실, 이 페이지 첫 화면</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>첫 중심은 서로 멀리 떨어지게 고르는 k-means++ 방식으로 정하고, 최대 24번 반복해 중심을 다듬습니다. 난수에 시드를 쓰기 때문에 같은 그림·같은 설정이면 언제나 같은 결과가 나와, 학생끼리 결과를 비교할 수 있습니다.</p>
-            <p>색 거리는 RGB와 LAB 중에서 고릅니다. LAB은 사람 눈이 느끼는 색 차이에 더 가깝습니다. <span class="file">js/kmeans.js</span> <span class="file">js/analysis.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>그림을 점으로 바꾸기</h4>
-          <p>그림에서 점 수천 개를 뽑아 각 점에 가장 가까운 대표색을 칠합니다. 밝은 곳, 어두운 곳, 윤곽선 쪽에 점을 더 많이 놓을 수도 있습니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>밝기·어둡기·윤곽 세기(Sobel)로 가중치 지도를 만든 뒤 그 비율대로 위치를 뽑습니다. 점마다 위치, 대표색 번호, 밝기, 윤곽 세기를 저장해 움직임과 3D 깊이에 다시 씁니다. <span class="file">js/analysis.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>일곱 가지 분석 알고리즘</h4>
-          <p>대표색 외에도 색 단순화(포스터화), 명암 단순화(노탄), 윤곽선 찾기, 미디언 컷, 모자이크, 구도 분석으로 같은 그림을 다르게 읽습니다.</p>
-          <p class="where">알고리즘 분석실</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>기본 네 가지(K-means, 포스터화, 노탄, Sobel 윤곽)와 심화 세 가지(Median Cut, 모자이크, 무게중심·삼분할 구도)로 나뉩니다. 각 결과 옆에 차트와 한계 메모 칸이 붙습니다. <span class="file">js/algos/algorithms.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>색채 조화와 차트</h4>
-          <p>대표색이 색상환에서 보색·삼각·유사 관계인지 찾아 주고, 색 비율을 도넛·막대·히스토그램 등 여섯 가지 차트로 보여 줍니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>색을 HSL로 바꿔 색상 각도 차이로 조화 관계를 판정합니다. 차트는 외부 라이브러리 없이 Canvas 2D로 직접 그려서 인터넷이 없어도 나옵니다. <span class="file">js/harmony.js</span> <span class="file">js/charts.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>움직이는 점</h4>
-          <p>대표색 점들이 마우스를 피하거나 따라오고, 소리가 커지면 흔들리거나 흩어집니다. 밝기를 깊이로 바꾸면 3D 조각처럼 돌려 볼 수 있습니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>수만 개의 점을 빠르게 그리려고 일반 배열 대신 Typed Array를 씁니다. 그리기에는 p5.js를 쓰며, 사이트 안에 함께 들어 있어 오프라인에서도 작동합니다. 저장된 설정으로 갤러리와 키오스크에서 같은 움직임을 다시 재생합니다. <span class="file">js/particles.js</span> <span class="file">js/player.js</span> <span class="file">vendor/p5.min.js</span></p>
-          </div></details>
-        </li>
-      </ul>
-    </div>
-
-    <div class="map-group split reverse">
-      <h3>소리<small>목소리와 음악을 데이터 표로</small></h3>
-      <ul class="items">
-        <li class="item">
-          <h4>소리를 숫자로 바꾸기</h4>
-          <p>5~20초 동안 녹음하면, 0.15초마다 소리의 크기와 낮은음·중간음·높은음의 세기, 가장 센 음높이를 표(CSV)로 만듭니다. 이 표를 그대로 데이터 점 스튜디오로 보낼 수 있습니다.</p>
-          <p class="where">소리 스튜디오, 색 군집 스튜디오(마이크로 연주)</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>브라우저에 들어 있는 Web Audio API의 AnalyserNode(FFT 크기 1024)로 주파수를 나눕니다. 음량은 RMS로, 음높이는 에너지가 가장 큰 주파수(Hz)로 계산합니다. 녹음 원본은 저장하지 않고 숫자 표만 씁니다. <span class="file">js/studio-sound.js</span> <span class="file">js/audio.js</span></p>
-          </div></details>
-        </li>
-      </ul>
-    </div>
-
-    <div class="map-group split reverse">
-      <h3>AI<small>쓰는 곳과 쓰지 않는 곳</small></h3>
-      <ul class="items">
-        <li class="item">
-          <h4>사진 속 사물 찾기</h4>
-          <p>사진을 넣으면 AI가 사람, 컵, 의자처럼 80가지 사물을 찾아 상자와 이름을 붙입니다. 명화 앞에서 AI가 무엇을 못 보는지도 확인합니다.</p>
-          <p class="where">객체 감지</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>TensorFlow.js와 COCO-SSD 모델(lite_mobilenet_v2)을 처음 쓸 때 내려받아 브라우저 안에서 계산합니다. 사진은 서버로 올라가지 않습니다. 모델을 받지 못하면 미리 준비한 예시 결과로 넘어갑니다. <span class="file">js/studio-object.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>감상 코치</h4>
-          <p>작품을 보고 정답이나 칭찬 대신 "왜 그렇게 느꼈는지" 근거를 묻는 질문만 합니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>기본은 규칙에 따라 질문을 고르는 방식이라 AI도 인터넷도 쓰지 않습니다. 선생님이 교사 대시보드에서 켰을 때만 Claude(Anthropic API) 또는 학교가 지정한 중계 서버를 부릅니다. 요청은 분당 5회로 제한되고, 실패하면 규칙 기반 질문으로 돌아갑니다. API 키는 그 기기의 브라우저에만 저장됩니다. <span class="file">js/coach.js</span> <span class="file">js/ratelimit.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>작품 해설(도슨트)<span class="not-ai">AI 아님</span></h4>
-          <p>학생이 적은 의도와 설정값을 읽어 해설 문단을 만듭니다. AI처럼 보이지만 미리 짜 둔 문장 틀에 값을 채워 넣는 방식입니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>의도, 사용한 데이터, 매핑, K와 점 개수를 문장 틀에 넣어 조립합니다. 같은 입력이면 같은 문장이 나옵니다. 페이지 곳곳의 설명 팝업과 힌트, 낱말 사전도 모두 미리 써 둔 글입니다. <span class="file">js/docent.js</span> <span class="file">js/explain.js</span> <span class="file">js/guide.js</span></p>
-          </div></details>
-        </li>
-      </ul>
-    </div>
-
-    <div class="map-group split reverse">
-      <h3>기록과 전시<small>저장하고 공유하기</small></h3>
-      <ul class="items">
-        <li class="item">
-          <h4>작품 저장</h4>
-          <p>작품, 피드백, 작업 노트, 퀴즈를 저장합니다. 학교 저장소에 연결되어 있으면 반 친구들과 공유되고, 연결이 끊기면 내 기기에 저장됩니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>기본은 브라우저 저장소(localStorage)이고, 설정 파일이 있으면 Firebase Firestore를 씁니다. 주소 끝에 <span class="file">?local=1</span>을 붙이면 기기 저장만 씁니다. 교사 대시보드에서 전체를 JSON 파일로 내보내고 다시 가져올 수 있습니다. <span class="file">js/store.js</span> <span class="file">config/cloud-config.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>QR 감상과 키오스크</h4>
-          <p>전시 화면에 작품마다 QR 코드가 뜨고, 관람객은 로그인 없이 휴대폰으로 작품을 보고 비평을 씁니다.</p>
-          <details><summary>원리 보기</summary><div class="deep">
-            <p>키오스크는 9초마다 작품을 넘기며, 방향키와 스페이스바로 직접 넘기거나 F로 전체 화면을 켭니다. 비평은 펠드먼의 4단계(서술·분석·해석·판단)를 따릅니다. <span class="file">js/exhibit.js</span> <span class="file">js/qr.js</span> <span class="file">js/work.js</span></p>
-          </div></details>
-        </li>
-        <li class="item">
-          <h4>작업 노트</h4>
-          <p>과정과 버전, 성찰을 시간 순서로 기록하고, "AI가 도운 것"과 "내가 결정한 것"을 나눠 적습니다.</p>
-          <p class="where">작업 노트</p>
-        </li>
-      </ul>
-    </div>
-  </section>
-
-  <section class="sec" aria-labelledby="data-title">
-    <div class="sec-head">
-      <h2 id="data-title">내 데이터는 어디에 저장되나요</h2>
-      <p>굵은 테두리: 기기 밖으로 나가지 않음 · 점선: 선생님이 켰을 때만</p>
-    </div>
-    <div class="zones grid c3 no-orphan">
-      <article class="zone inside">
-        <h3>내 기기 안</h3>
-        <p class="who">이 컴퓨터나 휴대폰의 브라우저에만 저장됩니다.</p>
-        <ul>
-          <li>로그인 정보(이름, 반, PIN)</li>
-          <li>녹음한 소리(숫자 표로 바꾼 뒤 원본은 버림)</li>
-          <li>사물 찾기에 넣은 사진</li>
-          <li>화면 테마 같은 설정</li>
-        </ul>
-        <p class="note">다른 기기에서는 다시 로그인 정보를 만들어야 합니다.</p>
-      </article>
-      <article class="zone">
-        <h3>학교 저장소</h3>
-        <p class="who">Firebase Firestore. 반 친구들과 공유하기 위한 곳입니다.</p>
-        <ul>
-          <li>전시한 작품(표시 이름, 의도와 근거, 설정, 이미지)</li>
-          <li>피드백과 비평</li>
-          <li>작업 노트</li>
-          <li>퀴즈와 답</li>
-        </ul>
-        <p class="note"><b>사이트 주소를 아는 사람은 누구나 볼 수 있습니다.</b> 표시 이름은 실명 대신 이니셜이나 별명을 고르세요. 단원이 끝나면 선생님이 정리합니다.</p>
-      </article>
-      <article class="zone optional">
-        <h3>AI 감상 코치</h3>
-        <p class="who">기본은 꺼져 있습니다. 선생님이 켰을 때만 외부로 보냅니다.</p>
-        <ul>
-          <li>작품의 대표색과 설정값</li>
-          <li>학생이 쓴 작품 의도</li>
-        </ul>
-        <p class="note">Anthropic의 Claude API 또는 학교가 지정한 중계 서버로 전송됩니다. 꺼져 있으면 아무것도 나가지 않습니다.</p>
-      </article>
-    </div>
-  </section>
-
-  <section class="sec" aria-labelledby="rule-title">
-    <div class="sec-head">
-      <h2 id="rule-title">이렇게 만든 이유</h2>
-    </div>
-    <ul class="rules grid c3 no-orphan">
-      <li>
-        <h3>인터넷이 끊겨도 수업은 계속됩니다</h3>
-        <p>설치나 서버 없이 파일만 열면 시작됩니다. 명화를 못 불러오면 비슷한 그림을 직접 그려 대신하고, 저장소가 끊기면 기기에 저장합니다.</p>
-      </li>
-      <li>
-        <h3>AI는 정답을 주지 않습니다</h3>
-        <p>감상 코치는 질문만 하고, 판단은 학생이 합니다. AI가 도운 부분은 작업 노트에 따로 표시합니다.</p>
-      </li>
-      <li>
-        <h3>분석의 한계를 묻습니다</h3>
-        <p>모든 알고리즘은 그림을 줄여서 봅니다. 결과마다 무엇이 사라졌는지 적는 칸이 있습니다.</p>
-      </li>
-    </ul>
+    <p class="start" style="margin-top:28px">
+      <a class="btn primary" href="hub.html">수업 허브에서 단원 고르기</a>
+      <a class="btn" href="start.html">5분 사용 안내</a>
+      <a class="btn ghost" href="about.html">쓰인 기술과 데이터 보관 위치</a>
+    </p>
   </section>
 
   <p class="footer-note">명화는 위키미디어 공용의 퍼블릭 도메인 이미지입니다. 사이트 코드는 MIT, p5.js는 LGPL-2.1 라이선스를 따릅니다.</p>

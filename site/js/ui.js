@@ -10,31 +10,52 @@
   // 저장된 테마를 가능한 한 일찍 적용(깜빡임 최소화)
   try { if (localStorage.getItem('dn_theme') === 'dark') document.documentElement.setAttribute('data-theme', 'dark'); } catch (e) {}
 
+  // 내비는 수업 순서(읽기 → 만들기 → 나누기)만 따른다. 도움말·교사는 끝으로.
   const NAV = [
-    { label: '소개', href: 'index.html' },
-    { label: '사용 안내', href: 'start.html' },
-    { label: '만들기', drop: [
-      { href: 'studio-color.html', t: '색 군집 스튜디오' },
-      { href: 'studio-data.html', t: '데이터 점 스튜디오' },
-      { href: 'studio-sound.html', t: '소리 스튜디오' },
-      { href: 'studio-life.html', t: '내 삶 스튜디오' },
-      { href: 'project.html', t: '사회문제 프로젝트' },
-      { href: 'studio-object.html', t: '객체 감지' },
-      { href: 'lab.html', t: '알고리즘 분석실' }
+    { label: '홈', href: 'hub.html' },
+    { label: '1 읽기', drop: [
+      { href: 'lab.html', t: '알고리즘 분석실', s: '한 그림을 일곱 방법으로' },
+      { href: 'studio-object.html', t: '객체 감지', s: 'AI의 눈이 보는 것·못 보는 것' },
+      { href: 'critique.html', t: '데이터 비평', s: '차트를 사실·해석·가치로' }
     ] },
-    { label: '배우기', drop: [
-      { href: 'learn.html', t: '알고리즘 배움터' },
-      { href: 'critique.html', t: '데이터 비평' },
-      { href: 'journey.html', t: '학습 여정' }
+    { label: '2 만들기', drop: [
+      { href: 'studio-color.html', t: '색 군집 스튜디오', s: '그림 → 점' },
+      { href: 'studio-data.html', t: '데이터 점 스튜디오', s: '숫자 표 → 점' },
+      { href: 'studio-sound.html', t: '소리 스튜디오', s: '재료 만들기 → 데이터 점' },
+      { href: 'studio-life.html', t: '내 삶 스튜디오', s: '재료 만들기 → 데이터 점' },
+      { href: 'project.html', t: '사회문제 프로젝트', s: '재료 만들기 → 데이터 점' }
     ] },
-    { label: '나누기', drop: [
-      { href: 'gallery.html', t: '전시 갤러리' },
-      { href: 'exhibit.html', t: '키오스크 전시' },
-      { href: 'quiz.html', t: '분석 퀴즈' },
-      { href: 'notes.html', t: '작업 노트' }
+    { label: '3 나누기', drop: [
+      { href: 'gallery.html', t: '전시 갤러리', s: '작품 보고 피드백' },
+      { href: 'exhibit.html', t: '키오스크 전시', s: '큰 화면 · QR' },
+      { href: 'quiz.html', t: '분석 퀴즈', s: '문제 내고 풀기' }
     ] },
-    { label: '교사', href: 'admin.html' }
+    { label: '내 기록', href: 'notes.html' },
+    { label: '도움말', drop: [
+      { href: 'start.html', t: '사용 안내', s: '5분 시작 · 낱말 사전' },
+      { href: 'learn.html', t: '알고리즘 배움터', s: '원리를 깊게' },
+      { href: 'journey.html', t: '학습 여정 · 평가', s: '학기 흐름' },
+      { href: 'about.html', t: '사이트 소개', s: '기술 · 데이터 보관' }
+    ] },
+    { label: '교사', href: 'admin.html', teacher: true }
   ];
+
+  // 페이지마다 "다음 단계" 하나. 막다른 화면을 없앤다.
+  const NEXT = {
+    'lab.html': ['studio-color.html', '재창조 이미지를 색 군집 스튜디오로 보내기'],
+    'studio-object.html': ['studio-data.html', '감지 결과를 데이터 점 스튜디오로 보내기'],
+    'critique.html': ['notes.html', '성찰을 작업 노트에 남기기'],
+    'studio-sound.html': ['studio-data.html', '소리 표를 데이터 점 스튜디오로 보내기'],
+    'studio-life.html': ['studio-data.html', '내 삶 표를 데이터 점 스튜디오로 보내기'],
+    'project.html': ['studio-data.html', '정제한 CSV를 데이터 점 스튜디오로 보내기'],
+    'studio-data.html': ['gallery.html', '저장한 작품을 전시 갤러리에서 보기'],
+    'gallery.html': ['quiz.html', '친구 작품으로 분석 퀴즈 내기'],
+    'quiz.html': ['notes.html', '오늘 배운 것을 작업 노트에 적기'],
+    'learn.html': ['lab.html', '배운 알고리즘을 분석실에서 써 보기'],
+    'start.html': ['studio-color.html', '색 군집 스튜디오에서 시작하기'],
+    'journey.html': ['hub.html', '홈으로 가서 단원 고르기'],
+    'about.html': ['hub.html', '홈으로 가기']
+  };
 
   const UI = {};
   const cur = () => location.pathname.split('/').pop() || 'index.html';
@@ -43,7 +64,8 @@
     const host = document.getElementById('app-header');
     if (!host) return;
     const active = activeOverride || cur();
-    const navHTML = NAV.map((n, i) => {
+    const isTeacher = !!(global.Auth && Auth.isTeacher && Auth.isTeacher());
+    const navHTML = NAV.filter(n => !n.teacher || isTeacher).map((n, i) => {
       if (n.drop) {
         const isActive = n.drop.some(d => d.href === active);
         const items = n.drop.map(d =>
@@ -188,7 +210,9 @@
     const f = document.createElement('footer');
     f.id = 'site-footer';
     f.style.cssText = 'text-align:center; color:var(--muted2); font-size:12px; padding:24px 18px 30px; border-top:1px solid var(--line); margin-top:28px;';
-    f.innerHTML = '© 2026 <b style="color:var(--muted)">MIRAN HWANG</b> · <a href="mailto:MIRAN726@GMAIL.COM" style="color:var(--muted)">MIRAN726@GMAIL.COM</a> · 데이터 미디어아트 스튜디오 · 교육용';
+    const nx = NEXT[cur()];
+    const nxHTML = nx ? '<p style="margin:0 0 14px; font-size:14px; color:var(--muted)">다음 단계 → <a href="' + nx[0] + '" style="font-weight:700; color:var(--text)">' + nx[1] + '</a></p>' : '';
+    f.innerHTML = nxHTML + '© 2026 <b style="color:var(--muted)">MIRAN HWANG</b> · <a href="mailto:MIRAN726@GMAIL.COM" style="color:var(--muted)">MIRAN726@GMAIL.COM</a> · 데이터 미디어아트 스튜디오 · 교육용';
     document.body.appendChild(f);
   };
 

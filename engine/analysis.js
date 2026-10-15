@@ -106,12 +106,17 @@
   /* ------------------------------------------------------------------ */
   function analyze(source, opts) {
     opts = opts || {};
-    const reqK = Math.max(1, Math.floor(opts.K || 8));   // 학생이 입력한 K(클램프 전)
+    // 학생이 입력한 K. 상한 없음 — Infinity(∞)면 "그림에 있는 색 전부"를 뜻한다.
+    const reqK = opts.K === Infinity ? Infinity : Math.max(1, Math.floor(opts.K || 8));
     const space = opts.space === 'lab' ? 'lab' : 'rgb';
     const sampling = opts.sampling || 'uniform';
     const reqN = Math.max(100, Math.min(opts.N || 4000, 50000));   // 사용자가 정한 점 개수(클램프 전 기준)
-    // K가 매우 크면 더 많은 픽셀이 필요(색 수 확보) — 입력 K에 맞춰 분석 해상도를 키운다.
-    const maxDim = opts.maxDim || (reqK > 6000 ? 600 : reqK > 1500 ? 460 : 320);
+    // K가 크면 더 많은 픽셀(색)이 필요 — 입력 K에 맞춰 분석 해상도를 키운다.
+    //  K=∞면 원본 해상도까지. 브라우저 메모리를 지키려고 긴 변은 MAX_DIM까지만.
+    const MAX_DIM = 2048;
+    const srcDim = Math.max(source.width, source.height);
+    const maxDim = opts.maxDim || (reqK === Infinity ? Math.min(srcDim, MAX_DIM)
+      : Math.min(MAX_DIM, Math.max(320, Math.ceil(Math.sqrt(reqK * 6)))));
     const seed = opts.seed != null ? opts.seed : 12345;
     const rng = KMeans.makeRNG(seed);
 
@@ -131,44 +136,51 @@
     }
 
     // (2) K-means 입력: 픽셀을 골고루 표본추출해서 학습.
-    //   K가 크면 군집당 표본이 부족하지 않도록 표본 수를 K에 맞춰 늘린다(성능 위해 상한).
-    const sampleTarget = Math.max(6000, Math.min(reqK * 6, 60000));
+    //   K가 크면 군집당 표본이 부족하지 않도록 표본 수를 K에 맞춰 늘린다(∞면 모든 픽셀).
+    const sampleTarget = reqK === Infinity ? total : Math.max(6000, reqK * 6);
     const sampleStep = Math.max(1, Math.floor(total / sampleTarget));
-    const data = [];
+    //   같은 색 픽셀은 하나로 합치고 개수를 가중치로 쓴다(결과는 같고 훨씬 빠름).
+    const keyIdx = new Map(), data = [], wts = [], uR = [], uG = [], uB = [];
+    let nSample = 0;
     for (let i = 0; i < total; i += sampleStep) {
-      data.push(toSpace(px[i * 4], px[i * 4 + 1], px[i * 4 + 2], space));
+      const r = px[i * 4], g = px[i * 4 + 1], b = px[i * 4 + 2], key = (r << 16) | (g << 8) | b;
+      let u = keyIdx.get(key);
+      if (u === undefined) {
+        u = data.length; keyIdx.set(key, u);
+        data.push(toSpace(r, g, b, space)); wts.push(0); uR.push(r); uG.push(g); uB.push(b);
+      }
+      wts[u]++; nSample++;
     }
-    // 실제 K: 입력값을 (표본 색 수, 성능 상한)로 제한.
-    //   → 수만 개까지 입력할 수 있지만, 이미지의 실제 색 수와 k-means 비용(K에 비례)이 한계라
-    //      그 한도 안에서만 쓴다(정직한 근사). 큰 K일수록 반복 횟수를 줄여 멈춤을 막는다.
-    const PERF_CAP = 50000;
-    const K = Math.max(1, Math.min(reqK, data.length, PERF_CAP));
+    // 실제 K: 입력값을 표본의 서로 다른 색 수로 제한(그보다 많은 대표색은 존재할 수 없음).
+    //   K가 색 수와 같거나 크면 색 하나하나가 그대로 대표색이 된다.
+    const K0 = Math.max(1, Math.min(reqK, data.length));
     // 점 개수 N: 사용자 설정(reqN)을 기본으로, 실제 K가 더 크면 점도 K만큼 자동 확보한다.
     //  - K색을 다 보여주려면 점이 최소 그만큼 필요(점<K면 일부 색은 점으로 나타나지 못함).
-    //  - 그래서 N을 K보다 작게 두면 K가 점 개수를 '직접' 정한다(K를 키우면 점이 늘어남).
-    const N = Math.min(50000, Math.max(reqN, K));
-    const maxIter = K <= 64 ? 24 : K <= 256 ? 14 : K <= 1024 ? 10 : K <= 4096 ? 6 : K <= 12000 ? 4 : 2;
-    const km = KMeans.cluster(data, K, { seed, maxIter });
+    //  - 화면이 멈추지 않도록 점은 POINT_CAP까지만(팔레트 K에는 상한 없음).
+    const POINT_CAP = 200000;
+    const N = Math.min(POINT_CAP, Math.max(reqN, Math.min(K0, total)));
+    const maxIter = K0 <= 64 ? 24 : K0 <= 256 ? 14 : K0 <= 1024 ? 10 : K0 <= 4096 ? 6 : K0 <= 12000 ? 4 : 2;
+    const km = KMeans.cluster(data, K0, { seed, maxIter, weights: wts });
 
     // 군집 중심을 RGB 팔레트로 환산 + 비율(%) 계산
     // (LAB 중심은 직접 역변환 대신, 그 군집에 속한 원본 RGB들의 평균색을 쓴다.)
-    const sumR = new Float64Array(K), sumG = new Float64Array(K), sumB = new Float64Array(K);
-    const cnt = new Int32Array(K);
-    for (let s = 0; s < data.length; s++) {
-      const c = km.assignments[s];
-      const src = s * sampleStep;
-      sumR[c] += px[src * 4]; sumG[c] += px[src * 4 + 1]; sumB[c] += px[src * 4 + 2];
-      cnt[c]++;
+    const sumR = new Float64Array(K0), sumG = new Float64Array(K0), sumB = new Float64Array(K0);
+    const cnt = new Float64Array(K0);
+    for (let u = 0; u < data.length; u++) {
+      const c = km.assignments[u], wu = wts[u];
+      sumR[c] += uR[u] * wu; sumG[c] += uG[u] * wu; sumB[c] += uB[u] * wu;
+      cnt[c] += wu;
     }
     let palette = [];
-    for (let c = 0; c < K; c++) {
-      const n = Math.max(1, cnt[c]);
+    for (let c = 0; c < K0; c++) {
+      if (!cnt[c]) continue;               // 빈 군집은 버린다
       palette.push({
-        r: clamp255(sumR[c] / n), g: clamp255(sumG[c] / n), b: clamp255(sumB[c] / n),
-        ratio: cnt[c] / data.length,
+        r: clamp255(sumR[c] / cnt[c]), g: clamp255(sumG[c] / cnt[c]), b: clamp255(sumB[c] / cnt[c]),
+        ratio: cnt[c] / nSample,
         _cen: km.centroids[c]            // 점 배정을 위해 색공간 중심 보관
       });
     }
+    const K = palette.length;
     // 비율 높은 색 순으로 정렬(리포트 가독성)
     palette.sort((a, b) => b.ratio - a.ratio);
     const centroidsSpace = palette.map(p => p._cen);
@@ -192,7 +204,8 @@
 
     // (4) 점 리스트(JSON 같은 구조, 성능 위해 Typed Array로)
     const nx = new Float32Array(N), ny = new Float32Array(N);
-    const clusterArr = new Int16Array(N), brArr = new Float32Array(N), edArr = new Float32Array(N);
+    const nearest = KMeans.makeNearest(centroidsSpace), nnCache = new Map();
+    const clusterArr = new Int32Array(N), brArr = new Float32Array(N), edArr = new Float32Array(N);
     const orr = new Uint8Array(N), ogg = new Uint8Array(N), obb = new Uint8Array(N);
     for (let k = 0; k < N; k++) {
       const i = idx[k];
@@ -205,19 +218,15 @@
       brArr[k] = bright[i];
       edArr[k] = emap[i];          // 점이 놓인 곳의 윤곽(에지) 세기 0~1 — '에지 렌즈'용
       // 가장 가까운 대표색(군집)에 배정 = "대표색 점으로 치환"
-      const v = toSpace(r, g, b, space);
-      let best = 0, bestD = Infinity;
-      for (let c = 0; c < centroidsSpace.length; c++) {
-        const cc = centroidsSpace[c];
-        let dd = 0;
-        for (let d = 0; d < cc.length; d++) { const df = v[d] - cc[d]; dd += df * df; }
-        if (dd < bestD) { bestD = dd; best = c; }
-      }
+      //  같은 색은 결과도 같으므로 한 번 찾은 답을 기억해 둔다.
+      const key = (r << 16) | (g << 8) | b;
+      let best = nnCache.get(key);
+      if (best === undefined) { best = nearest(toSpace(r, g, b, space)); nnCache.set(key, best); }
       clusterArr[k] = best;
     }
 
     return {
-      width: w, height: h, count: N, K, requestedK: reqK, maxK: Math.min(data.length, PERF_CAP), space, sampling, seed,
+      width: w, height: h, count: N, K, requestedK: reqK, maxK: data.length, space, sampling, seed,
       palette,                       // [{r,g,b,ratio}] 비율 내림차순
       nx, ny, cluster: clusterArr, br: brArr, ed: edArr,
       or: orr, og: ogg, ob: obb
